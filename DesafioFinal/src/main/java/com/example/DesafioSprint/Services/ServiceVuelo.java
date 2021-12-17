@@ -22,69 +22,31 @@ public class ServiceVuelo implements IServiceVuelo {
         this.repoFlight = repoFlight;
     }
 
+    public FlightsResponseDTO addFlight(VueloDTO flightDTO)throws FechasException,VuelosException{
+        if (flightDTO.getDisponibilityDateTo().before(flightDTO.getGoingDate()))
+            throw new FechasException("La fecha de vuelta debe ser mayor a la de ida", HttpStatus.BAD_REQUEST);
+        if(repoFlight.existsVuelo(flightDTO.getFlightNumber()))
+            throw new VuelosException("Ya existe un vuelo con ese numero", HttpStatus.BAD_REQUEST);
+        Vuelo flight = new Vuelo(flightDTO.getFlightNumber(),flightDTO.getName(),flightDTO.getOrigin(),flightDTO.getDestination(),flightDTO.getGoingDate(),flightDTO.getReturnDate(),flightDTO.getSeatType(),flightDTO.getFlightPrice());
+        repoFlight.save(flight);
+        FlightsResponseDTO res = new FlightRepository("Vuelo dado de alta correctamente");
+        return res;
+    }
+
     /**
      * @return los vuelos ingresados en el sistema con sus respectivos datos como por ejemplo , numero de vuelo, origen,destino,fecha ida, fecha vuelta,tipo de vuelo, y el precio por persona.
      */
-    public List<VueloDTO> getVuelos() throws VuelosException {
+    public List<VueloDTO> getFlights() throws VuelosException {
         List<Vuelo> vuelosData = repoFlight.findAll();
         List<VueloDTO> res = new ArrayList<>();
         if (vuelosData.isEmpty())
             throw new VuelosException("No hay vuelos en el repositorio", HttpStatus.BAD_REQUEST);
         for (Vuelo v : vuelosData) {
-            VueloDTO aux = new VueloDTO(v.getFlightNumber(), v.getOrigin(), v.getDestination(), v.getDateFrom(), v.getDateTo(), v.getSeatType(), v.getPricePerPerson());
+            VueloDTO aux = v.flightToDTO();
             res.add(aux);
         }
         return res;
     }
-
-    /**
-     * @param cod es el codigo que identifica a los vuelos en el sistema
-     * @return True si en el sistema existe un vuelo que tenga como codigo identificador = cod y false en el caso contrario
-     */
-    public boolean existsVuelo(String cod) {
-        boolean res = false;
-        List<Vuelo> aux = repoFlight.findAll();
-        for (Vuelo e : aux) {
-            if (e.getFlightNumber().equals(cod)) {
-                res = true;
-                break;
-            }
-        }
-        return res;
-    }
-
-    /**
-     * @param dest es el destino donde se va a realizar la busqueda de vuelos
-     * @return True si existen vuelo en esa destino y false en el caso contrario.
-     */
-    public boolean existsDestinationVuelo(String dest) {
-        boolean res = false;
-        List<Vuelo> aux = repoFlight.findAll();
-        for (Vuelo v : aux) {
-            if (v.getDestination().equals(dest)) {
-                res = true;
-                break;
-            }
-        }
-        return res;
-    }
-
-    /**
-     * @param org es el origen donde se va a realizar la busqueda de vuelos
-     * @return True si existen vuelos en esa origen y false en el caso contrario.
-     */
-    public boolean existsOriginVuelo(String org) {
-        boolean res = false;
-        List<Vuelo> aux = repoFlight.findAll();
-        for (Vuelo v : aux) {
-            if (v.getOrigin().equals(org)) {
-                res = true;
-                break;
-            }
-        }
-        return res;
-    }
-
     /**
      * @param vuelo En este parametro se recibe los datos para la consulta, ya sea las fechas de la estadia y el destino que se esta buscando.
      * @return Devuelve la lista de los vuelos que cumplen los requisitos solicitados.
@@ -94,25 +56,48 @@ public class ServiceVuelo implements IServiceVuelo {
      */
     public List<VueloDTO> disponibilidadVuelos(DisponibilidadVuelosDTO vuelo) throws UbicacionException, FechasException, VuelosException {
         List<VueloDTO> res = new ArrayList<>();
-        if (!existsDestinationVuelo(vuelo.getDestination()))
+        if (!repoFlight.existsDestinationVuelo(vuelo.getDestination()))
             throw new UbicacionException("El destino elegido no existe", HttpStatus.BAD_REQUEST);
-        if (!existsOriginVuelo(vuelo.getOrigin()))
+        if (!repoFlight.existsOriginVuelo(vuelo.getOrigin()))
             throw new UbicacionException("El origen elegido no existe", HttpStatus.BAD_REQUEST);
         if (vuelo.getDateTo().before(vuelo.getDateFrom()))
             throw new FechasException("La fecha de vuelta debe ser mayor a la de ida", HttpStatus.BAD_REQUEST);
         List<Vuelo> vuelosData = repoFlight.findAll();
-
         for (Vuelo v : vuelosData) {
-            if (v.getOrigin().equals(vuelo.getOrigin()) && v.getDestination().equals(vuelo.getDestination()) && v.getDateTo().equals(vuelo.getDateTo()) && v.getDateFrom().equals(vuelo.getDateFrom())) {
-                VueloDTO nuevo = new VueloDTO(v.getFlightNumber(), v.getOrigin(), v.getDestination(), v.getDateFrom(), v.getDateTo(), v.getSeatType(), v.getPricePerPerson());
+            if (v.getOrigin().equals(vuelo.getOrigin()) && v.getDestination().equals(vuelo.getDestination()) && v.getReturnDate().equals(vuelo.getDateTo()) && v.getGoingDate().equals(vuelo.getDateFrom())) {
+                VueloDTO nuevo = v.flightToDTO();
                 res.add(nuevo);
             }
         }
-
         if (res.isEmpty())
             throw new VuelosException("No hay Vuelos disponibles con los datos ingresados", HttpStatus.BAD_REQUEST);
         return res;
     }
+
+    public FlightsResponseDTO updateFlight(String cod, VueloDTO flightDto) throws  VuelosException{
+        if(repoFlight.existsVuelo(flightDto.getFlightNumber()))
+        throw new VuelosException("No hay vuelo con ese codigo", HttpStatus.BAD_REQUEST);
+        Vuelo flight = repoFlight.findFlightByCod(cod);
+        flight.setOrigin(flightDto.getOrigin());
+        flight.setDestination(flightDto.getDestination());
+        flight.setGoingDate(flightDto.getGoingDate());
+        flight.setReturnDate(flightDto.getReturnDate());
+        flight.setSeatType(flightDto.getSeatType());
+        flight.setPricePerPerson(flightDto.getFlightPrice());
+        repoFlight.save(flight);
+        FlightsResponseDTO res = new FlightRepository("Vuelo modificado correctamente");
+        return res;
+    }
+
+    public FlightsResponseDTO deleteFlight(String cod) throws  VuelosException{
+        Vuelo flight = repoFlight.findFlightByCod(cod);
+        if(flight==null)
+            throw new VuelosException("No hay vuelo con ese codigo", HttpStatus.BAD_REQUEST);
+        repoFlight.delete(flight);
+        FlightsResponseDTO res = new FlightRepository("Vuelo borrado correctamente");
+        return res;
+    }
+
 
 
 }

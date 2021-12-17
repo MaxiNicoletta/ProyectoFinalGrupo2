@@ -5,9 +5,9 @@ import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Exceptions.PersonasException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
-import com.example.DesafioSprint.Edentity.Pago;
-import com.example.DesafioSprint.Edentity.Persona;
-import com.example.DesafioSprint.Edentity.ReservaHotel;
+import com.example.DesafioSprint.Entities.Pago;
+import com.example.DesafioSprint.Entities.Persona;
+import com.example.DesafioSprint.Entities.ReservaHotel;
 import com.example.DesafioSprint.Repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,7 +51,7 @@ public class ServiceReservaH implements IServiceReservaH {
      * @throws FechasException    Excepcion causada por si la fecha de Salida es mayor a la fecha de entrada
      * @throws UbicacionException Excepcion causada por si no existen hoteles en el origen ingresado o en el destino.
      */
-    public ReservasHotelDTOResponse addReserva(ReservaHotelRequestDTO rvHot) throws PersonasException, HotelesException, FechasException {
+    public BookingResponseDTO addReserva(BookingRequestDTO rvHot) throws PersonasException, HotelesException, FechasException {
         if (!sr.existsDestination(rvHot.getBooking().getDestination()))
             throw new HotelesException("El destino elegido no existe", HttpStatus.BAD_REQUEST);
         if (!sr.existsHoteles(rvHot.getBooking().getHotelCode()))
@@ -64,7 +64,7 @@ public class ServiceReservaH implements IServiceReservaH {
             throw new PersonasException("La Habitacion es para 3 personas", HttpStatus.BAD_REQUEST);
         if (rvHot.getBooking().getRoomType().equals("SINGLE") && rvHot.getBooking().getPeopleAmount() > 1)
             throw new PersonasException("La Habitacion es para 1 persona", HttpStatus.BAD_REQUEST);
-        ReservasHotelDTOResponse res = null;
+        BookingResponseDTO res = null;
         DisponibilidadHotelDTO hotRsv = new DisponibilidadHotelDTO(rvHot.getBooking().getDateFrom(), rvHot.getBooking().getDateTo(), rvHot.getBooking().getDestination());
         ListHotelesDTO lstHoteles = sr.getHotelesDisponibles(hotRsv);
         HotelDTO hotel = null;
@@ -105,7 +105,7 @@ public class ServiceReservaH implements IServiceReservaH {
             ReservaDTO rsv2 = new ReservaDTO(rvHot.getBooking().getDateFrom(), rvHot.getBooking().getDateTo(), rvHot.getBooking().getDestination(), rvHot.getBooking().getHotelCode(), rvHot.getBooking().getPeopleAmount(), rvHot.getBooking().getRoomType(), rvHot.getBooking().getPeople());
             repository.addReservaHotel(rsv);
             StatusDTO status = new StatusDTO(200, "El proceso termino satisfactoriamente");
-            res = new ReservasHotelDTOResponse(rvHot.getUsername(), amount, interest, total, rsv2, status);
+            res = new BookingResponseDTO(rvHot.getUsername(), amount, interest, total, rsv2, status);
         } else
             throw new HotelesException("Ese hotel No esta disponible en las fechas ingresadas", HttpStatus.BAD_REQUEST);
         return res;
@@ -116,11 +116,11 @@ public class ServiceReservaH implements IServiceReservaH {
      * @return Todos los datos de las reservas que corresponden al vuelo ingresado.
      */
 
-    public List<ReservasHotelDTOResponse> getReservasHotel(String codHotel) throws HotelesException {
+    public List<BookingResponseDTO> getReservasHotel(String codHotel) throws HotelesException {
         if (!sr.existsHoteles(codHotel))
             throw new HotelesException("No existe ese hotel en el sistema", HttpStatus.BAD_REQUEST);
-        ReservasHotelDTOResponse r;
-        List<ReservasHotelDTOResponse> res = new ArrayList<>();
+        BookingResponseDTO r;
+        List<BookingResponseDTO> res = new ArrayList<>();
         List<ReservaHotel> agenda = repository.getReservasHot().get(codHotel);
         if (agenda == null)
             throw new HotelesException("No hay reservas para ese hotel", HttpStatus.BAD_REQUEST);
@@ -132,7 +132,7 @@ public class ServiceReservaH implements IServiceReservaH {
                 personaL.add(per);
             }
             ReservaDTO rsv = new ReservaDTO(h.getDateFrom(), h.getDateTo(), h.getDestination(), h.getHotelCode(), h.getPeopleAmount(), h.getRoomType(), personaL);
-            r = new ReservasHotelDTOResponse(h.getUserName(), h.getAmount(), h.getInterest(), h.getTotal(), rsv, null);
+            r = new BookingResponseDTO(h.getUserName(), h.getAmount(), h.getInterest(), h.getTotal(), rsv, null);
             res.add(r);
         }
         return res;

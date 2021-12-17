@@ -138,7 +138,7 @@ class ControllerHotelTest {
         lista.add(persona1);
         ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
-        ReservaHotelRequestDTO rsv = new ReservaHotelRequestDTO("maximiliano@hotmail.com", reserva, pago);
+        BookingRequestDTO rsv = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
 
         ResponseEntity<?> responseDto = ResponseEntity.ok(null);
         ObjectWriter writer = new ObjectMapper().configure(SerializationFeature.WRAP_ROOT_VALUE, false).writer();

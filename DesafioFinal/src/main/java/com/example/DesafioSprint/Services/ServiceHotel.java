@@ -5,10 +5,8 @@ import com.example.DesafioSprint.DTOs.HotelDTO;
 import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
-import com.example.DesafioSprint.Edentity.Hotel;
-import com.example.DesafioSprint.Repository.FlightRepository;
+import com.example.DesafioSprint.Entities.Hotel;
 import com.example.DesafioSprint.Repository.IHotelRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

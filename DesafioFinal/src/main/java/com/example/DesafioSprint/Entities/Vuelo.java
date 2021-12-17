@@ -1,4 +1,4 @@
-package com.example.DesafioSprint.Edentity;
+package com.example.DesafioSprint.Entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

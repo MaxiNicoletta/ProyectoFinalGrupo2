@@ -5,12 +5,8 @@ import com.example.DesafioSprint.DTOs.VueloDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
 import com.example.DesafioSprint.Exceptions.VuelosException;
-import com.example.DesafioSprint.Edentity.Vuelo;
-import com.example.DesafioSprint.Repository.FlightRepository;
+import com.example.DesafioSprint.Entities.Vuelo;
 import com.example.DesafioSprint.Repository.IFlightRepository;
-import com.example.DesafioSprint.Repository.IHotelRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

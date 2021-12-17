@@ -1,4 +1,4 @@
-package com.example.DesafioSprint.Edentity;
+package com.example.DesafioSprint.Entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

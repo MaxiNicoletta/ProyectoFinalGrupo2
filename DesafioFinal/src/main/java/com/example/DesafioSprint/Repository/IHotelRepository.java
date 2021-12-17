@@ -1,7 +1,6 @@
 package com.example.DesafioSprint.Repository;
 
-import com.example.DesafioSprint.Edentity.Hotel;
-import com.example.DesafioSprint.Edentity.ReservaHotel;
+import com.example.DesafioSprint.Entities.Hotel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

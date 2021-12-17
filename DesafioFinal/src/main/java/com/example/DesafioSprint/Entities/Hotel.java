@@ -1,4 +1,4 @@
-package com.example.DesafioSprint.Edentity;
+package com.example.DesafioSprint.Entities;
 
 import com.example.DesafioSprint.DTOs.HotelDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -41,7 +41,4 @@ public class Hotel {
         this.reserved = reserved;
     }
     
-    public HotelDTO hotelToDTO(){
-        return new HotelDTO(getHotelCode(),getName(),getPlace(),getRoomType(),getPriceByNight(),getAvailableFrom(),getAvailableTo(),isReserved(),getBookings());
-    }
 }

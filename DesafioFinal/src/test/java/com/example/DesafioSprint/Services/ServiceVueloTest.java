@@ -50,7 +50,7 @@ class ServiceVueloTest {
     @Test
     void getVuelosTest() throws VuelosException{
         when(repository.getVuelos()).thenReturn(list);
-        List<VueloDTO> res = srvVuelo.getVuelos();
+        List<VueloDTO> res = srvVuelo.getFlights();
         assertFalse(res.isEmpty());
     }
 
@@ -58,7 +58,7 @@ class ServiceVueloTest {
     void getVuelosTestVacio(){
         List<Vuelo> aux = new ArrayList<>();
         when(repository.getVuelos()).thenReturn(aux);
-        VuelosException ex = assertThrows(VuelosException.class, () -> srvVuelo.getVuelos());
+        VuelosException ex = assertThrows(VuelosException.class, () -> srvVuelo.getFlights());
         assertEquals("No hay vuelos en el repositorio",ex.getERROR());
     }
 

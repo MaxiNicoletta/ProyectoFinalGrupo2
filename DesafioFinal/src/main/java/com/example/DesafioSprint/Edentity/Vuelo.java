@@ -12,9 +12,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @DiscriminatorValue("V")
 public class Vuelo {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String flightNumber;
@@ -28,4 +28,15 @@ public class Vuelo {
     private double pricePerPerson;
     @OneToMany(mappedBy = "flightNumber")
     List<ReservaVuelo> flightReservations;
+
+    public Vuelo(String flightNumber, String origin, String destination, Date dateFrom, Date dateTo, String seatType, double pricePerPerson) {
+        this.flightNumber = flightNumber;
+        this.origin = origin;
+        this.destination = destination;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.seatType = seatType;
+        this.pricePerPerson = pricePerPerson;
+    }
+
 }

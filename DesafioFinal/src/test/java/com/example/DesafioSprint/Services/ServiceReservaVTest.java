@@ -27,7 +27,7 @@ class ServiceReservaVTest {
 
     @BeforeEach
     void cargarServ() {
-        srvVueloR = new ServiceReservaV();
+        srvVueloR = new ServiceReservaV(srvVueloR, repository);
         repository = new FlightRepository();
     }
 

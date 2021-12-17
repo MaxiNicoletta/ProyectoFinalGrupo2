@@ -1,28 +1,58 @@
 package com.example.DesafioSprint.controller;
 
 
-import com.example.DesafioSprint.DTOs.DisponibilidadVuelosDTO;
-import com.example.DesafioSprint.DTOs.VueloDTO;
-import com.example.DesafioSprint.Exceptions.FaltanParametros;
-import com.example.DesafioSprint.Exceptions.FechasException;
-import com.example.DesafioSprint.Exceptions.UbicacionException;
-import com.example.DesafioSprint.Exceptions.VuelosException;
+import com.example.DesafioSprint.DTOs.*;
+import com.example.DesafioSprint.Exceptions.*;
+import com.example.DesafioSprint.Services.IServiceReservaV;
 import com.example.DesafioSprint.Services.IServiceVuelo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/flight")
+@RequestMapping("/api/v1/flights")
 public class ControllerFlight {
 
     @Autowired
-    IServiceVuelo sFlight;
+    IServiceVuelo service;
+
+    /**
+     * Adds a new Hotel to the database.
+     * @param flight Flight object.
+     * @return FlightResponseDTO
+     * @throws PersonasException This exception is thrown when the amount of people doesn't match with the input.
+     * @throws FechasException
+     * @throws VuelosException
+     * @throws UbicacionException
+     */
+    @PostMapping("/new")
+    public FlightResponseDTO newFlight(@RequestBody VueloDTO flight){
+        service.addFlight(flight);
+        FlightResponseDTO response = new FlightResponseDTO();
+        response.setMessage("Vuelo dado de alta correctamente.");
+        return response;
+    }
+
+    /**
+     * Edits the flight number.
+     * @param flightNumber New flight number.
+     * @return FlightResponseDTO.
+     */
+    @PutMapping("/edit")
+    public FlightResponseDTO editFlightNUmber(@RequestParam String flightNumber){
+        service.modifyFlight(flightNumber);
+        FlightResponseDTO response = new FlightResponseDTO();
+        response.setMessage("Vuelo modificado correctamente.");
+        return response;
+    }
+
     /**
      * @param dateFrom    Fecha de origen para listar los vuelos.
      * @param dateTo      Fecha de destino para listar los vuelos.
@@ -35,8 +65,8 @@ public class ControllerFlight {
      * @throws FaltanParametros   Excepcion causada por si faltan algunos parametrso en cuanto a la fecha de origen o la fecha de salida.
      */
 
-    @GetMapping("/flights")
-    ResponseEntity<List<VueloDTO>> listarVuelos(@RequestParam(required = false) String dateFrom, @RequestParam(required = false) String dateTo, @RequestParam(required = false) String origin, @RequestParam(required = false) String destination) throws UbicacionException, FechasException, VuelosException, FaltanParametros {
+    @GetMapping("/")
+    public ResponseEntity<List<VueloDTO>> listarVuelos(@RequestParam(required = false) String dateFrom, @RequestParam(required = false) String dateTo, @RequestParam(required = false) String origin, @RequestParam(required = false) String destination) throws UbicacionException, FechasException, VuelosException, FaltanParametros {
         DisponibilidadVuelosDTO nuevo = null;
         if (dateFrom == null && dateTo == null && destination == null && origin == null)
             return new ResponseEntity<>(sFlight.getVuelos(), HttpStatus.OK);
@@ -56,11 +86,17 @@ public class ControllerFlight {
      * @param cod Recibe el identificador del vuelo que quiere consultar
      * @return Todos los datos de las reservas que corresponden al vuelo ingresado.
      */
-/*
     @GetMapping("/flight-history/{cod}")
     ResponseEntity<List<ReservaVueloResponseDTO>> getReservasVuelos(@PathVariable String cod) throws VuelosException {
         return new ResponseEntity<>(sFlight.getReservasVuelo(cod), HttpStatus.OK);
     }
- */
+
+    @DeleteMapping("/delete")
+    public FlightResponseDTO deleteFlight(@RequestParam String flightNumber){
+        service.deleteFlight(flightNumber);
+        FlightResponseDTO response = new FlightResponseDTO();
+        response.setMessage("Vuelo eliminado correctamente.");
+        return response;
+    }
 
 }

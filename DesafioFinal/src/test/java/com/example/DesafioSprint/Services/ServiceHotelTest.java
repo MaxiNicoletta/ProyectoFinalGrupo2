@@ -4,7 +4,7 @@ import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
 import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
-import com.example.DesafioSprint.Edentity.Hotel;
+import com.example.DesafioSprint.Entities.Hotel;
 import com.example.DesafioSprint.Repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

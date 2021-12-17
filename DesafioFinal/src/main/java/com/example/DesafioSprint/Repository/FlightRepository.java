@@ -1,9 +1,9 @@
 package com.example.DesafioSprint.Repository;
 
-import com.example.DesafioSprint.Edentity.Hotel;
-import com.example.DesafioSprint.Edentity.ReservaHotel;
-import com.example.DesafioSprint.Edentity.ReservaVuelo;
-import com.example.DesafioSprint.Edentity.Vuelo;
+import com.example.DesafioSprint.Entities.Hotel;
+import com.example.DesafioSprint.Entities.ReservaHotel;
+import com.example.DesafioSprint.Entities.ReservaVuelo;
+import com.example.DesafioSprint.Entities.Vuelo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;

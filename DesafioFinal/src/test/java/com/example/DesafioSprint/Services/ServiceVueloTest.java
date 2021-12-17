@@ -5,7 +5,7 @@ import com.example.DesafioSprint.DTOs.VueloDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
 import com.example.DesafioSprint.Exceptions.VuelosException;
-import com.example.DesafioSprint.Edentity.Vuelo;
+import com.example.DesafioSprint.Entities.Vuelo;
 import com.example.DesafioSprint.Repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ class ServiceVueloTest {
             date1 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaOrigin);
             date2 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaVuelta);
         } catch (Exception e) {}
-        Vuelo vuelo1 = new Vuelo("TUPI-3369","Tucumán","Puerto Iguazú",date1,date2,"Business",12530);
+        Vuelo vuelo1 = new Vuelo("TUPI-3369","Boeing 1447", "Tucumán","Puerto Iguazú",date1,date2,"Business",12530);
         list = new ArrayList<>();
         list.add(vuelo1);
     }

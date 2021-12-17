@@ -21,6 +21,7 @@ public class ReservaVueloDTO {
     private String origin;
     private String destination;
     private String flightNumber;
+    private String name;
     @Min(value = 1, message = "El valor minimo es 1")
     private int seats;
     private String seatType;

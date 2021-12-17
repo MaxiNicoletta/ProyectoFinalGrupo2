@@ -11,6 +11,6 @@ import javax.validation.Valid;
 @NoArgsConstructor
 public class BookingRequestDTO {
     private String username;
-    private @Valid ReservaDTO booking;
+    private @Valid BookingDTO booking;
     private PagoDTO paymentMethod;
 }

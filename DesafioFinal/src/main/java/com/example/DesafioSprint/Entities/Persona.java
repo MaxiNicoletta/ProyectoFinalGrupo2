@@ -1,5 +1,6 @@
 package com.example.DesafioSprint.Entities;
 
+import com.example.DesafioSprint.DTOs.PersonaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,10 @@ public class Persona {
     private Date birthDate;
     private String mail;
 
+    public PersonaDTO personaToDTO(){
+        return new PersonaDTO(getDni(),getName(),getLastname(),getBirthDate(),getMail());
+    }
+    public Persona personaDTOtoPersona(PersonaDTO personaDTO){
+        return new Persona(personaDTO.getDni(),personaDTO.getName(),personaDTO.getLastname(),personaDTO.getBirthDate(),personaDTO.getMail());
+    }
 }

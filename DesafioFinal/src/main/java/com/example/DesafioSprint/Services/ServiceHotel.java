@@ -6,7 +6,6 @@ import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Entities.Hotel;
-import com.example.DesafioSprint.Repository.IHotelRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

@@ -14,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @DiscriminatorValue("V")
 public class Vuelo {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String flightNumber;

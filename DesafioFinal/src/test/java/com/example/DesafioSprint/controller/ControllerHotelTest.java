@@ -136,7 +136,7 @@ class ControllerHotelTest {
         PersonaDTO persona1 = new PersonaDTO("12345678", "Maximiliano", "Nicoletta", dateCumple, "maxinicoletta@hotmail.com");
         List<PersonaDTO> lista = new ArrayList<>();
         lista.add(persona1);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
         BookingRequestDTO rsv = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
 

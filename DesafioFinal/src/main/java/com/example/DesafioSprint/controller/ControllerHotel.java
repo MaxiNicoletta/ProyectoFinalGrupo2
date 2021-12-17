@@ -19,7 +19,7 @@ public class ControllerHotel {
     @Autowired
     IServiceHotel hotelService;
     @Autowired
-    IServiceReservaH hotelBooking;
+    IServiceBooking hotelBooking;
 
     /**
      * @param HotelDTO contiene los datos necesarios para la reserva:
@@ -121,8 +121,8 @@ public class ControllerHotel {
 //    }
 
     @GetMapping("/hotel-bookings")
-    ResponseEntity<List<ReservaDTO>> getReservasHoteles() throws HotelesException {
-        return new ResponseEntity<List<ReservaDTO>>(hotelBooking.getReservasHotel(), HttpStatus.OK);
+    ResponseEntity<List<BookingDTO>> getReservasHoteles() throws HotelesException {
+        return new ResponseEntity<List<BookingDTO>>(hotelBooking.getReservasHotel(), HttpStatus.OK);
     }
 
 }

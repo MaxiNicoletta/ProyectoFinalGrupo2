@@ -26,12 +26,12 @@ class ServiceReservaHTest {
     IFlightRepository repository;
 
     @InjectMocks
-    ServiceReservaH srvHotelR;
+    ServiceBooking srvHotelR;
 
     @BeforeEach
     void cargarServ() {
         repository = new FlightRepository();
-        srvHotelR = new ServiceReservaH();
+        srvHotelR = new ServiceBooking();
     }
 
     @Test
@@ -51,7 +51,7 @@ class ServiceReservaHTest {
         PersonaDTO persona1 = new PersonaDTO("12345678", "Maximiliano", "Nicoletta", dateCumple, "maxinicoletta@hotmail.com");
         List<PersonaDTO> lista = new ArrayList<>();
         lista.add(persona1);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Airesgjhjghj", "BH-0002", 1, "DOUBLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Airesgjhjghj", "BH-0002", 1, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
         BookingRequestDTO res = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
         assertThrows(HotelesException.class, () -> srvHotelR.addReserva(res));
@@ -74,7 +74,7 @@ class ServiceReservaHTest {
         PersonaDTO persona1 = new PersonaDTO("12345678", "Maximiliano", "Nicoletta", dateCumple, "maxinicoletta@hotmail.com");
         List<PersonaDTO> lista = new ArrayList<>();
         lista.add(persona1);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002ghjfghj", 1, "DOUBLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002ghjfghj", 1, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
         BookingRequestDTO res = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
         assertThrows(HotelesException.class, () -> srvHotelR.addReserva(res));
@@ -99,7 +99,7 @@ class ServiceReservaHTest {
         List<PersonaDTO> lista = new ArrayList<>();
         lista.add(persona1);
         lista.add(persona2);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
         BookingRequestDTO res = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
         assertThrows(PersonasException.class, () -> srvHotelR.addReserva(res));
@@ -124,7 +124,7 @@ class ServiceReservaHTest {
         List<PersonaDTO> lista = new ArrayList<>();
         lista.add(persona1);
         lista.add(persona2);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 2, "SINGLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 2, "SINGLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
         BookingRequestDTO res = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
         assertThrows(PersonasException.class, () -> srvHotelR.addReserva(res));
@@ -151,7 +151,7 @@ class ServiceReservaHTest {
         lista.add(persona1);
         lista.add(persona2);
         lista.add(persona3);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 3, "DOUBLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 3, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
         BookingRequestDTO res = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
         assertThrows(PersonasException.class, () -> srvHotelR.addReserva(res));
@@ -180,7 +180,7 @@ class ServiceReservaHTest {
         lista.add(persona2);
         lista.add(persona3);
         lista.add(persona4);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 4, "TRIPLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 4, "TRIPLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
         BookingRequestDTO res = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
         assertThrows(PersonasException.class, () -> srvHotelR.addReserva(res));
@@ -203,7 +203,7 @@ class ServiceReservaHTest {
         PersonaDTO persona1 = new PersonaDTO("12345678", "Maximiliano", "Nicoletta", dateCumple, "maxinicoletta@hotmail.com");
         List<PersonaDTO> lista = new ArrayList<>();
         lista.add(persona1);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
         BookingRequestDTO rsv = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
         BookingResponseDTO res = srvHotelR.addReserva(rsv);
@@ -227,7 +227,7 @@ class ServiceReservaHTest {
         PersonaDTO persona1 = new PersonaDTO("12345678", "Maximiliano", "Nicoletta", dateCumple, "maxinicoletta@hotmail.com");
         List<PersonaDTO> lista = new ArrayList<>();
         lista.add(persona1);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
         BookingRequestDTO rsv = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
         srvHotelR.addReserva(rsv);
@@ -247,7 +247,7 @@ class ServiceReservaHTest {
         PersonaDTO persona2 = new PersonaDTO("12345678", "Maximiliano", "Nicoletta", dateCumple2, "maxinicoletta@hotmail.com");
         List<PersonaDTO> lista2 = new ArrayList<>();
         lista2.add(persona2);
-        ReservaDTO reserva2 = new ReservaDTO(dateFrom2, dateTo2, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista2);
+        BookingDTO reserva2 = new BookingDTO(dateFrom2, dateTo2, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista2);
         PagoDTO pago2 = new PagoDTO("CREDIT", "132456-456546-48", 2);
         BookingRequestDTO rsv2 = new BookingRequestDTO("maximiliano2@hotmail.com", reserva2, pago2);
         BookingResponseDTO res2 = srvHotelR.addReserva(rsv2);
@@ -271,7 +271,7 @@ class ServiceReservaHTest {
         PersonaDTO persona1 = new PersonaDTO("12345678", "Maximiliano", "Nicoletta", dateCumple, "maxinicoletta@hotmail.com");
         List<PersonaDTO> lista = new ArrayList<>();
         lista.add(persona1);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("DEBIT", "132456-456546-48", 6);
         BookingRequestDTO rsv = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
         assertThrows(HotelesException.class, () -> srvHotelR.addReserva(rsv));
@@ -294,7 +294,7 @@ class ServiceReservaHTest {
         PersonaDTO persona1 = new PersonaDTO("12345678", "Maximiliano", "Nicoletta", dateCumple, "maxinicoletta@hotmail.com");
         List<PersonaDTO> lista = new ArrayList<>();
         lista.add(persona1);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
         BookingRequestDTO rsv = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
         assertThrows(HotelesException.class, () -> srvHotelR.addReserva(rsv));
@@ -328,7 +328,7 @@ class ServiceReservaHTest {
         PersonaDTO persona1 = new PersonaDTO("12345678", "Maximiliano", "Nicoletta", dateCumple, "maxinicoletta@hotmail.com");
         List<PersonaDTO> lista = new ArrayList<>();
         lista.add(persona1);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
         BookingRequestDTO rsv = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
         srvHotelR.addReserva(rsv);

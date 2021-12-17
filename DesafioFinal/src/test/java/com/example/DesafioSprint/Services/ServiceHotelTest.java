@@ -2,10 +2,12 @@ package com.example.DesafioSprint.Services;
 
 import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
 import com.example.DesafioSprint.DTOs.HotelDTO;
+import com.example.DesafioSprint.DTOs.HotelResponseDTO;
 import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Entities.Hotel;
+import com.example.DesafioSprint.Exceptions.VuelosException;
 import com.example.DesafioSprint.Repository.FlightRepository;
 import com.example.DesafioSprint.Repository.IFlightRepository;
 import com.example.DesafioSprint.Repository.IHotelRepository;
@@ -58,6 +60,48 @@ class ServiceHotelTest {
     }
 
     @Test
+    void addHotel() throws FechasException, VuelosException {
+        String fechaOrigin = "10/02/2022";
+        String fechaVuelta = "19/03/2022";
+        Date date1 = null, date2 = null;
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaOrigin);
+            date2 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaVuelta);
+        } catch (Exception e) {}
+        HotelDTO hotel1 = new HotelDTO("HB-0001", "Hotel Bristol", "Buenos Aires", "Single", 5435, date1, date2, false);
+        HotelResponseDTO res = srvHotel.addHotel(hotel1);
+        assertTrue(res.getMessage()== "Hotel modificado correctamente");
+    }
+
+    @Test
+    void addHotelExistenteTest() throws FechasException, VuelosException {
+        when(repository.findAll()).thenReturn(list);
+        String fechaOrigin = "10/02/2022";
+        String fechaVuelta = "19/03/2022";
+        Date date1 = null, date2 = null;
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaOrigin);
+            date2 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaVuelta);
+        } catch (Exception e) {}
+        HotelDTO hotel1 = new HotelDTO("HB-0001", "Hotel Bristol", "Buenos Aires", "Single", 5435, date1, date2, false);
+        HotelesException ex =  assertThrows(HotelesException.class, () -> srvHotel.addHotel(hotel1));
+        assertEquals("Ya existe un hotel con ese numero",ex.getERROR());
+    }
+    @Test
+    void addHotelFechasMalTest() throws FechasException, VuelosException {
+        String fechaOrigin = "10/02/2022";
+        String fechaVuelta = "19/03/2022";
+        Date date1 = null, date2 = null;
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaOrigin);
+            date2 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaVuelta);
+        } catch (Exception e) {}
+        HotelDTO hotel1 = new HotelDTO("HB-0001", "Hotel Bristol", "Buenos Aires", "Single", 5435, date2, date1, false);
+        HotelesException ex =  assertThrows(HotelesException.class, () -> srvHotel.addHotel(hotel1));
+        assertEquals("Ya existe un hotel con ese codigo",ex.getERROR());
+    }
+
+    @Test
     void getHotelesTest() throws HotelesException {
         when(repository.findAll()).thenReturn(list);
         ListHotelesDTO res = srvHotel.getHoteles();
@@ -65,7 +109,7 @@ class ServiceHotelTest {
     }
 
     @Test
-    void updateHotel() throws HotelesException {
+    void updateHotelTest() throws HotelesException {
         when(repository.findAll()).thenReturn(list);
         String fechaOrigin = "10/02/2022";
         String fechaVuelta = "19/03/2022";
@@ -82,14 +126,21 @@ class ServiceHotelTest {
     }
 
     @Test
+    void updateHotelNoExistenteTest(){
+        //Arrange
+        when(repository.findAll()).thenReturn(list);
+        HotelesException ex =  assertThrows(HotelesException.class, () -> srvHotel.updateHotel("dfgdsfgsdfg",null));
+        //Assert
+        assertEquals("No existe hotel con ese codigo",ex.getERROR());
+    }
+
+    @Test
     void getHotelesTestVacio(){
         List<Hotel> aux = new ArrayList<>();
         when(repository.findAll()).thenReturn(aux);
         HotelesException ex = assertThrows(HotelesException.class, () -> srvHotel.getHoteles());
         assertEquals("No hay hoteles en el repositorio",ex.getERROR());
     }
-
-
 
     @Test
     void getHotelesDisponiblesTestOk() throws FechasException, HotelesException {
@@ -164,5 +215,19 @@ class ServiceHotelTest {
         assertThrows(HotelesException.class, () -> srvHotel.getHotelesDisponibles(rsv));
     }
 
+    @Test
+    void deleteHotel() throws HotelesException {
+        when(repository.findAll()).thenReturn(list);
+        HotelResponseDTO res = srvHotel.deleteHotel("BH-0002");
+        assertTrue(res.getMessage()== "Hotel borrado correctamente");
+    }
+    @Test
+    void deleteHotelNoExistente(){
+        //Arrange
+        when(repository.findAll()).thenReturn(list);
+        HotelesException ex =  assertThrows(HotelesException.class, () -> srvHotel.deleteHotel("dfgdsfgsdfg"));
+        //Assert
+        assertEquals("No existe hotel con ese codigo",ex.getERROR());
+    }
 
 }

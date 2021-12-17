@@ -2,6 +2,7 @@ package com.example.DesafioSprint.Services;
 
 import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
 import com.example.DesafioSprint.DTOs.HotelDTO;
+import com.example.DesafioSprint.DTOs.HotelResponseDTO;
 import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;

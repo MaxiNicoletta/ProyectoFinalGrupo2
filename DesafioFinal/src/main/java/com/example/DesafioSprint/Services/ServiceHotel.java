@@ -85,7 +85,7 @@ public class ServiceHotel implements IServiceHotel {
         List<HotelDTO> auxLst = new ArrayList<>();
         for (Hotel e : aux) {
             if ((e.getPlace().equals(hotel.getDestination())) && (!e.isReserved()) && (e.getAvailableFrom().before(hotel.getDateFrom())) && (e.getAvailableTo().after(hotel.getDateTo()))) {
-                HotelDTO nuevo = new HotelDTO(e.getHotelCode(), e.getName(), e.getPlace(), e.getRoomType(), e.getPriceByNight(), e.getAvailableFrom(), e.getAvailableTo(), e.isReserved());
+                HotelDTO nuevo = e.hotelToDTO();
                 auxLst.add(nuevo);
             }
         }

@@ -19,5 +19,4 @@ public class HotelDTO {
     private Date availableFrom;
     private Date availableTo;
     private boolean reserved;
-    List<ReservaHotel> bookings;
 }

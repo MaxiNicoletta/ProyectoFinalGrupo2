@@ -27,7 +27,7 @@ public class ServiceHotel implements IServiceHotel {
         if (hotelDTO.getAvailableTo().before(hotelDTO.getAvailableFrom()))
             throw new FechasException("La fecha de salida debe ser mayor a la de ida", HttpStatus.BAD_REQUEST);
         if (repoHotel.existsHotel(hotelDTO.getHotelCode()))
-            throw new VuelosException("Ya existe un hotel con ese numero", HttpStatus.BAD_REQUEST);
+            throw new VuelosException("Ya existe un hotel con ese codigo", HttpStatus.BAD_REQUEST);
         Hotel hotel = new Hotel(hotelDTO.getHotelCode(), hotelDTO.getName(), hotelDTO.getPlace(), hotelDTO.getRoomType(), hotelDTO.getPriceByNight(), hotelDTO.getAvailableFrom(), hotelDTO.getAvailableTo(), hotelDTO.isReserved());
         repoHotel.save(hotel);
         HotelResponseDTO res = new HotelResponseDTO("Hotel dado de alta correctamente");
@@ -54,7 +54,7 @@ public class ServiceHotel implements IServiceHotel {
 
     public HotelResponseDTO updateHotel(String cod, HotelDTO hotelDTO) throws HotelesException {
         if (!repoHotel.existsHotel(cod))
-            throw new HotelesException("No existe ese hotel en el repositorio", HttpStatus.BAD_REQUEST);
+            throw new HotelesException("No existe hotel con ese codigo", HttpStatus.BAD_REQUEST);
         Hotel hotel = repoHotel.findHoteltByCod(cod);
         hotel.setName(hotelDTO.getName());
         hotel.setPlace(hotelDTO.getPlace());

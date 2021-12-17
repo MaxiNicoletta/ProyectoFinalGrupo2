@@ -1,15 +1,8 @@
 package com.example.DesafioSprint.Repository;
-<<<<<<< HEAD
-
-
-import com.example.DesafioSprint.Entities.Vuelo;
-import org.springframework.data.jpa.repository.JpaRepository;
-=======
 import com.example.DesafioSprint.Entities.Vuelo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
->>>>>>> 6612f432ea4770bcb2374ac2e7b24889ddb3c508
 import org.springframework.stereotype.Repository;
 
 @Repository

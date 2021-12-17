@@ -9,9 +9,9 @@ import com.example.DesafioSprint.Exceptions.VuelosException;
 import java.util.List;
 
 public interface IServiceVuelo {
-    FlightsResponseDTO addFlight(VueloDTO flightDTO);
+    FlightsResponseDTO addFlight(VueloDTO flightDTO)throws FechasException,VuelosException;
     List<VueloDTO> getFlights() throws VuelosException;
     List<VueloDTO> disponibilidadVuelos(DisponibilidadVuelosDTO vuelo) throws UbicacionException, FechasException, VuelosException;
     FlightsResponseDTO updateFlight(String cod, VueloDTO flightDto) throws  VuelosException;
-    FlightsResponseDTO deleteFlight(String cod) throws  VuelosException;
+    FlightsResponseDTO deleteFlight(String cod) throws VuelosException;
     }

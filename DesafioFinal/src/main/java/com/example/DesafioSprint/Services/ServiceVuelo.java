@@ -8,9 +8,6 @@ import com.example.DesafioSprint.Exceptions.VuelosException;
 import com.example.DesafioSprint.Edentity.Vuelo;
 import com.example.DesafioSprint.Repository.FlightRepository;
 import com.example.DesafioSprint.Repository.IFlightRepository;
-import com.example.DesafioSprint.Repository.IHotelRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +23,12 @@ public class ServiceVuelo implements IServiceVuelo {
         this.repoFlight = repoFlight;
     }
 
-    FlightsResponseDTO addFlight(VueloDTO flightDTO)throws FechasException,VuelosException{
-        if (flightDTO.getDateTo().before(flightDTO.getDateFrom()))
+    public FlightsResponseDTO addFlight(VueloDTO flightDTO)throws FechasException,VuelosException{
+        if (flightDTO.getDisponibilityDateTo().before(flightDTO.getGoingDate()))
             throw new FechasException("La fecha de vuelta debe ser mayor a la de ida", HttpStatus.BAD_REQUEST);
         if(repoFlight.existsVuelo(flightDTO.getFlightNumber()))
             throw new VuelosException("Ya existe un vuelo con ese numero", HttpStatus.BAD_REQUEST);
-        Vuelo flight = new Vuelo(flightDTO.getFlightNumber(),flightDTO.getOrigin(),flightDTO.getDestination(),flightDTO.getDateFrom(),flightDTO.getDateTo(),flightDTO.getSeatType(),flightDTO.getPricePerPerson());
+        Vuelo flight = new Vuelo(flightDTO.getFlightNumber(),flightDTO.getName(),flightDTO.getOrigin(),flightDTO.getDestination(),flightDTO.getGoingDate(),flightDTO.getReturnDate(),flightDTO.getSeatType(),flightDTO.getFlightPrice());
         repoFlight.save(flight);
         FlightsResponseDTO res = new FlightRepository("Vuelo dado de alta correctamente");
         return res;
@@ -68,7 +65,7 @@ public class ServiceVuelo implements IServiceVuelo {
             throw new FechasException("La fecha de vuelta debe ser mayor a la de ida", HttpStatus.BAD_REQUEST);
         List<Vuelo> vuelosData = repoFlight.findAll();
         for (Vuelo v : vuelosData) {
-            if (v.getOrigin().equals(vuelo.getOrigin()) && v.getDestination().equals(vuelo.getDestination()) && v.getDateTo().equals(vuelo.getDateTo()) && v.getDateFrom().equals(vuelo.getDateFrom())) {
+            if (v.getOrigin().equals(vuelo.getOrigin()) && v.getDestination().equals(vuelo.getDestination()) && v.getReturnDate().equals(vuelo.getDateTo()) && v.getGoingDate().equals(vuelo.getDateFrom())) {
                 VueloDTO nuevo = v.flightToDTO();
                 res.add(nuevo);
             }
@@ -78,22 +75,22 @@ public class ServiceVuelo implements IServiceVuelo {
         return res;
     }
 
-    FlightsResponseDTO updateFlight(String cod, VueloDTO flightDto) throws  VuelosException{
+    public FlightsResponseDTO updateFlight(String cod, VueloDTO flightDto) throws  VuelosException{
         if(repoFlight.existsVuelo(flightDto.getFlightNumber()))
         throw new VuelosException("No hay vuelo con ese codigo", HttpStatus.BAD_REQUEST);
         Vuelo flight = repoFlight.findFlightByCod(cod);
         flight.setOrigin(flightDto.getOrigin());
         flight.setDestination(flightDto.getDestination());
-        flight.setDateFrom(flightDto.getDateFrom());
-        flight.setDateTo(flightDto.getDateTo());
+        flight.setGoingDate(flightDto.getGoingDate());
+        flight.setReturnDate(flightDto.getReturnDate());
         flight.setSeatType(flightDto.getSeatType());
-        flight.setPricePerPerson(flightDto.getPricePerPerson());
+        flight.setPricePerPerson(flightDto.getFlightPrice());
         repoFlight.save(flight);
         FlightsResponseDTO res = new FlightRepository("Vuelo modificado correctamente");
         return res;
     }
 
-    FlightsResponseDTO deleteFlight(String cod) throws  VuelosException{
+    public FlightsResponseDTO deleteFlight(String cod) throws  VuelosException{
         Vuelo flight = repoFlight.findFlightByCod(cod);
         if(flight==null)
             throw new VuelosException("No hay vuelo con ese codigo", HttpStatus.BAD_REQUEST);

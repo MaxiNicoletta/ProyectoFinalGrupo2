@@ -1,6 +1,5 @@
 package com.example.DesafioSprint.Entities;
 
-import com.example.DesafioSprint.DTOs.ReservaVueloDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,34 +25,4 @@ public class ReservaVuelo extends Reserva {
         this.seaType = seaType;
         this.origin = origin;
     }
-
-//    public ReservaVueloDTO flightReservationToDTO(){
-//        return new ReservaVueloDTO(
-//                getDateFrom(),
-//                getDateTo(),
-//                getOrigin(),
-//                getDestination(),
-//                getFlightNumber(),
-//                getUserName(),
-//                getAmount(),
-//                getInterest(),
-//                getTotal(),
-//                getSeats(),
-//                getSeaType(),
-//                getOrigin()
-//        );
-//    }
-//    public ReservaVuelo flightReservationDTOtoFlight(ReservaVueloDTO reserva){
-//        return new ReservaVuelo(
-//                reserva.getDateFrom(),
-//                reserva.getDateTo(),
-//                reserva.getOrigin(),
-//                reserva.getDestination(),
-//                reserva.getFlightNumber(),
-//                reserva.getName(),
-//                reserva.getSeats(),
-//                reserva.getSeatType(),
-//                reserva.getPeople()
-//        );
-//    }
 }

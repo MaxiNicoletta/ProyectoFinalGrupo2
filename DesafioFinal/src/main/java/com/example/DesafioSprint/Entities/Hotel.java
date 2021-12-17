@@ -40,8 +40,10 @@ public class Hotel {
         this.availableTo = availableTo;
         this.reserved = reserved;
     }
-    
     public HotelDTO hotelToDTO(){
         return new HotelDTO(getHotelCode(),getName(),getPlace(),getRoomType(),getPriceByNight(),getAvailableFrom(),getAvailableTo(),isReserved(),getBookings());
+    }
+    public Hotel hotelDTOtoHotel(HotelDTO hotelDTO){
+        return new Hotel(hotelDTO.getHotelCode(),hotelDTO.getName(),hotelDTO.getPlace(),hotelDTO.getRoomType(),hotelDTO.getPriceByNight(),hotelDTO.getAvailableFrom(),hotelDTO.getAvailableTo(),hotelDTO.isReserved(),hotelDTO.getBookings());
     }
 }

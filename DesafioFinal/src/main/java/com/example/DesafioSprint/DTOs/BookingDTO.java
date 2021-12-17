@@ -12,7 +12,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReservaDTO {
+public class BookingDTO {
+    private Long id;
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     private Date dateFrom;
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")

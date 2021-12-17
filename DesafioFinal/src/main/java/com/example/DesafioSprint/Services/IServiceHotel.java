@@ -1,17 +1,17 @@
 package com.example.DesafioSprint.Services;
 
 import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
+import com.example.DesafioSprint.DTOs.HotelDTO;
 import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
+import com.example.DesafioSprint.Exceptions.VuelosException;
 
 public interface IServiceHotel {
-    public ListHotelesDTO getHoteles() throws HotelesException;
-
+    ListHotelesDTO getHoteles() throws HotelesException;
+    HotelResponseDTO addHotel(HotelDTO hotelDTO)throws FechasException, VuelosException;
+    HotelResponseDTO updateHotel(String cod, HotelDTO hotelDTO) throws  HotelesException;
     public ListHotelesDTO getHotelesDisponibles(DisponibilidadHotelDTO hotel) throws HotelesException, FechasException;
-
-    public boolean existsHoteles(String cod);
-
-    public boolean existsDestination(String dest);
+    HotelResponseDTO deleteHotel(String cod)throws HotelesException ;
 
 }

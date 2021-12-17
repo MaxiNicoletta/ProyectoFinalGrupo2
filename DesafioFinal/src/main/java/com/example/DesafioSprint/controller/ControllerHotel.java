@@ -17,12 +17,12 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class ControllerHotel {
     @Autowired
-    IServiceHotel sh;
+    IServiceHotel hotelService;
     @Autowired
-    IServiceReservaH sR;
+    IServiceBooking hotelBooking;
 
     /**
-     * @param rsvHotel contiene los datos ncesarios para la reserva:
+     * @param HotelDTO contiene los datos necesarios para la reserva:
      *                 username
      *                 booking que contiene :
      *                 dateFrom
@@ -47,9 +47,40 @@ public class ControllerHotel {
      * @throws FechasException   Excepcion causada por si la fecha de Salida es mayor a la fecha de entrada
      */
 
+
+    // Altas
+    @PostMapping("/hotels/new")
+    public ResponseEntity<HotelResponseDTO> addHotel(@RequestBody HotelDTO hotelDTO){
+        return new ResponseEntity<HotelResponseDTO>(hotelService.addHotel(hotelDTO), HttpStatus.OK);
+    }
+
     @PostMapping("/bookings/new")
-    ResponseEntity<ReservasHotelDTOResponse> addReserva(@Valid @RequestBody ReservaHotelRequestDTO rsvHotel) throws PersonasException, HotelesException, FechasException {
-        return new ResponseEntity<>(sR.addReserva(rsvHotel), HttpStatus.OK);
+    public ResponseEntity<BookingResponseDTO> addReserva(@Valid @RequestBody BookingRequestDTO bookingRequestDTO) throws PersonasException, HotelesException, FechasException, UbicacionException {
+        return new ResponseEntity<>(hotelBooking.addReserva(bookingRequestDTO), HttpStatus.OK);
+    }
+    
+    // Modificaciones
+
+    @PutMapping("/hotels/edit/?hotelCode=code")
+    public ResponseEntity<HotelResponseDTO> modifyHotel(@RequestBody HotelDTO hotelDTO){
+        return new ResponseEntity<HotelResponseDTO>(hotelService.updateHotel(hotelDTO), HttpStatus.OK);
+    }
+
+    @PutMapping("/hotel-bookings/edit/?id=num_id")
+    public ResponseEntity<BookingResponseDTO> modifyHotel(@RequestBody BookingRequestDTO bookingRequestDTO){
+        return new ResponseEntity<HotelResponseDTO>(hotelBooking.updateBooking(bookingRequestDTO), HttpStatus.OK);
+    }
+
+
+    // Bajas
+    @DeleteMapping("/hotels/edit/?hotelCode=code")
+    public ResponseEntity<HotelResponseDTO> modifyHotel(@RequestBody HotelDTO hotelDTO){
+        return new ResponseEntity<HotelResponseDTO>(hotelService.deleteHotel(hotelDTO), HttpStatus.OK);
+    }
+
+    @PutMapping("/hotel-bookings/edit/?id=num_id")
+    public ResponseEntity<BookingResponseDTO> modifyHotel(@RequestBody BookingRequestDTO bookingRequestDTO){
+        return new ResponseEntity<HotelResponseDTO>(hotelBooking.deleteBooking(bookingRequestDTO), HttpStatus.OK);
     }
 
     /**
@@ -65,7 +96,7 @@ public class ControllerHotel {
     ResponseEntity<ListHotelesDTO> listarHoteles(@RequestParam(name = "dateFrom", required = false) String dateFrom, @RequestParam(name = "dateTo", required = false) String dateTo, @RequestParam(name = "destination", required = false) String destination) throws FaltanParametros, HotelesException, FechasException {
         DisponibilidadHotelDTO nuevo = null;
         if (dateFrom == null && dateTo == null && destination == null)
-            return new ResponseEntity<>(sh.getHoteles(), HttpStatus.OK);
+            return new ResponseEntity<>(hotelService.getHoteles(), HttpStatus.OK);
         else if (dateFrom.isEmpty() || dateTo.isEmpty())
             throw new FaltanParametros("Faltan Parametros para realizar la consulta", HttpStatus.BAD_REQUEST);
         else {
@@ -74,20 +105,23 @@ public class ControllerHotel {
                 Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(dateTo);
                 nuevo = new DisponibilidadHotelDTO(date1, date2, destination);} catch (Exception e) {
             }
-            return new ResponseEntity<>(sh.getHotelesDisponibles(nuevo), HttpStatus.OK);
+            return new ResponseEntity<>(hotelService.getHotelesDisponibles(nuevo), HttpStatus.OK);
         }
     }
+
 
     /**
      * @param cod Recibe el identificador del hotel que quiere consultar
      * @return Todos los datos de las reservas que corresponden al hotel ingresado.
      */
+//    @GetMapping("/bookings-history/{cod}")
+//    ResponseEntity<List<BookingResponseDTO>> getReservasHoteles(@PathVariable String cod) throws HotelesException {
+//        return new ResponseEntity<>(hotelBooking.getReservasHotel(cod), HttpStatus.OK);
+//    }
 
-    @GetMapping("/bookings-history/{cod}")
-    ResponseEntity<List<ReservasHotelDTOResponse>> getReservasHoteles(@PathVariable String cod) throws HotelesException {
-        return new ResponseEntity<>(sR.getReservasHotel(cod), HttpStatus.OK);
+    @GetMapping("/hotel-bookings")
+    ResponseEntity<List<BookingDTO>> getReservasHoteles() throws HotelesException {
+        return new ResponseEntity<List<BookingDTO>>(hotelBooking.getReservasHotel(), HttpStatus.OK);
     }
-
-
 
 }

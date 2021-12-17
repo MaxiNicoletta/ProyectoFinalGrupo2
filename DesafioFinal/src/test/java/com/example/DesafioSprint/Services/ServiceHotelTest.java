@@ -1,17 +1,21 @@
 package com.example.DesafioSprint.Services;
 
 import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
+import com.example.DesafioSprint.DTOs.HotelDTO;
 import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Entities.Hotel;
 import com.example.DesafioSprint.Repository.FlightRepository;
+import com.example.DesafioSprint.Repository.IFlightRepository;
+import com.example.DesafioSprint.Repository.IHotelRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.stereotype.Repository;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,7 +29,7 @@ import static org.mockito.Mockito.*;
 class ServiceHotelTest {
 
     @Mock
-    FlightRepository repository;
+    IHotelRepository repository;
 
     @InjectMocks
     ServiceHotel srvHotel;
@@ -55,45 +59,42 @@ class ServiceHotelTest {
 
     @Test
     void getHotelesTest() throws HotelesException {
-        when(repository.getHoteles()).thenReturn(list);
+        when(repository.findAll()).thenReturn(list);
         ListHotelesDTO res = srvHotel.getHoteles();
         assertTrue(res.getHoteles().get(0) != null);
     }
 
     @Test
+    void updateHotel() throws HotelesException {
+        when(repository.findAll()).thenReturn(list);
+        String fechaOrigin = "10/02/2022";
+        String fechaVuelta = "19/03/2022";
+        Date date1 = null, date2 = null;
+        Date date3 = null, date4 = null;
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaOrigin);
+            date2 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaVuelta);
+
+        } catch (Exception e) {}
+        HotelDTO hotel1 = new HotelDTO("HB-0001", "Hotel BristolModificado", "Buenos Aires", "Single", 5435, date1, date2, false);
+        HotelResponseDTO res = srvHotel.updateHotel("HB-0001",hotel1);
+        assertTrue(res.getMessage()== "Hotel modificado correctamente");
+    }
+
+    @Test
     void getHotelesTestVacio(){
         List<Hotel> aux = new ArrayList<>();
-        when(repository.getHoteles()).thenReturn(aux);
+        when(repository.findAll()).thenReturn(aux);
         HotelesException ex = assertThrows(HotelesException.class, () -> srvHotel.getHoteles());
         assertEquals("No hay hoteles en el repositorio",ex.getERROR());
     }
 
-    @Test
-    void existsHotelesTestOk() {
-        when(repository.getHoteles()).thenReturn(list);
-        assertTrue(srvHotel.existsHoteles("HB-0001"));
-    }
 
-    @Test
-    void existsHotelesTestFalla() {
-        assertFalse(srvHotel.existsHoteles("dsfgdsfg"));
-    }
-
-    @Test
-    void existsDestinationTestOk() {
-        when(repository.getHoteles()).thenReturn(list);
-        assertTrue(srvHotel.existsDestination("Buenos Aires"));
-    }
-
-    @Test
-    void existsDestinationTestFalla() {
-        assertFalse(srvHotel.existsDestination("dgfhfdghdfgh"));
-    }
 
     @Test
     void getHotelesDisponiblesTestOk() throws FechasException, HotelesException {
         //Arrange
-        when(repository.getHoteles()).thenReturn(list);
+        when(repository.findAll()).thenReturn(list);
         String fechaOrigin = "13/02/2022";
         String fechaVuelta = "17/02/2022";
         Date date1 = null, date2 = null;
@@ -112,7 +113,7 @@ class ServiceHotelTest {
     @Test
     void getHotelesDisponiblesTestDestinationNo(){
         //Arrange
-        when(repository.getHoteles()).thenReturn(list);
+        when(repository.findAll()).thenReturn(list);
         String fechaOrigin = "12/02/2022";
         String fechaVuelta = "17/02/2022";
         Date date1 = null, date2 = null;
@@ -128,11 +129,10 @@ class ServiceHotelTest {
     }
 
 
-
     @Test
     void getHotelesDisponiblesTestFechaNo() throws FechasException, HotelesException {
         //Arrange
-        when(repository.getHoteles()).thenReturn(list);
+        when(repository.findAll()).thenReturn(list);
         String fechaOrigin = "17/02/2022";
         String fechaVuelta = "12/02/2022";
         Date date1 = null, date2 = null;
@@ -150,7 +150,7 @@ class ServiceHotelTest {
     @Test
     void getHotelesDisponiblesTestExistencia() throws FechasException, HotelesException {
         //Arrange
-        when(repository.getHoteles()).thenReturn(list);
+        when(repository.findAll()).thenReturn(list);
         String fechaOrigin = "12/02/2024";
         String fechaVuelta = "13/02/2024";
         Date date1 = null, date2 = null;

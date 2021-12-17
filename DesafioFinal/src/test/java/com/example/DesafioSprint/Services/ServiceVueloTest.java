@@ -42,7 +42,7 @@ class ServiceVueloTest {
             date1 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaOrigin);
             date2 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaVuelta);
         } catch (Exception e) {}
-        Vuelo vuelo1 = new Vuelo("TUPI-3369","Boeing 1447", "Tucumán","Puerto Iguazú",date1,date2,"Business",12530);
+        Vuelo vuelo1 = new Vuelo("TUPI-3369","vuelo1","Tucumán","Puerto Iguazú",date1,date2,"Business",12530);
         list = new ArrayList<>();
         list.add(vuelo1);
     }
@@ -50,7 +50,7 @@ class ServiceVueloTest {
     @Test
     void getVuelosTest() throws VuelosException{
         when(repository.getVuelos()).thenReturn(list);
-        List<VueloDTO> res = srvVuelo.getVuelos();
+        List<VueloDTO> res = srvVuelo.getFlights();
         assertFalse(res.isEmpty());
     }
 
@@ -58,41 +58,8 @@ class ServiceVueloTest {
     void getVuelosTestVacio(){
         List<Vuelo> aux = new ArrayList<>();
         when(repository.getVuelos()).thenReturn(aux);
-        VuelosException ex = assertThrows(VuelosException.class, () -> srvVuelo.getVuelos());
+        VuelosException ex = assertThrows(VuelosException.class, () -> srvVuelo.getFlights());
         assertEquals("No hay vuelos en el repositorio",ex.getERROR());
-    }
-
-    @Test
-    void existsVueloTestOk() {
-        when(repository.getVuelos()).thenReturn(list);
-        assertTrue(srvVuelo.existsVuelo("TUPI-3369"));
-    }
-
-    @Test
-    void existsVueloTestFalla() {
-        assertFalse(srvVuelo.existsVuelo("BAPI-1235gdfgdfg"));
-    }
-
-    @Test
-    void existsDestinationVueloTestOk() {
-        when(repository.getVuelos()).thenReturn(list);
-        assertTrue(srvVuelo.existsDestinationVuelo("Puerto Iguazú"));
-    }
-
-    @Test
-    void existsDestinationVueloTestFalla() {
-        assertFalse(srvVuelo.existsDestinationVuelo("Buenos Airesfdgdsfg"));
-    }
-
-    @Test
-    void existsOriginVueloTestOk() {
-        when(repository.getVuelos()).thenReturn(list);
-        assertTrue(srvVuelo.existsOriginVuelo("Tucumán"));
-    }
-
-    @Test
-    void existsOriginVueloTestFalla() {
-        assertFalse(srvVuelo.existsOriginVuelo("Buenos Airesgfhdfgh"));
     }
 
     @Test

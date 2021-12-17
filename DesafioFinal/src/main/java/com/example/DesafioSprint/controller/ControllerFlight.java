@@ -69,7 +69,7 @@ public class ControllerFlight {
     public ResponseEntity<List<VueloDTO>> listarVuelos(@RequestParam(required = false) String dateFrom, @RequestParam(required = false) String dateTo, @RequestParam(required = false) String origin, @RequestParam(required = false) String destination) throws UbicacionException, FechasException, VuelosException, FaltanParametros {
         DisponibilidadVuelosDTO nuevo = null;
         if (dateFrom == null && dateTo == null && destination == null && origin == null)
-            return new ResponseEntity<>(sFlight.getVuelos(), HttpStatus.OK);
+            return new ResponseEntity<>(sFlight.getFlights(), HttpStatus.OK);
         else if (dateFrom.isEmpty() || dateTo.isEmpty())
             throw new FaltanParametros("Faltan Parametros para realizar la consulta", HttpStatus.BAD_REQUEST);
         else {

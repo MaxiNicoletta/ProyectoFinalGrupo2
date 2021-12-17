@@ -1,5 +1,6 @@
 package com.example.DesafioSprint.Entities;
 
+import com.example.DesafioSprint.DTOs.BookingDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,6 +42,10 @@ public class Reserva {
         this.interest = interest;
         this.total = total;
     }
+
+
+
+
 }
 
 

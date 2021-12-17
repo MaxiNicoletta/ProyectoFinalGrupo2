@@ -4,19 +4,15 @@ import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
 import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
-import com.example.DesafioSprint.Identity.Hotel;
-import com.example.DesafioSprint.Repository.IRepositoryData;
-import com.example.DesafioSprint.Repository.RepositoryData;
+import com.example.DesafioSprint.Edentity.Hotel;
+import com.example.DesafioSprint.Repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.print.attribute.standard.MediaSize;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +25,7 @@ import static org.mockito.Mockito.*;
 class ServiceHotelTest {
 
     @Mock
-    RepositoryData repository;
+    FlightRepository repository;
 
     @InjectMocks
     ServiceHotel srvHotel;

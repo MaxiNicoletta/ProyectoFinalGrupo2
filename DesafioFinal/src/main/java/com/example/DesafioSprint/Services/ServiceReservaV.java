@@ -5,10 +5,10 @@ import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.PersonasException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
 import com.example.DesafioSprint.Exceptions.VuelosException;
-import com.example.DesafioSprint.Identity.Pago;
-import com.example.DesafioSprint.Identity.Persona;
-import com.example.DesafioSprint.Identity.ReservaVuelo;
-import com.example.DesafioSprint.Repository.RepositoryData;
+import com.example.DesafioSprint.Edentity.Pago;
+import com.example.DesafioSprint.Edentity.Persona;
+import com.example.DesafioSprint.Edentity.ReservaVuelo;
+import com.example.DesafioSprint.Repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class ServiceReservaV implements IServiceReservaV {
     @Autowired
-    private RepositoryData repository = new RepositoryData();
+    private FlightRepository repository = new FlightRepository();
 
     @Autowired
     private ServiceVuelo sv = new ServiceVuelo();

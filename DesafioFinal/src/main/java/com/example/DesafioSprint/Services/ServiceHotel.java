@@ -5,8 +5,9 @@ import com.example.DesafioSprint.DTOs.HotelDTO;
 import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
-import com.example.DesafioSprint.Identity.Hotel;
-import com.example.DesafioSprint.Repository.RepositoryData;
+import com.example.DesafioSprint.Edentity.Hotel;
+import com.example.DesafioSprint.Repository.FlightRepository;
+import com.example.DesafioSprint.Repository.IHotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,18 @@ import java.util.List;
 
 @Service
 public class ServiceHotel implements IServiceHotel {
+    private final IHotelRepository repoHotel;
 
-    @Autowired
-    private RepositoryData repository = new RepositoryData();
+    public ServiceHotel(IHotelRepository repoHotel) {
+        this.repoHotel = repoHotel;
+    }
 
     /**
      * @return los hoteles ingresados en el sistema con sus respectivos atributos como por ejemplo,nombre, codigo,lugar,tipo de habitacion,precio por noche
      * fecha disponible entrada, fecha disponible salida y si esta reservado o no.
      */
     public ListHotelesDTO getHoteles() throws HotelesException {
-        List<Hotel> aux = repository.getHoteles();
+        List<Hotel> aux = repoHotel.findAll();
         List<HotelDTO> auxLst = new ArrayList<>();
         ListHotelesDTO res = new ListHotelesDTO();
         if (aux.isEmpty())
@@ -44,7 +47,7 @@ public class ServiceHotel implements IServiceHotel {
      */
     public boolean existsHoteles(String cod) {
         boolean res = false;
-        List<Hotel> aux = repository.getHoteles();
+        List<Hotel> aux = repoHotel.findAll();
         for (Hotel e : aux) {
             if (e.getHotelCode().equals(cod)) {
                 res = true;
@@ -60,7 +63,7 @@ public class ServiceHotel implements IServiceHotel {
      */
     public boolean existsDestination(String dest) {
         boolean res = false;
-        List<Hotel> aux = repository.getHoteles();
+        List<Hotel> aux = repoHotel.findAll();
         for (Hotel e : aux) {
             if (e.getPlace().equals(dest)) {
                 res = true;
@@ -83,7 +86,7 @@ public class ServiceHotel implements IServiceHotel {
         if (hotel.getDateTo().before(hotel.getDateFrom()))
             throw new FechasException("La fecha de salida debe ser mayor a la de entrada", HttpStatus.BAD_REQUEST);
 
-        List<Hotel> aux = repository.getHoteles();
+        List<Hotel> aux = repoHotel.findAll();
         List<HotelDTO> auxLst = new ArrayList<>();
         for (Hotel e : aux) {
             if ((e.getPlace().equals(hotel.getDestination())) && (!e.isReserved()) && (e.getAvailableFrom().before(hotel.getDateFrom())) && (e.getAvailableTo().after(hotel.getDateTo()))) {

@@ -4,8 +4,8 @@ import com.example.DesafioSprint.DTOs.*;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Exceptions.PersonasException;
-import com.example.DesafioSprint.Repository.IRepositoryData;
-import com.example.DesafioSprint.Repository.RepositoryData;
+import com.example.DesafioSprint.Repository.IFlightRepository;
+import com.example.DesafioSprint.Repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,14 +23,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class ServiceReservaHTest {
     @Mock
-    IRepositoryData repository;
+    IFlightRepository repository;
 
     @InjectMocks
     ServiceReservaH srvHotelR;
 
     @BeforeEach
     void cargarServ() {
-        repository = new RepositoryData();
+        repository = new FlightRepository();
         srvHotelR = new ServiceReservaH();
     }
 

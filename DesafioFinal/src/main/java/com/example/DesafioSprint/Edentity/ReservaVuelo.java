@@ -1,15 +1,17 @@
-package com.example.DesafioSprint.Identity;
+package com.example.DesafioSprint.Edentity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
 import java.util.Date;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class ReservaVuelo extends Reserva {
     private String flightNumber;
     private int seats;
@@ -23,5 +25,4 @@ public class ReservaVuelo extends Reserva {
         this.seaType = seaType;
         this.origin = origin;
     }
-
 }

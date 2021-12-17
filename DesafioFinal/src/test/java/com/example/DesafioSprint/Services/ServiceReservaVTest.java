@@ -2,8 +2,8 @@ package com.example.DesafioSprint.Services;
 
 import com.example.DesafioSprint.DTOs.*;
 import com.example.DesafioSprint.Exceptions.*;
-import com.example.DesafioSprint.Repository.IRepositoryData;
-import com.example.DesafioSprint.Repository.RepositoryData;
+import com.example.DesafioSprint.Repository.IFlightRepository;
+import com.example.DesafioSprint.Repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class ServiceReservaVTest {
     @Mock
-    IRepositoryData repository;
+    IFlightRepository repository;
 
     @InjectMocks
     ServiceReservaV srvVueloR;
@@ -28,7 +28,7 @@ class ServiceReservaVTest {
     @BeforeEach
     void cargarServ() {
         srvVueloR = new ServiceReservaV();
-        repository = new RepositoryData();
+        repository = new FlightRepository();
     }
 
     @Test

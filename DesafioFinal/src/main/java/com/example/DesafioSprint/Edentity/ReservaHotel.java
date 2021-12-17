@@ -1,16 +1,18 @@
-package com.example.DesafioSprint.Identity;
+package com.example.DesafioSprint.Edentity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Entity
+@DiscriminatorValue("H")
 public class ReservaHotel extends Reserva {
     private String hotelCode;
     private int peopleAmount;

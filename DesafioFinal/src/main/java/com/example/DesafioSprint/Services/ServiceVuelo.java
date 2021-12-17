@@ -5,9 +5,12 @@ import com.example.DesafioSprint.DTOs.VueloDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
 import com.example.DesafioSprint.Exceptions.VuelosException;
-import com.example.DesafioSprint.Identity.Vuelo;
-import com.example.DesafioSprint.Repository.RepositoryData;
+import com.example.DesafioSprint.Edentity.Vuelo;
+import com.example.DesafioSprint.Repository.FlightRepository;
+import com.example.DesafioSprint.Repository.IFlightRepository;
+import com.example.DesafioSprint.Repository.IHotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +19,18 @@ import java.util.List;
 
 @Service
 public class ServiceVuelo implements IServiceVuelo {
-    @Autowired
-    private RepositoryData repository = new RepositoryData();
+
+    private final IFlightRepository repoFlight;
+
+    public ServiceVuelo(IFlightRepository repoFlight) {
+        this.repoFlight = repoFlight;
+    }
 
     /**
      * @return los vuelos ingresados en el sistema con sus respectivos datos como por ejemplo , numero de vuelo, origen,destino,fecha ida, fecha vuelta,tipo de vuelo, y el precio por persona.
      */
     public List<VueloDTO> getVuelos() throws VuelosException {
-        List<Vuelo> vuelosData = repository.getVuelos();
+        List<Vuelo> vuelosData = repoFlight.findAll();
         List<VueloDTO> res = new ArrayList<>();
         if (vuelosData.isEmpty())
             throw new VuelosException("No hay vuelos en el repositorio", HttpStatus.BAD_REQUEST);
@@ -40,7 +47,7 @@ public class ServiceVuelo implements IServiceVuelo {
      */
     public boolean existsVuelo(String cod) {
         boolean res = false;
-        List<Vuelo> aux = repository.getVuelos();
+        List<Vuelo> aux = repoFlight.findAll();
         for (Vuelo e : aux) {
             if (e.getFlightNumber().equals(cod)) {
                 res = true;
@@ -56,7 +63,7 @@ public class ServiceVuelo implements IServiceVuelo {
      */
     public boolean existsDestinationVuelo(String dest) {
         boolean res = false;
-        List<Vuelo> aux = repository.getVuelos();
+        List<Vuelo> aux = repoFlight.findAll();
         for (Vuelo v : aux) {
             if (v.getDestination().equals(dest)) {
                 res = true;
@@ -72,7 +79,7 @@ public class ServiceVuelo implements IServiceVuelo {
      */
     public boolean existsOriginVuelo(String org) {
         boolean res = false;
-        List<Vuelo> aux = repository.getVuelos();
+        List<Vuelo> aux = repoFlight.findAll();
         for (Vuelo v : aux) {
             if (v.getOrigin().equals(org)) {
                 res = true;
@@ -97,7 +104,7 @@ public class ServiceVuelo implements IServiceVuelo {
             throw new UbicacionException("El origen elegido no existe", HttpStatus.BAD_REQUEST);
         if (vuelo.getDateTo().before(vuelo.getDateFrom()))
             throw new FechasException("La fecha de vuelta debe ser mayor a la de ida", HttpStatus.BAD_REQUEST);
-        List<Vuelo> vuelosData = repository.getVuelos();
+        List<Vuelo> vuelosData = repoFlight.findAll();
 
         for (Vuelo v : vuelosData) {
             if (v.getOrigin().equals(vuelo.getOrigin()) && v.getDestination().equals(vuelo.getDestination()) && v.getDateTo().equals(vuelo.getDateTo()) && v.getDateFrom().equals(vuelo.getDateFrom())) {

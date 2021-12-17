@@ -1,17 +1,12 @@
 package com.example.DesafioSprint.Services;
 
-import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
 import com.example.DesafioSprint.DTOs.DisponibilidadVuelosDTO;
-import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.DTOs.VueloDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
-import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
 import com.example.DesafioSprint.Exceptions.VuelosException;
-import com.example.DesafioSprint.Identity.Hotel;
-import com.example.DesafioSprint.Identity.Vuelo;
-import com.example.DesafioSprint.Repository.IRepositoryData;
-import com.example.DesafioSprint.Repository.RepositoryData;
+import com.example.DesafioSprint.Edentity.Vuelo;
+import com.example.DesafioSprint.Repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +26,7 @@ import static org.mockito.Mockito.when;
 class ServiceVueloTest {
 
     @Mock
-    RepositoryData repository;
+    FlightRepository repository;
 
     @InjectMocks
     ServiceVuelo srvVuelo;

@@ -39,7 +39,7 @@ class ServiceHotelTest {
     private List<Hotel> list;
 
     @BeforeEach
-    void cargarServ(){
+    void loadServ(){
         String fechaOrigin = "10/02/2022";
         String fechaVuelta = "19/03/2022";
         String fechaOrigin2 = "12/02/2022";
@@ -74,7 +74,7 @@ class ServiceHotelTest {
     }
 
     @Test
-    void addHotelExistenteTest() throws FechasException, VuelosException {
+    void addHotelExist() throws FechasException, VuelosException {
         when(repository.findAll()).thenReturn(list);
         String fechaOrigin = "10/02/2022";
         String fechaVuelta = "19/03/2022";
@@ -88,7 +88,7 @@ class ServiceHotelTest {
         assertEquals("Ya existe un hotel con ese numero",ex.getERROR());
     }
     @Test
-    void addHotelFechasMalTest() throws FechasException, VuelosException {
+    void addHotelDate() throws FechasException, VuelosException {
         String fechaOrigin = "10/02/2022";
         String fechaVuelta = "19/03/2022";
         Date date1 = null, date2 = null;
@@ -102,14 +102,14 @@ class ServiceHotelTest {
     }
 
     @Test
-    void getHotelesTest() throws HotelesException {
+    void getHoteles() throws HotelesException {
         when(repository.findAll()).thenReturn(list);
         ListHotelesDTO res = srvHotel.getHoteles();
         assertTrue(res.getHoteles().get(0) != null);
     }
 
     @Test
-    void updateHotelTest() throws HotelesException {
+    void updateHotel() throws HotelesException {
         when(repository.findAll()).thenReturn(list);
         String fechaOrigin = "10/02/2022";
         String fechaVuelta = "19/03/2022";
@@ -126,7 +126,7 @@ class ServiceHotelTest {
     }
 
     @Test
-    void updateHotelNoExistenteTest(){
+    void updateHotelNoExist(){
         //Arrange
         when(repository.findAll()).thenReturn(list);
         HotelesException ex =  assertThrows(HotelesException.class, () -> srvHotel.updateHotel("dfgdsfgsdfg",null));
@@ -135,7 +135,7 @@ class ServiceHotelTest {
     }
 
     @Test
-    void getHotelesTestVacio(){
+    void getHotelesEmpty(){
         List<Hotel> aux = new ArrayList<>();
         when(repository.findAll()).thenReturn(aux);
         HotelesException ex = assertThrows(HotelesException.class, () -> srvHotel.getHoteles());
@@ -143,7 +143,7 @@ class ServiceHotelTest {
     }
 
     @Test
-    void getHotelesDisponiblesTestOk() throws FechasException, HotelesException {
+    void getHotelAvailableOk() throws FechasException, HotelesException {
         //Arrange
         when(repository.findAll()).thenReturn(list);
         String fechaOrigin = "13/02/2022";
@@ -162,7 +162,7 @@ class ServiceHotelTest {
     }
 
     @Test
-    void getHotelesDisponiblesTestDestinationNo(){
+    void getHotelAvailableDestinationNoExist(){
         //Arrange
         when(repository.findAll()).thenReturn(list);
         String fechaOrigin = "12/02/2022";
@@ -181,7 +181,7 @@ class ServiceHotelTest {
 
 
     @Test
-    void getHotelesDisponiblesTestFechaNo() throws FechasException, HotelesException {
+    void getHotelAvailableDateNo() throws FechasException, HotelesException {
         //Arrange
         when(repository.findAll()).thenReturn(list);
         String fechaOrigin = "17/02/2022";
@@ -199,7 +199,7 @@ class ServiceHotelTest {
     }
 
     @Test
-    void getHotelesDisponiblesTestExistencia() throws FechasException, HotelesException {
+    void getHotelAvailableExist() throws FechasException, HotelesException {
         //Arrange
         when(repository.findAll()).thenReturn(list);
         String fechaOrigin = "12/02/2024";
@@ -222,7 +222,7 @@ class ServiceHotelTest {
         assertTrue(res.getMessage()== "Hotel borrado correctamente");
     }
     @Test
-    void deleteHotelNoExistente(){
+    void deleteHotelNoExist(){
         //Arrange
         when(repository.findAll()).thenReturn(list);
         HotelesException ex =  assertThrows(HotelesException.class, () -> srvHotel.deleteHotel("dfgdsfgsdfg"));

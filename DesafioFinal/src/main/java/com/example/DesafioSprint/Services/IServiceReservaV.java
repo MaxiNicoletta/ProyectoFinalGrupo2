@@ -15,6 +15,5 @@ public interface IServiceReservaV {
 
     public List<ReservaVueloResponseDTO> getReservasVuelo(String codVuelo) throws VuelosException;
 
-    public ArrayList<>
 
 }

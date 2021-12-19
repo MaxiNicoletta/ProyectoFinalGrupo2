@@ -2,16 +2,13 @@ package com.example.DesafioSprint.Entities;
 
 import com.example.DesafioSprint.DTOs.HotelDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "hotels")
@@ -27,8 +24,6 @@ public class Hotel {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date availableTo;
     private boolean reserved;
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
-    List<ReservaHotel> bookings;
 
     public Hotel(String hotelCode, String name, String place, String roomType, int priceByNight, Date availableFrom, Date availableTo, boolean reserved) {
         this.hotelCode = hotelCode;

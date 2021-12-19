@@ -56,7 +56,7 @@ public class ControllerHotel {
 
     @PostMapping("/bookings/new")
     public ResponseEntity<BookingResponseDTO> addReserva(@Valid @RequestBody BookingRequestDTO bookingRequestDTO) throws PersonasException, HotelesException, FechasException, UbicacionException {
-        return new ResponseEntity<>(hotelBooking.addReserva(bookingRequestDTO), HttpStatus.OK);
+        return new ResponseEntity<>(hotelBooking.addBooking(bookingRequestDTO), HttpStatus.OK);
     }
     
     // Modificaciones
@@ -67,8 +67,8 @@ public class ControllerHotel {
     }
 
     @PutMapping("/hotel-bookings/edit/?id=num_id")
-    public ResponseEntity<BookingResponseDTO> modifyHotel(@RequestBody BookingRequestDTO bookingRequestDTO){
-        return new ResponseEntity<HotelResponseDTO>(hotelBooking.updateBooking(bookingRequestDTO), HttpStatus.OK);
+    public ResponseEntity<BookingResponseDTO> modifyHotel(@RequestBody BookingDTO bookingDTO){
+        return new ResponseEntity<HotelResponseDTO>(hotelBooking.updateBooking(bookingDTO), HttpStatus.OK);
     }
 
 
@@ -79,8 +79,8 @@ public class ControllerHotel {
     }
 
     @PutMapping("/hotel-bookings/edit/?id=num_id")
-    public ResponseEntity<BookingResponseDTO> modifyHotel(@RequestBody BookingRequestDTO bookingRequestDTO){
-        return new ResponseEntity<HotelResponseDTO>(hotelBooking.deleteBooking(bookingRequestDTO), HttpStatus.OK);
+    public ResponseEntity<BookingResponseDTO> modifyHotel(@RequestBody BookingDTO bookingDTO){
+        return new ResponseEntity<HotelResponseDTO>(hotelBooking.updateBooking(bookingDTO), HttpStatus.OK);
     }
 
     /**

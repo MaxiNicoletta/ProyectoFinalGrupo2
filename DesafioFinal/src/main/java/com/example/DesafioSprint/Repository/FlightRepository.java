@@ -1,7 +1,7 @@
 package com.example.DesafioSprint.Repository;
 
 import com.example.DesafioSprint.Entities.Hotel;
-import com.example.DesafioSprint.Entities.ReservaHotel;
+import com.example.DesafioSprint.Entities.Booking;
 import com.example.DesafioSprint.Entities.ReservaVuelo;
 import com.example.DesafioSprint.Entities.Vuelo;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class FlightRepository {
     private List<Hotel> hoteles;
     private List<Vuelo> vuelos;
-    private Map<String, List<ReservaHotel>> reservasHot;
+    private Map<String, List<Booking>> reservasHot;
     private Map<String, List<ReservaVuelo>> reservasVuelo;
 
     public FlightRepository() {
@@ -42,9 +42,9 @@ public class FlightRepository {
      *            especifico como el codigo de hotel, el tipo de habitacion y la cantidad de Personas.
      */
 
-    public void addReservaHotel(ReservaHotel rsv) {
+    public void addReservaHotel(Booking rsv) {
         if (reservasHot.get(rsv.getHotelCode()) == null) {
-            List<ReservaHotel> aux = new ArrayList<>();
+            List<Booking> aux = new ArrayList<>();
             aux.add(rsv);
             reservasHot.put(rsv.getHotelCode(), aux);
         } else {

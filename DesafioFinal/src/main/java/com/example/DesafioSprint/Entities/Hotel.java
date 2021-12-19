@@ -36,9 +36,9 @@ public class Hotel {
         this.reserved = reserved;
     }
     public HotelDTO hotelToDTO(){
-        return new HotelDTO(getHotelCode(),getName(),getPlace(),getRoomType(),getPriceByNight(),getAvailableFrom(),getAvailableTo(),isReserved(),getBookings());
+        return new HotelDTO(getHotelCode(),getName(),getPlace(),getRoomType(),getPriceByNight(),getAvailableFrom(),getAvailableTo(),isReserved());
     }
     public Hotel hotelDTOtoHotel(HotelDTO hotelDTO){
-        return new Hotel(hotelDTO.getHotelCode(),hotelDTO.getName(),hotelDTO.getPlace(),hotelDTO.getRoomType(),hotelDTO.getPriceByNight(),hotelDTO.getAvailableFrom(),hotelDTO.getAvailableTo(),hotelDTO.isReserved(),hotelDTO.getBookings());
+        return new Hotel(hotelDTO.getHotelCode(),hotelDTO.getName(),hotelDTO.getPlace(),hotelDTO.getRoomType(),hotelDTO.getPriceByNight(),hotelDTO.getAvailableFrom(),hotelDTO.getAvailableTo(),hotelDTO.isReserved());
     }
 }

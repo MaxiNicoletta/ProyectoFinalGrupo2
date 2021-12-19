@@ -18,7 +18,7 @@ public interface IServiceBooking {
 
     public BookingResponseDTO addBooking(BookingRequestDTO bookingRequestDTO) throws UbicacionException, PersonasException, HotelesException, FechasException;
 
-//    public List<BookingResponseDTO> getBookings(String codHotel) throws HotelesException;
+    public List<BookingDTO> getBookings() throws HotelesException;
 
     public BookingResponseDTO deleteBooking(Long id);
 

@@ -50,8 +50,8 @@ public class ControllerHotel {
 
     // Altas
     @PostMapping("/hotels/new")
-    public ResponseEntity<HotelResponseDTO> addHotel(@RequestBody HotelDTO hotelDTO){
-        return new ResponseEntity<HotelResponseDTO>(hotelService.addHotel(hotelDTO), HttpStatus.OK);
+    public ResponseEntity<HotelResponseDTO> addHotel(@RequestBody HotelDTO hotelDTO) throws VuelosException,FechasException{
+        return new ResponseEntity<>(hotelService.addHotel(hotelDTO), HttpStatus.OK);
     }
 
     @PostMapping("/bookings/new")
@@ -62,25 +62,24 @@ public class ControllerHotel {
     // Modificaciones
 
     @PutMapping("/hotels/edit/?hotelCode=code")
-    public ResponseEntity<HotelResponseDTO> modifyHotel(@RequestBody HotelDTO hotelDTO){
-        return new ResponseEntity<HotelResponseDTO>(hotelService.updateHotel(hotelDTO), HttpStatus.OK);
+    public ResponseEntity<HotelResponseDTO> updateHotel(@RequestBody HotelDTO hotelDTO) throws HotelesException{
+        return new ResponseEntity<>(hotelService.updateHotel(hotelDTO), HttpStatus.OK);
     }
 
     @PutMapping("/hotel-bookings/edit/?id=num_id")
-    public ResponseEntity<BookingResponseDTO> modifyHotel(@RequestBody BookingDTO bookingDTO){
-        return new ResponseEntity<HotelResponseDTO>(hotelBooking.updateBooking(bookingDTO), HttpStatus.OK);
+    public ResponseEntity<BookingResponseDTO> modifyBooking(@RequestBody BookingDTO bookingDTO){
+        return new ResponseEntity<>(hotelBooking.updateBooking(bookingDTO), HttpStatus.OK);
     }
-
 
     // Bajas
     @DeleteMapping("/hotels/edit/?hotelCode=code")
-    public ResponseEntity<HotelResponseDTO> modifyHotel(@RequestBody HotelDTO hotelDTO){
-        return new ResponseEntity<HotelResponseDTO>(hotelService.deleteHotel(hotelDTO), HttpStatus.OK);
+    public ResponseEntity<HotelResponseDTO> deleteHotel(@RequestBody String hotelCode) throws HotelesException{
+        return new ResponseEntity<HotelResponseDTO>(hotelService.deleteHotel(hotelCode), HttpStatus.OK);
     }
 
     @PutMapping("/hotel-bookings/edit/?id=num_id")
-    public ResponseEntity<BookingResponseDTO> modifyHotel(@RequestBody BookingDTO bookingDTO){
-        return new ResponseEntity<HotelResponseDTO>(hotelBooking.updateBooking(bookingDTO), HttpStatus.OK);
+    public ResponseEntity<BookingResponseDTO> deleteBooking(@RequestBody Long id){
+        return new ResponseEntity<>(hotelBooking.deleteBooking(id), HttpStatus.OK);
     }
 
     /**
@@ -92,6 +91,8 @@ public class ControllerHotel {
      * @throws HotelesException Excepcion causada por si no existen hoteles en el destino ingresado
      * @throws FechasException  Excepcion causada por si la fecha de Salida es mayor a la fecha de entrada
      */
+
+
     @GetMapping("/hotels")
     ResponseEntity<ListHotelesDTO> listarHoteles(@RequestParam(name = "dateFrom", required = false) String dateFrom, @RequestParam(name = "dateTo", required = false) String dateTo, @RequestParam(name = "destination", required = false) String destination) throws FaltanParametros, HotelesException, FechasException {
         DisponibilidadHotelDTO nuevo = null;
@@ -109,19 +110,14 @@ public class ControllerHotel {
         }
     }
 
-
     /**
      * @param cod Recibe el identificador del hotel que quiere consultar
      * @return Todos los datos de las reservas que corresponden al hotel ingresado.
      */
-//    @GetMapping("/bookings-history/{cod}")
-//    ResponseEntity<List<BookingResponseDTO>> getReservasHoteles(@PathVariable String cod) throws HotelesException {
-//        return new ResponseEntity<>(hotelBooking.getReservasHotel(cod), HttpStatus.OK);
-//    }
 
     @GetMapping("/hotel-bookings")
-    ResponseEntity<List<BookingDTO>> getReservasHoteles() throws HotelesException {
-        return new ResponseEntity<List<BookingDTO>>(hotelBooking.getReservasHotel(), HttpStatus.OK);
+    ResponseEntity<List<BookingDTO>> getBookings() throws HotelesException {
+        return new ResponseEntity<>(hotelBooking.getBookings(), HttpStatus.OK);
     }
 
 }

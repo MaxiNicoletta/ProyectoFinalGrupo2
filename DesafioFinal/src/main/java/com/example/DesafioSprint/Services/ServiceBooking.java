@@ -39,7 +39,7 @@ public class ServiceBooking implements IServiceBooking {
         bookingRepository.save(booking);
         return new BookingResponseDTO("Reserva realizada con exito");
     }
-    
+
     @Override
     public BookingResponseDTO deleteBooking(Long id) {
         Booking booking = bookingRepository.getById(id);
@@ -56,6 +56,17 @@ public class ServiceBooking implements IServiceBooking {
         return new BookingResponseDTO("Reserva Modificada correctamente");
     }
 
+    @Override
+    public List<BookingDTO> getBookings() throws HotelesException {
+        List<Booking> bookings = bookingRepository.getBookings();
+        List<BookingDTO> bookingsDTO = new ArrayList<>();
+        for (Booking booking : bookings) {
+            BookingDTO bookingDTO = booking.bookingToDTO();
+            bookingsDTO.add(bookingDTO);
+        }
+        return bookingsDTO;
+    }
+
 
     private Booking getBooking(BookingRequestDTO bookingRequestDTO) throws HotelesException {
         Pago pago = getPayment(bookingRequestDTO);
@@ -68,7 +79,7 @@ public class ServiceBooking implements IServiceBooking {
         return booking;
     }
 
-    private boolean isAvailableHotel(BookingRequestDTO bookingRequestDTO) throws FechasException,HotelesException{
+    private boolean isAvailableHotel(BookingRequestDTO bookingRequestDTO) throws FechasException, HotelesException {
         boolean result = false;
         DisponibilidadHotelDTO disponibilidadHotelDTO = new DisponibilidadHotelDTO(bookingRequestDTO.getBooking().getDateFrom(), bookingRequestDTO.getBooking().getDateTo(), bookingRequestDTO.getBooking().getDestination());
         ListHotelesDTO lstHoteles = hotelService.getHotelesDisponibles(disponibilidadHotelDTO); // Obtener hoteles disponibles
@@ -79,7 +90,7 @@ public class ServiceBooking implements IServiceBooking {
                 break;
             }
         }
-        if(hotel!= null){
+        if (hotel != null) {
             result = true;
         }
         return result;
@@ -100,7 +111,7 @@ public class ServiceBooking implements IServiceBooking {
             throw new PersonasException("La Habitacion es para 3 personas", HttpStatus.BAD_REQUEST);
         if (bookingRequestDTO.getBooking().getRoomType().equals("SINGLE") && bookingRequestDTO.getBooking().getPeopleAmount() > 1)
             throw new PersonasException("La Habitacion es para 1 persona", HttpStatus.BAD_REQUEST);
-        if(!isAvailableHotel(bookingRequestDTO)){
+        if (!isAvailableHotel(bookingRequestDTO)) {
             throw new HotelesException("Ese hotel No esta disponible en las fechas ingresadas", HttpStatus.BAD_REQUEST);
         }
     }
@@ -129,6 +140,7 @@ public class ServiceBooking implements IServiceBooking {
         Pago pago = new Pago(bookingRequestDTO.getPaymentMethod().getType(), bookingRequestDTO.getPaymentMethod().getNumber(), bookingRequestDTO.getPaymentMethod().getDues());
         return pago;
     }
+}
 
 
 //    private Hotel findHotelByCode(BookingRequestDTO bookingRequestDTO) throws HotelesException, FechasException {

@@ -52,7 +52,8 @@ public class ServiceHotel implements IServiceHotel {
         return res;
     }
 
-    public HotelResponseDTO updateHotel(String cod, HotelDTO hotelDTO) throws HotelesException {
+    public HotelResponseDTO updateHotel(HotelDTO hotelDTO) throws HotelesException {
+        String cod = hotelDTO.getHotelCode();
         if (!repoHotel.existsHotel(cod))
             throw new HotelesException("No existe ese hotel en el repositorio", HttpStatus.BAD_REQUEST);
         Hotel hotel = repoHotel.findHoteltByCod(cod);

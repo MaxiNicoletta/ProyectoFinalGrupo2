@@ -2,6 +2,7 @@ package com.example.DesafioSprint.Services;
 
 import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
 import com.example.DesafioSprint.DTOs.HotelDTO;
+import com.example.DesafioSprint.DTOs.HotelResponseDTO;
 import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
@@ -77,7 +78,7 @@ class ServiceHotelTest {
 
         } catch (Exception e) {}
         HotelDTO hotel1 = new HotelDTO("HB-0001", "Hotel BristolModificado", "Buenos Aires", "Single", 5435, date1, date2, false);
-        HotelResponseDTO res = srvHotel.updateHotel("HB-0001",hotel1);
+        HotelResponseDTO res = srvHotel.updateHotel(hotel1);
         assertTrue(res.getMessage()== "Hotel modificado correctamente");
     }
 

@@ -4,6 +4,7 @@ import com.example.DesafioSprint.DTOs.*;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Exceptions.PersonasException;
+import com.example.DesafioSprint.Repository.IBookingRepository;
 import com.example.DesafioSprint.Repository.IFlightRepository;
 import com.example.DesafioSprint.Repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,14 +24,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class ServiceReservaHTest {
     @Mock
-    IFlightRepository repository;
+    IBookingRepository repository;
 
     @InjectMocks
     ServiceBooking srvHotelR;
 
     @BeforeEach
     void cargarServ() {
-        repository = new FlightRepository();
         srvHotelR = new ServiceBooking();
     }
 

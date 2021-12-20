@@ -65,7 +65,7 @@ public class ControllerFlightReservation {
      * @return FlightResponseDTO.
      */
     @PutMapping("/edit")
-    public FlightResponseDTO updateFlightReservation(@RequestParam Long id, @Valid @RequestBody ReservasVueloRequestDTO reservasVueloRequestDTO){
+    public FlightResponseDTO updateFlightReservation(@RequestParam Long id, @Valid @RequestBody ReservasVueloRequestDTO reservasVueloRequestDTO) throws VuelosException, PersonasException {
         return bookingService.updateFlightReservation(id, reservasVueloRequestDTO);
     }
 
@@ -75,7 +75,7 @@ public class ControllerFlightReservation {
     }
 
     @DeleteMapping("/delete")
-    public FlightResponseDTO deleteFlightReservation(@RequestParam Long id){
+    public FlightResponseDTO deleteFlightReservation(@RequestParam Long id) throws VuelosException {
         return bookingService.deleteFlightReservation(id);
     }
 }

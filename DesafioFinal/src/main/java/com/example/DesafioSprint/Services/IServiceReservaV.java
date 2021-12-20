@@ -17,7 +17,7 @@ public interface IServiceReservaV {
 
     ArrayList<ReservaVueloDTO> getAllReservations();
 
-    FlightResponseDTO updateFlightReservation(Long id, ReservasVueloRequestDTO reservasVueloRequestDTO);
+    FlightResponseDTO updateFlightReservation(Long id, ReservasVueloRequestDTO reservasVueloRequestDTO) throws VuelosException, PersonasException;
 
-    FlightResponseDTO deleteFlightReservation(Long id);
+    FlightResponseDTO deleteFlightReservation(Long id) throws VuelosException;
 }

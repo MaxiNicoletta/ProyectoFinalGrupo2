@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,12 +23,11 @@ public class Reserva {
     protected Date dateFrom;
     protected Date dateTo;
     protected String destination;
-    @ManyToMany(mappedBy = "booking")
+    @ManyToMany
     @JoinTable(name = "reservation_people",
                 joinColumns = @JoinColumn(name = "reservation_id",referencedColumnName = "id"),
-                inverseJoinColumns = @JoinColumn(name="people_id",referencedColumnName = "id")
-    )
-    protected List<Persona> people;
+                inverseJoinColumns = @JoinColumn(name="people_id",referencedColumnName = "dni"))
+    protected List<Persona> people ;
     @OneToOne
     @JoinColumn(name ="pago_id")
     protected Pago paymentMethod;

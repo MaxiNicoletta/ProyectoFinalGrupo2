@@ -70,12 +70,12 @@ class ServiceHotelTest {
         } catch (Exception e) {}
         HotelDTO hotel1 = new HotelDTO("HB-0001", "Hotel Bristol", "Buenos Aires", "Single", 5435, date1, date2, false);
         HotelResponseDTO res = srvHotel.addHotel(hotel1);
-        assertTrue(res.getMessage()== "Hotel modificado correctamente");
+        assertTrue(res.getMessage()== "Hotel dado de alta correctamente");
     }
 
     @Test
     void addHotelExist() throws FechasException, VuelosException {
-        when(repository.findAll()).thenReturn(list);
+        when(repository.existsHotel("HB-0001")).thenReturn(true);
         String fechaOrigin = "10/02/2022";
         String fechaVuelta = "19/03/2022";
         Date date1 = null, date2 = null;
@@ -97,8 +97,8 @@ class ServiceHotelTest {
             date2 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaVuelta);
         } catch (Exception e) {}
         HotelDTO hotel1 = new HotelDTO("HB-0001", "Hotel Bristol", "Buenos Aires", "Single", 5435, date2, date1, false);
-        HotelesException ex =  assertThrows(HotelesException.class, () -> srvHotel.addHotel(hotel1));
-        assertEquals("Ya existe un hotel con ese codigo",ex.getERROR());
+        FechasException ex =  assertThrows(FechasException.class, () -> srvHotel.addHotel(hotel1));
+        assertEquals("La fecha de salida debe ser mayor a la de ida",ex.getERROR());
     }
 
     @Test

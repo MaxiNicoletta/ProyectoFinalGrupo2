@@ -11,7 +11,7 @@ import com.example.DesafioSprint.Exceptions.VuelosException;
 public interface IServiceHotel {
     ListHotelesDTO getHoteles() throws HotelesException;
     HotelResponseDTO addHotel(HotelDTO hotelDTO)throws FechasException, VuelosException;
-    HotelResponseDTO updateHotel(String cod, HotelDTO hotelDTO) throws  HotelesException;
+    HotelResponseDTO updateHotel(HotelDTO hotelDTO) throws  HotelesException;
     public ListHotelesDTO getHotelesDisponibles(DisponibilidadHotelDTO hotel) throws HotelesException, FechasException;
     HotelResponseDTO deleteHotel(String cod)throws HotelesException ;
 

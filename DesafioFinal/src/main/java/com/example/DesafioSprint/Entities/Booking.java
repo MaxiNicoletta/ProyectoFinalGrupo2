@@ -1,6 +1,7 @@
 package com.example.DesafioSprint.Entities;
 
 import com.example.DesafioSprint.DTOs.BookingDTO;
+import com.example.DesafioSprint.DTOs.BookingRequestDTO;
 import com.example.DesafioSprint.DTOs.PersonaDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -18,12 +19,12 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("H")
-public class ReservaHotel extends Reserva {
+public class Booking extends Reserva {
     private String hotelCode;
     private int peopleAmount;
     private String roomType;
 
-    public ReservaHotel(String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total, String hotelCode, int peopleAmount, String roomType) {
+    public Booking(String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total, String hotelCode, int peopleAmount, String roomType) {
         super(userName, dateFrom, dateTo, destination, people, paymentMethod, amount, interest, total);
         this.hotelCode = hotelCode;
         this.peopleAmount = peopleAmount;
@@ -38,5 +39,15 @@ public class ReservaHotel extends Reserva {
         }
         return new BookingDTO(getId(), getDateFrom(), getDateTo(), getDestination(), getHotelCode(), getPeopleAmount(), getRoomType(), people);
     }
+
+    public Booking bookingDTOtoBooking(BookingDTO bookingDTO) {
+        return new Booking(bookingDTO.getHotelCode(),bookingDTO.getPeopleAmount(),bookingDTO.getRoomType());
+    }
+
+
+
+//    public Booking bookingRequestDTOtoBooking(BookingRequestDTO bookingRequestDTO){
+//        Booking booking = new Booking(bookingRequestDTO.getBooking()
+//    }
 
 }

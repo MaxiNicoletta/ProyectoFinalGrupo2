@@ -121,7 +121,7 @@ class ServiceHotelTest {
 
         } catch (Exception e) {}
         HotelDTO hotel1 = new HotelDTO("HB-0001", "Hotel BristolModificado", "Buenos Aires", "Single", 5435, date1, date2, false);
-        HotelResponseDTO res = srvHotel.updateHotel("HB-0001",hotel1);
+        HotelResponseDTO res = srvHotel.updateHotel(hotel1);
         assertTrue(res.getMessage()== "Hotel modificado correctamente");
     }
 

@@ -58,7 +58,6 @@ public class ServiceReservaV implements IServiceReservaV {
                 l.add(persona);
                 repositoryPerson.save(persona);
             }
-
             double interest = 0;
             double amount = vuelo.getFlightPrice() * rsVuelo.getFlightReservation().getSeats();
             double total = 0;
@@ -81,7 +80,7 @@ public class ServiceReservaV implements IServiceReservaV {
             repositoryReservation.save(rsv);
             return new FlightResponseDTO("Reserva de vuelo dada de alta correctamente.");
         } else
-            throw new VuelosException("Ese vuelo No esta disponible en las fechas ingresadas", HttpStatus.BAD_REQUEST);
+            throw new VuelosException("Ese vuelo no esta disponible en las fechas ingresadas", HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -97,12 +96,15 @@ public class ServiceReservaV implements IServiceReservaV {
         validation(reservasVueloRequestDTO,id);
         ReservaVuelo rsv = repositoryReservation.getById(id);
         rsv.setUserName(reservasVueloRequestDTO.getUserName());
-        if (rsv.getSeats()!= reservasVueloRequestDTO.getFlightReservation().getSeats())
-           person(reservasVueloRequestDTO,rsv);
-        else
+        if (rsv.getSeats()!= reservasVueloRequestDTO.getFlightReservation().getSeats()) {
+            person(reservasVueloRequestDTO, rsv);
+        }
+        else {
             rsv.setSeats(reservasVueloRequestDTO.getFlightReservation().getSeats());
-        if (rsv.getPaymentMethod() != reservasVueloRequestDTO.getFlightReservation().getParmentMethod())
-            getPayment(reservasVueloRequestDTO,rsv);
+        }
+        if (rsv.getPaymentMethod() != reservasVueloRequestDTO.getFlightReservation().getParmentMethod()) {
+            getPayment(reservasVueloRequestDTO, rsv);
+        }
         else{
                 Pago pago = new Pago(reservasVueloRequestDTO.getPaymentMethod().getType(), reservasVueloRequestDTO.getPaymentMethod().getNumber(), reservasVueloRequestDTO.getPaymentMethod().getDues());
                 rsv.setPaymentMethod(pago);

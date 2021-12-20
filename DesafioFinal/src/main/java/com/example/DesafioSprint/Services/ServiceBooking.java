@@ -1,21 +1,17 @@
 package com.example.DesafioSprint.Services;
 
 import com.example.DesafioSprint.DTOs.*;
-import com.example.DesafioSprint.Entities.Hotel;
+import com.example.DesafioSprint.Entities.*;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Exceptions.PersonasException;
-import com.example.DesafioSprint.Exceptions.UbicacionException;
-import com.example.DesafioSprint.Entities.Pago;
-import com.example.DesafioSprint.Entities.Persona;
-import com.example.DesafioSprint.Entities.Booking;
 import com.example.DesafioSprint.Repository.IBookingRepository;
 import com.example.DesafioSprint.Repository.IHotelRepository;
-import com.example.DesafioSprint.Repository.IPaymentRepository;
+import com.example.DesafioSprint.Repository.IPagoRepository;
+import com.example.DesafioSprint.Repository.IPersonRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -26,19 +22,21 @@ public class ServiceBooking implements IServiceBooking {
     private IBookingRepository bookingRepository;
     private IHotelRepository hotelRepository;
     private IServiceHotel hotelService;
-    private IPaymentRepository paymentRepository;
+    private final IPersonRepository personRepository;
+    private final IPagoRepository paymentRepository;
 
-    public ServiceBooking(IBookingRepository bookingRepository, IHotelRepository hotelRepository, IServiceHotel serviceHotel, IPaymentRepository paymentRepository) {
+    public ServiceBooking(IBookingRepository bookingRepository, IHotelRepository hotelRepository, IServiceHotel serviceHotel, IPagoRepository paymentRepository, IPersonRepository personRepository) {
         this.bookingRepository = bookingRepository;
         this.hotelRepository = hotelRepository;
         this.hotelService = serviceHotel;
         this.paymentRepository = paymentRepository;
+        this.personRepository = personRepository;
     }
 
     @Override
     public BookingResponseDTO addBooking(BookingRequestDTO bookingRequestDTO) throws PersonasException, HotelesException, FechasException {
         validateBooking(bookingRequestDTO);
-        Booking booking = getBooking(bookingRequestDTO);
+        Booking booking = setBooking(bookingRequestDTO);
         bookingRepository.save(booking);
         return new BookingResponseDTO("Reserva realizada con exito");
     }
@@ -51,17 +49,36 @@ public class ServiceBooking implements IServiceBooking {
     }
 
     @Override
-    public BookingResponseDTO updateBooking(Long id, BookingRequestDTO bookingRequestDTO) throws HotelesException {
+    public BookingResponseDTO updateBooking(Long id, BookingRequestDTO bookingRequestDTO) throws HotelesException, FechasException, PersonasException {
+        validateBooking(bookingRequestDTO);
         Booking booking = bookingRepository.getById(id);
-        if(booking!= null) {
-            Booking updatedBooking = new Booking();
-            updatedBooking.bookingDTOtoBooking(bookingRequestDTO);
-            bookingRepository.save(updatedBooking);
+        bookingRepository.delete(booking);
+        addBooking(bookingRequestDTO);
+        return new BookingResponseDTO("Reserva modificada con exito");
+    }
+//    @Override
+//    public BookingResponseDTO updateBooking(Long id, BookingRequestDTO bookingRequestDTO) throws HotelesException, FechasException, PersonasException {
+//        validateBooking(bookingRequestDTO);
+//        Booking booking = bookingRepository.getById(id);
+//        booking.setUserName(bookingRequestDTO.getUsername());
+//        if (booking.getPeopleAmount()!= bookingRequestDTO.getBooking().getPeopleAmount()) {
+//            setPeople(bookingRequestDTO,booking);
+//        }
+//        else{
+//            booking.setPeopleAmount(bookingRequestDTO.getBooking().getPeopleAmount());
+//        }
+//
+//    }
+
+    private void setPeople(BookingRequestDTO bookingRequestDTO, Booking booking) {
+        List<Persona> people = new ArrayList<>();
+        for (PersonaDTO personaDTO : bookingRequestDTO.getBooking().getPeople()) {
+            Persona person = new Persona(personaDTO.getDni(), personaDTO.getName(), personaDTO.getLastname(), personaDTO.getBirthDate(), personaDTO.getMail());
+            people.add(person);
+            personRepository.save(person);
         }
-        else{
-            throw new HotelesException("No existe una reserva con ese id", HttpStatus.BAD_REQUEST);
-        }
-        return new BookingResponseDTO("Reserva Modificada correctamente");
+        booking.setPeople(people);
+        booking.setPeopleAmount(bookingRequestDTO.getBooking().getPeopleAmount());
     }
 
     @Override
@@ -75,9 +92,12 @@ public class ServiceBooking implements IServiceBooking {
         return bookingsDTO;
     }
 
-    private Booking getBooking(BookingRequestDTO bookingRequestDTO) throws HotelesException {
-        Pago pago = getPayment(bookingRequestDTO);
+    private Booking setBooking(BookingRequestDTO bookingRequestDTO) throws HotelesException {
+        Pago pago = setPayment(bookingRequestDTO);
         List<Persona> people = bookingRepository.getPeople();
+        for(Persona person : people){
+            personRepository.save(person);
+        }
         List<PersonaDTO> peopleDTO = bookingRequestDTO.getBooking().getPeople();
         for (PersonaDTO personaDTO : peopleDTO) {
             Persona person = new Persona(personaDTO.getDni(), personaDTO.getName(), personaDTO.getLastname(), personaDTO.getBirthDate(), personaDTO.getMail());
@@ -87,14 +107,13 @@ public class ServiceBooking implements IServiceBooking {
         booking.bookingDTOtoBooking(bookingRequestDTO);
         booking.setPaymentMethod(pago);
         booking.setPeople(people);
-        paymentRepository.save(pago);
         return booking;
     }
 
     private boolean isAvailableHotel(BookingRequestDTO bookingRequestDTO) throws FechasException, HotelesException {
         boolean result = false;
         DisponibilidadHotelDTO disponibilidadHotelDTO = new DisponibilidadHotelDTO(bookingRequestDTO.getBooking().getDateFrom(), bookingRequestDTO.getBooking().getDateTo(), bookingRequestDTO.getBooking().getDestination());
-        ListHotelesDTO lstHoteles = hotelService.getHotelesDisponibles(disponibilidadHotelDTO); // Obtener hoteles disponibles
+        ListHotelesDTO lstHoteles = hotelService.getHotelesDisponibles(disponibilidadHotelDTO);
         HotelDTO hotel = null;
         for (HotelDTO h : lstHoteles.getHoteles()) {
             if (h.getHotelCode().equals(bookingRequestDTO.getBooking().getHotelCode())) {
@@ -128,7 +147,7 @@ public class ServiceBooking implements IServiceBooking {
         }
     }
 
-    private Pago getPayment(BookingRequestDTO bookingRequestDTO) throws HotelesException {
+    private Pago setPayment(BookingRequestDTO bookingRequestDTO) throws HotelesException {
         double interest = 0;
         double amount = 0, total = 0;
         Hotel hotel = hotelRepository.findHoteltByCod(bookingRequestDTO.getBooking().getHotelCode());
@@ -150,6 +169,7 @@ public class ServiceBooking implements IServiceBooking {
                 throw new HotelesException("Se ha ingresado una cantidad de cuotas diferente a 1 ", HttpStatus.BAD_REQUEST);
         }
         Pago pago = new Pago(bookingRequestDTO.getPaymentMethod().getType(), bookingRequestDTO.getPaymentMethod().getNumber(), bookingRequestDTO.getPaymentMethod().getDues());
+        paymentRepository.save(pago);
         return pago;
     }
 }
@@ -275,4 +295,18 @@ public class ServiceBooking implements IServiceBooking {
 //            res.add(r);
 //        }
 //        return res;
+//    }
+
+//    @Override
+//    public BookingResponseDTO updateBooking(Long id, BookingRequestDTO bookingRequestDTO) throws HotelesException {
+//        Booking booking = bookingRepository.getById(id);
+//        if(booking!= null) {
+//            Booking updatedBooking = new Booking();
+//            updatedBooking.bookingDTOtoBooking(bookingRequestDTO);
+//            bookingRepository.save(updatedBooking);
+//        }
+//        else{
+//            throw new HotelesException("No existe una reserva con ese id", HttpStatus.BAD_REQUEST);
+//        }
+//        return new BookingResponseDTO("Reserva modificada correctamente");
 //    }

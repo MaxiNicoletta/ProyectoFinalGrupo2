@@ -1,6 +1,7 @@
 package com.example.DesafioSprint.controller;
 
 import com.example.DesafioSprint.DTOs.FlightResponseDTO;
+import com.example.DesafioSprint.DTOs.ReservaVueloDTO;
 import com.example.DesafioSprint.DTOs.ReservasVueloRequestDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.PersonasException;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/v1/flight-reservation")
@@ -48,10 +50,7 @@ public class ControllerFlightReservation {
      */
     @PostMapping("/new")
     public FlightResponseDTO addReservaVuelo(@Valid @RequestBody ReservasVueloRequestDTO rsVuelo) throws PersonasException, FechasException, VuelosException, UbicacionException {
-        bookingService.addReserva(rsVuelo);
-        FlightResponseDTO response = new FlightResponseDTO();
-        response.setMessage("Reserva de vuelo dada de alta correctamente.");
-        return response;
+        return bookingService.addReserva(rsVuelo);
     }
 
     /**
@@ -60,20 +59,17 @@ public class ControllerFlightReservation {
      * @return FlightResponseDTO.
      */
     @PutMapping("/edit")
-    public FlightResponseDTO editFlightReservation(@RequestParam int id){
-        bookingService.modifyFlightReservation(id);
-        FlightResponseDTO response = new FlightResponseDTO();
-        response.setMessage("Reserva de vuelo modificada correctamente.");
-        return response;
+    public FlightResponseDTO updateFlightReservation(@RequestParam Long id, @Valid @RequestBody ReservasVueloRequestDTO reservasVueloRequestDTO){
+        return bookingService.updateFlightReservation(id, reservasVueloRequestDTO);
     }
 
     @GetMapping("/")
+    public ArrayList<ReservaVueloDTO> getAllReservations() {
+        return bookingService.getAllReservations();
+    }
 
     @DeleteMapping("/delete")
-    public FlightResponseDTO deleteFlightReservation(@RequestParam int id){
-        bookingService.deleteFlightReservation(id);
-        FlightResponseDTO response = new FlightResponseDTO();
-        response.setMessage("Reserva de vuelo eliminada correctamente.");
-        return response;
+    public FlightResponseDTO deleteFlightReservation(@RequestParam Long id){
+        return bookingService.deleteFlightReservation(id);
     }
 }

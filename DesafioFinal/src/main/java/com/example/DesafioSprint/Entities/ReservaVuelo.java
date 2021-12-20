@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +22,9 @@ public class ReservaVuelo extends Reserva {
     private int seats;
     private String seaType;
     private String origin;
+    @ManyToOne
+    @JoinColumn( name = "flightReservations", nullable = false)
+    private Vuelo vuelo;
 
     //Constructor
     public ReservaVuelo(String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total, String flightNumber, int seats, String seaType, String origin) {
@@ -30,19 +35,19 @@ public class ReservaVuelo extends Reserva {
         this.origin = origin;
     }
 
-    public ReservaVueloDTO entityToDTO(ReservaVuelo reservation){
+    public ReservaVueloDTO entityToDTO(){
         ArrayList<PersonaDTO> people = new ArrayList<>();
         Persona person = new Persona();
         for(Persona p: getPeople())
             people.add(person.entityToDTO(p));
         return new ReservaVueloDTO(
-                reservation.getDateFrom(),
-                reservation.getDateTo(),
-                reservation.getOrigin(),
-                reservation.getDestination(),
-                reservation.getFlightNumber(),
-                reservation.getSeats(),
-                reservation.getSeaType(),
+                getDateFrom(),
+                getDateTo(),
+                getOrigin(),
+                getDestination(),
+                getFlightNumber(),
+                getSeats(),
+                getSeaType(),
                 people
         );
     }

@@ -1,11 +1,13 @@
 package com.example.DesafioSprint.Services;
 
 import com.example.DesafioSprint.DTOs.DisponibilidadVuelosDTO;
+import com.example.DesafioSprint.DTOs.FlightResponseDTO;
 import com.example.DesafioSprint.DTOs.VueloDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
 import com.example.DesafioSprint.Exceptions.VuelosException;
 import com.example.DesafioSprint.Entities.Vuelo;
+import com.example.DesafioSprint.Repository.FlightRepository;
 import com.example.DesafioSprint.Repository.IFlightRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,7 @@ public class ServiceVuelo implements IServiceVuelo {
         this.repoFlight = repoFlight;
     }
 
-    public FlightsResponseDTO addFlight(VueloDTO flightDTO)throws FechasException,VuelosException{
+    public FlightResponseDTO addFlight(VueloDTO flightDTO)throws FechasException,VuelosException{
         if (flightDTO.getDisponibilityDateTo().before(flightDTO.getGoingDate()))
             throw new FechasException("La fecha de vuelta debe ser mayor a la de ida", HttpStatus.BAD_REQUEST);
         if(repoFlight.existsVuelo(flightDTO.getFlightNumber()))
@@ -74,7 +76,7 @@ public class ServiceVuelo implements IServiceVuelo {
         return res;
     }
 
-    public FlightsResponseDTO updateFlight(String cod, VueloDTO flightDto) throws  VuelosException{
+    public FlightResponseDTO updateFlight(String cod, VueloDTO flightDto) throws  VuelosException{
         if(repoFlight.existsVuelo(flightDto.getFlightNumber()))
         throw new VuelosException("No hay vuelo con ese codigo", HttpStatus.BAD_REQUEST);
         Vuelo flight = repoFlight.findFlightByCod(cod);
@@ -85,16 +87,16 @@ public class ServiceVuelo implements IServiceVuelo {
         flight.setSeatType(flightDto.getSeatType());
         flight.setPricePerPerson(flightDto.getFlightPrice());
         repoFlight.save(flight);
-        FlightsResponseDTO res = new FlightRepository("Vuelo modificado correctamente");
+        FlightResponseDTO res = new FlightResponseDTO("Vuelo modificado correctamente");
         return res;
     }
 
-    public FlightsResponseDTO deleteFlight(String cod) throws  VuelosException{
+    public FlightResponseDTO deleteFlight(String cod) throws  VuelosException{
         Vuelo flight = repoFlight.findFlightByCod(cod);
         if(flight==null)
             throw new VuelosException("No hay vuelo con ese codigo", HttpStatus.BAD_REQUEST);
         repoFlight.delete(flight);
-        FlightsResponseDTO res = new FlightRepository("Vuelo borrado correctamente");
+        FlightResponseDTO res = new FlightRepository("Vuelo borrado correctamente");
         return res;
     }
 

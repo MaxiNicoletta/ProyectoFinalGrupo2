@@ -9,25 +9,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class TouristicPackage {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private int packageNumber;
+    private String name;
+    private Date creation_date;
+    private int clientId;
+    private Booking booking;
+    private ReservaVuelo reservaVuelo;
 
     public TouristicPackageDTO entityToDTO(){
-        return new TouristicPackageDTO();
+        return new TouristicPackageDTO(getBooking().bookingToDTO(),getReservaVuelo().entityToDTO());
     }
 
     public TouristicPackage dtoToEntity(TouristicPackageDTO touristicPackageDTO){
         return new TouristicPackage();
     }
-
 
 }

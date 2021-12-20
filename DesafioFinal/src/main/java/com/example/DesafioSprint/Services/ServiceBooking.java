@@ -11,6 +11,7 @@ import com.example.DesafioSprint.Entities.Persona;
 import com.example.DesafioSprint.Entities.Booking;
 import com.example.DesafioSprint.Repository.IBookingRepository;
 import com.example.DesafioSprint.Repository.IHotelRepository;
+import com.example.DesafioSprint.Repository.IPaymentRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +26,13 @@ public class ServiceBooking implements IServiceBooking {
     private IBookingRepository bookingRepository;
     private IHotelRepository hotelRepository;
     private IServiceHotel hotelService;
+    private IPaymentRepository paymentRepository;
 
-    public ServiceBooking(IBookingRepository bookingRepository, IHotelRepository hotelRepository, IServiceHotel serviceHotel) {
+    public ServiceBooking(IBookingRepository bookingRepository, IHotelRepository hotelRepository, IServiceHotel serviceHotel, IPaymentRepository paymentRepository) {
         this.bookingRepository = bookingRepository;
         this.hotelRepository = hotelRepository;
         this.hotelService = serviceHotel;
+        this.paymentRepository = paymentRepository;
     }
 
     @Override
@@ -48,11 +51,11 @@ public class ServiceBooking implements IServiceBooking {
     }
 
     @Override
-    public BookingResponseDTO updateBooking(Long id, BookingDTO bookingDTO) throws HotelesException {
+    public BookingResponseDTO updateBooking(Long id, BookingRequestDTO bookingRequestDTO) throws HotelesException {
         Booking booking = bookingRepository.getById(id);
         if(booking!= null) {
             Booking updatedBooking = new Booking();
-            updatedBooking.bookingDTOtoBooking(bookingDTO);
+            updatedBooking.bookingDTOtoBooking(bookingRequestDTO);
             bookingRepository.save(updatedBooking);
         }
         else{
@@ -74,17 +77,17 @@ public class ServiceBooking implements IServiceBooking {
 
     private Booking getBooking(BookingRequestDTO bookingRequestDTO) throws HotelesException {
         Pago pago = getPayment(bookingRequestDTO);
+        List<Persona> people = bookingRepository.getPeople();
         List<PersonaDTO> peopleDTO = bookingRequestDTO.getBooking().getPeople();
-        List<Persona> people = new ArrayList<>();
         for (PersonaDTO personaDTO : peopleDTO) {
             Persona person = new Persona(personaDTO.getDni(), personaDTO.getName(), personaDTO.getLastname(), personaDTO.getBirthDate(), personaDTO.getMail());
             people.add(person);
         }
-        BookingDTO bookingDTO = bookingRequestDTO.getBooking();
         Booking booking = new Booking();
-        booking.bookingDTOtoBooking(bookingDTO);
+        booking.bookingDTOtoBooking(bookingRequestDTO);
         booking.setPaymentMethod(pago);
         booking.setPeople(people);
+        paymentRepository.save(pago);
         return booking;
     }
 

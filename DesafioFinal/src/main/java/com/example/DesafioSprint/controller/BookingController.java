@@ -8,7 +8,6 @@ import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Exceptions.PersonasException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
 import com.example.DesafioSprint.Services.IServiceBooking;
-import com.example.DesafioSprint.Services.IServiceHotel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +28,8 @@ public class BookingController {
     }
 
     @PutMapping("/hotel-bookings/edit")
-    public ResponseEntity<BookingResponseDTO> updateBooking(@RequestParam Long id, @RequestBody BookingDTO bookingDTO) throws HotelesException{
-        return new ResponseEntity<>(hotelBooking.updateBooking(id, bookingDTO), HttpStatus.OK);
+    public ResponseEntity<BookingResponseDTO> updateBooking(@RequestParam Long id, @RequestBody BookingRequestDTO bookingRequestDTO) throws HotelesException{
+        return new ResponseEntity<>(hotelBooking.updateBooking(id, bookingRequestDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/hotel-bookings/delete")

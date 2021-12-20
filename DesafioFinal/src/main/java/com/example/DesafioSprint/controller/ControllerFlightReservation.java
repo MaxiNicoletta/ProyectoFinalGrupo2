@@ -3,16 +3,20 @@ package com.example.DesafioSprint.controller;
 import com.example.DesafioSprint.DTOs.FlightResponseDTO;
 import com.example.DesafioSprint.DTOs.ReservaVueloDTO;
 import com.example.DesafioSprint.DTOs.ReservasVueloRequestDTO;
+import com.example.DesafioSprint.DTOs.VueloDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.PersonasException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
 import com.example.DesafioSprint.Exceptions.VuelosException;
 import com.example.DesafioSprint.Services.IServiceReservaV;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/flight-reservation")
@@ -48,10 +52,12 @@ public class ControllerFlightReservation {
      * @throws VuelosException    Excepcion causada por si en el sistema no se registran vuelos de acuerdo a los parametros ingresados anteriormente.
      * @throws UbicacionException Excepcion causada por si no existen hoteles en el destino ingresado.
      */
+
     @PostMapping("/new")
-    public FlightResponseDTO addReservaVuelo(@Valid @RequestBody ReservasVueloRequestDTO rsVuelo) throws PersonasException, FechasException, VuelosException, UbicacionException {
-        return bookingService.addReserva(rsVuelo);
+    public ResponseEntity<FlightResponseDTO> addReservaVuelo(@Valid @RequestBody ReservasVueloRequestDTO rsVuelo) throws PersonasException, FechasException, VuelosException, UbicacionException {
+        return new ResponseEntity<>(bookingService.addReserva(rsVuelo), HttpStatus.OK);
     }
+
 
     /**
      * Edit the flight reservation.

@@ -11,7 +11,9 @@ import com.example.DesafioSprint.Repository.IFlightRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -67,7 +69,7 @@ public class ServiceVuelo implements IServiceVuelo {
             throw new FechasException("La fecha de vuelta debe ser mayor a la de ida", HttpStatus.BAD_REQUEST);
         List<Vuelo> vuelosData = repoFlight.findAll();
         for (Vuelo v : vuelosData) {
-            if (v.getOrigin().equals(vuelo.getOrigin()) && v.getDestination().equals(vuelo.getDestination()) && v.getReturnDate().equals(vuelo.getDateTo()) && v.getGoingDate().equals(vuelo.getDateFrom())) {
+            if (v.getOrigin().equals(vuelo.getOrigin()) && v.getDestination().equals(vuelo.getDestination()) && v.getReturnDate().compareTo(vuelo.getDateTo()) == 0 && v.getGoingDate().compareTo(vuelo.getDateFrom())==0) {
                 VueloDTO nuevo = v.entityToDTO();
                 res.add(nuevo);
             }
@@ -78,7 +80,7 @@ public class ServiceVuelo implements IServiceVuelo {
     }
 
     public FlightResponseDTO updateFlight(String cod, VueloDTO flightDto) throws  VuelosException{
-        if(repoFlight.existsVuelo(flightDto.getFlightNumber()))
+        if(!repoFlight.existsVuelo(flightDto.getFlightNumber()))
         throw new VuelosException("No hay vuelo con ese codigo", HttpStatus.BAD_REQUEST);
         Vuelo flight = repoFlight.findFlightByCod(cod);
         flight.setOrigin(flightDto.getOrigin());
@@ -87,6 +89,7 @@ public class ServiceVuelo implements IServiceVuelo {
         flight.setReturnDate(flightDto.getReturnDate());
         flight.setSeatType(flightDto.getSeatType());
         flight.setPricePerPerson(flightDto.getFlightPrice());
+        flight.setName(flightDto.getName());
         repoFlight.save(flight);
         FlightResponseDTO res = new FlightResponseDTO("Vuelo modificado correctamente");
         return res;

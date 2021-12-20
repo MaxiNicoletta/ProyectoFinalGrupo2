@@ -22,7 +22,11 @@ public class Reserva {
     protected Date dateFrom;
     protected Date dateTo;
     protected String destination;
-    @OneToMany(mappedBy = "id")
+    @ManyToMany(mappedBy = "booking")
+    @JoinTable(name = "reservation_people",
+                joinColumns = @JoinColumn(name = "reservation_id",referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name="people_id",referencedColumnName = "id")
+    )
     protected List<Persona> people;
     @OneToOne
     @JoinColumn(name ="pago_id")

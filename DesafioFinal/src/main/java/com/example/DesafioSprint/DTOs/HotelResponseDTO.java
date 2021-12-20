@@ -1,12 +1,12 @@
 package com.example.DesafioSprint.DTOs;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class HotelResponseDTO {
-    String message;
-
-    public HotelResponseDTO(String message) {
-        this.message = "The flight" + message;
-    }
+    private String message;
 }

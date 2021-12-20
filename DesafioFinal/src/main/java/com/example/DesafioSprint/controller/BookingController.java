@@ -23,17 +23,17 @@ public class BookingController {
     IServiceBooking hotelBooking;
 
     @PostMapping("/bookings/new")
-    public ResponseEntity<BookingResponseDTO> addReserva(@Valid @RequestBody BookingRequestDTO bookingRequestDTO) throws PersonasException, HotelesException, FechasException, UbicacionException {
+    public ResponseEntity<BookingResponseDTO> addBooking(@Valid @RequestBody BookingRequestDTO bookingRequestDTO) throws PersonasException, HotelesException, FechasException, UbicacionException {
         return new ResponseEntity<>(hotelBooking.addBooking(bookingRequestDTO), HttpStatus.OK);
     }
 
-    @PutMapping("/hotel-bookings/edit/?id=num_id")
-    public ResponseEntity<BookingResponseDTO> modifyBooking(@RequestBody BookingRequestDTO bookingRequestDTO){
-        return new ResponseEntity<>(hotelBooking.updateBooking(bookingRequestDTO), HttpStatus.OK);
+    @PutMapping("/hotel-bookings/edit")
+    public ResponseEntity<BookingResponseDTO> updateBooking(@RequestParam Long id, @RequestBody BookingRequestDTO bookingRequestDTO) throws HotelesException{
+        return new ResponseEntity<>(hotelBooking.updateBooking(id, bookingRequestDTO), HttpStatus.OK);
     }
 
-    @DeleteMapping("/hotel-bookings/edit/?id=num_id")
-    public ResponseEntity<BookingResponseDTO> deleteBooking(@RequestBody Long id){
+    @DeleteMapping("/hotel-bookings/delete")
+    public ResponseEntity<BookingResponseDTO> deleteBooking(@RequestParam Long id){
         return new ResponseEntity<>(hotelBooking.deleteBooking(id), HttpStatus.OK);
     }
 

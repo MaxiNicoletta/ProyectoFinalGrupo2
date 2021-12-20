@@ -1,9 +1,6 @@
 package com.example.DesafioSprint.Services;
 
-import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
-import com.example.DesafioSprint.DTOs.HotelDTO;
-import com.example.DesafioSprint.DTOs.HotelResponseDTO;
-import com.example.DesafioSprint.DTOs.ListHotelesDTO;
+import com.example.DesafioSprint.DTOs.*;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Entities.Hotel;
@@ -12,7 +9,9 @@ import com.example.DesafioSprint.Repository.IHotelRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -24,11 +23,11 @@ public class ServiceHotel implements IServiceHotel {
     }
 
     public HotelResponseDTO addHotel(HotelDTO hotelDTO) throws FechasException, VuelosException {
-        if (hotelDTO.getAvailableTo().before(hotelDTO.getAvailableFrom()))
+        if (hotelDTO.getDisponibilityDateTo().before(hotelDTO.getDisponibilityDateFrom()))
             throw new FechasException("La fecha de salida debe ser mayor a la de ida", HttpStatus.BAD_REQUEST);
         if (repoHotel.existsHotel(hotelDTO.getHotelCode()))
             throw new VuelosException("Ya existe un hotel con ese codigo", HttpStatus.BAD_REQUEST);
-        Hotel hotel = new Hotel(hotelDTO.getHotelCode(), hotelDTO.getName(), hotelDTO.getPlace(), hotelDTO.getRoomType(), hotelDTO.getPriceByNight(), hotelDTO.getAvailableFrom(), hotelDTO.getAvailableTo(), hotelDTO.isReserved());
+        Hotel hotel = new Hotel(hotelDTO.getHotelCode(), hotelDTO.getName(), hotelDTO.getPlace(), hotelDTO.getRoomType(), hotelDTO.getRoomPrice(), hotelDTO.getDisponibilityDateFrom(), hotelDTO.getDisponibilityDateTo(), hotelDTO.isBooking());
         repoHotel.save(hotel);
         HotelResponseDTO res = new HotelResponseDTO("Hotel dado de alta correctamente");
         return res;
@@ -52,17 +51,16 @@ public class ServiceHotel implements IServiceHotel {
         return res;
     }
 
-    public HotelResponseDTO updateHotel(HotelDTO hotelDTO) throws HotelesException {
-        String cod = hotelDTO.getHotelCode();
-        if (!repoHotel.existsHotel(cod))
+    public HotelResponseDTO updateHotel(String hotelCode, HotelDTO hotelDTO) throws HotelesException {
+        if (!repoHotel.existsHotel(hotelCode))
             throw new HotelesException("No existe hotel con ese codigo", HttpStatus.BAD_REQUEST);
-        Hotel hotel = repoHotel.findHoteltByCod(cod);
+        Hotel hotel = repoHotel.findHoteltByCod(hotelCode);
         hotel.setName(hotelDTO.getName());
         hotel.setPlace(hotelDTO.getPlace());
         hotel.setRoomType(hotelDTO.getRoomType());
-        hotel.setAvailableFrom(hotelDTO.getAvailableFrom());
-        hotel.setAvailableTo(hotelDTO.getAvailableTo());
-        hotel.setReserved(hotelDTO.isReserved());
+        hotel.setAvailableFrom(hotelDTO.getDisponibilityDateFrom());
+        hotel.setAvailableTo(hotelDTO.getDisponibilityDateTo());
+        hotel.setReserved(hotelDTO.isBooking());
         hotel.setPlace(hotelDTO.getPlace());
         repoHotel.save(hotel);
         HotelResponseDTO res = new HotelResponseDTO("Hotel modificado correctamente");

@@ -22,7 +22,8 @@ public interface IServiceBooking {
 
     public BookingResponseDTO deleteBooking(Long id);
 
-    public BookingResponseDTO updateBooking(BookingRequestDTO bookingRequestDTO);
+    public BookingResponseDTO updateBooking(Long id,BookingRequestDTO bookingRequestDTO) throws HotelesException;
+
 
 
 

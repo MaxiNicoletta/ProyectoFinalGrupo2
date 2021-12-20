@@ -1,5 +1,6 @@
 package com.example.DesafioSprint.DTOs;
 
+import com.example.DesafioSprint.Entities.Pago;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,9 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 public class ReservaVueloDTO {
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
-    private Date dateFrom;
+    private Date goingDate;
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
-    private Date dateTo;
+    private Date returnDate;
     private String origin;
     private String destination;
     private String flightNumber;
@@ -25,4 +26,6 @@ public class ReservaVueloDTO {
     private int seats;
     private String seatType;
     private List<@Valid PersonaDTO> people;
+    private Pago parmentMethod;
+
 }

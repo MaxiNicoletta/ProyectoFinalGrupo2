@@ -51,17 +51,22 @@ public class ServiceBooking implements IServiceBooking {
     }
 
     @Override
-    public BookingResponseDTO updateBooking(BookingRequestDTO bookingRequestDTO) {
-        Booking booking = bookingRepository.getById(bookingRequestDTO.getBooking().getId());
-        Booking updatedBooking = new Booking();
-        updatedBooking.bookingDTOtoBooking(bookingRequestDTO);
-        bookingRepository.save(updatedBooking);
+    public BookingResponseDTO updateBooking(Long id, BookingRequestDTO bookingRequestDTO) throws HotelesException {
+        Booking booking = bookingRepository.getById(id);
+        if(booking!= null) {
+            Booking updatedBooking = new Booking();
+            updatedBooking.bookingDTOtoBooking(bookingRequestDTO);
+            bookingRepository.save(updatedBooking);
+        }
+        else{
+            throw new HotelesException("No existe una reserva con ese id", HttpStatus.BAD_REQUEST);
+        }
         return new BookingResponseDTO("Reserva Modificada correctamente");
     }
 
     @Override
     public List<BookingDTO> getBookings() throws HotelesException {
-        List<Booking> bookings = bookingRepository.getBookings();
+        List<Booking> bookings = bookingRepository.findAll();
         List<BookingDTO> bookingsDTO = new ArrayList<>();
         for (Booking booking : bookings) {
             BookingDTO bookingDTO = booking.bookingToDTO();
@@ -73,6 +78,11 @@ public class ServiceBooking implements IServiceBooking {
     private Booking getBooking(BookingRequestDTO bookingRequestDTO) throws HotelesException {
         Pago pago = getPayment(bookingRequestDTO);
         List<Persona> people = bookingRepository.getPeople();
+        List<PersonaDTO> peopleDTO = bookingRequestDTO.getBooking().getPeople();
+        for (PersonaDTO personaDTO : peopleDTO) {
+            Persona person = new Persona(personaDTO.getDni(), personaDTO.getName(), personaDTO.getLastname(), personaDTO.getBirthDate(), personaDTO.getMail());
+            people.add(person);
+        }
         Booking booking = new Booking();
         booking.bookingDTOtoBooking(bookingRequestDTO);
         booking.setPaymentMethod(pago);

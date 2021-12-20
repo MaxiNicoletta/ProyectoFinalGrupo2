@@ -6,9 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,14 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@DiscriminatorValue("V")
 public class ReservaVuelo extends Reserva {
     private String flightNumber;
     private int seats;
     private String seaType;
     private String origin;
-    @ManyToOne
-    @JoinColumn( name = "flightReservations", nullable = false)
-    private Vuelo vuelo;
+
 
     //Constructor
     public ReservaVuelo(String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total, String flightNumber, int seats, String seaType, String origin) {
@@ -48,7 +46,7 @@ public class ReservaVuelo extends Reserva {
                 getFlightNumber(),
                 getSeats(),
                 getSeaType(),
-                people
+                people,getPaymentMethod()
         );
     }
 
@@ -56,10 +54,10 @@ public class ReservaVuelo extends Reserva {
         ArrayList<Persona> people = new ArrayList<>();
         Persona person = new Persona();
         for(PersonaDTO p: reservationDTO.getPeople())
-            people.add(person.dtoToEntity(p));
+            people.add(person.DTOPersonaToDTO(p));
         ReservaVuelo reservation = new ReservaVuelo();
-        reservation.setDateFrom(reservationDTO.getDateFrom());
-        reservation.setDateTo(reservationDTO.getDateTo());
+        reservation.setDateFrom(reservationDTO.getGoingDate());
+        reservation.setDateTo(reservationDTO.getReturnDate());
         reservation.setOrigin(reservationDTO.getOrigin());
         reservation.setDestination(reservationDTO.getDestination());
         reservation.setFlightNumber(reservationDTO.getFlightNumber());

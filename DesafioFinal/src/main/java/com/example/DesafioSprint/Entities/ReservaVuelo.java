@@ -56,7 +56,7 @@ public class ReservaVuelo extends Reserva {
         ArrayList<Persona> people = new ArrayList<>();
         Persona person = new Persona();
         for(PersonaDTO p: reservationDTO.getPeople())
-            people.add(person.dtoToEntity(p));
+            people.add(person.DTOPersonaToDTO(p));
         ReservaVuelo reservation = new ReservaVuelo();
         reservation.setDateFrom(reservationDTO.getDateFrom());
         reservation.setDateTo(reservationDTO.getDateTo());

@@ -10,10 +10,7 @@ import java.util.List;
 @Repository
 public interface IBookingRepository extends JpaRepository<Booking,Long> {
 
-    @Query("SELECT b FROM booking b")
-    public List<Booking> getBookings();
-
-    @Query("SELECT p FROM persona p" )
+    @Query("SELECT p FROM Booking b where ")
     public List<Persona> getPeople();
 
 }

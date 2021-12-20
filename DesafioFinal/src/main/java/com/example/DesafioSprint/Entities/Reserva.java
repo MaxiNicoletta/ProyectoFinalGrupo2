@@ -22,7 +22,7 @@ public class Reserva {
     protected Date dateFrom;
     protected Date dateTo;
     protected String destination;
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "dni")
     protected List<Persona> people;
     @OneToOne
     @JoinColumn(name ="pago_id")

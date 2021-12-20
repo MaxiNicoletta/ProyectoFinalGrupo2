@@ -22,13 +22,13 @@ public class ServiceReservaV implements IServiceReservaV {
         this.serviceVuelo = serviceVuelo;
         this.repository = repository;
     }
-
+/*
     @Override
     public FlightResponseDTO addReserva(ReservasVueloRequestDTO rsVuelo) throws PersonasException, VuelosException, FechasException, UbicacionException {
         repository.save(rsVuelo);
         return new FlightResponseDTO("Reserva de vuelo dada de alta correctamente.");
     }
-
+*/
     @Override
     public ArrayList<ReservaVueloDTO> getAllReservations() {
         ArrayList<ReservaVueloDTO> response = new ArrayList<>();

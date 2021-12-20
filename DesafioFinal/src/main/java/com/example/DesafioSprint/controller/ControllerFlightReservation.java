@@ -48,10 +48,13 @@ public class ControllerFlightReservation {
      * @throws VuelosException    Excepcion causada por si en el sistema no se registran vuelos de acuerdo a los parametros ingresados anteriormente.
      * @throws UbicacionException Excepcion causada por si no existen hoteles en el destino ingresado.
      */
+    /*
     @PostMapping("/new")
     public FlightResponseDTO addReservaVuelo(@Valid @RequestBody ReservasVueloRequestDTO rsVuelo) throws PersonasException, FechasException, VuelosException, UbicacionException {
         return bookingService.addReserva(rsVuelo);
     }
+
+     */
 
     /**
      * Edit the flight reservation.

@@ -31,7 +31,7 @@ public class ServiceVuelo implements IServiceVuelo {
             throw new VuelosException("Ya existe un vuelo con ese numero", HttpStatus.BAD_REQUEST);
         Vuelo flight = new Vuelo(flightDTO.getFlightNumber(),flightDTO.getName(),flightDTO.getOrigin(),flightDTO.getDestination(),flightDTO.getGoingDate(),flightDTO.getReturnDate(),flightDTO.getSeatType(),flightDTO.getFlightPrice());
         repoFlight.save(flight);
-        FlightResponseDTO res = new FlightRepository("Vuelo dado de alta correctamente");
+        FlightResponseDTO res = new FlightResponseDTO("Vuelo dado de alta correctamente");
         return res;
     }
 
@@ -87,7 +87,7 @@ public class ServiceVuelo implements IServiceVuelo {
         flight.setSeatType(flightDto.getSeatType());
         flight.setPricePerPerson(flightDto.getFlightPrice());
         repoFlight.save(flight);
-        FlightResponseDTO res = new FlightRepository("Vuelo modificado correctamente");
+        FlightResponseDTO res = new FlightResponseDTO("Vuelo modificado correctamente");
         return res;
     }
 
@@ -96,7 +96,7 @@ public class ServiceVuelo implements IServiceVuelo {
         if(flight==null)
             throw new VuelosException("No hay vuelo con ese codigo", HttpStatus.BAD_REQUEST);
         repoFlight.delete(flight);
-        FlightResponseDTO res = new FlightRepository("Vuelo borrado correctamente");
+        FlightResponseDTO res = new FlightResponseDTO("Vuelo borrado correctamente");
         return res;
     }
 

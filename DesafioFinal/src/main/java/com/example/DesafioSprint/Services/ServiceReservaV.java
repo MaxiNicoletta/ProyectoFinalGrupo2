@@ -5,11 +5,10 @@ import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.PersonasException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
 import com.example.DesafioSprint.Exceptions.VuelosException;
-import com.example.DesafioSprint.Identity.Pago;
-import com.example.DesafioSprint.Identity.Persona;
-import com.example.DesafioSprint.Identity.ReservaVuelo;
-import com.example.DesafioSprint.Repository.RepositoryData;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.DesafioSprint.Entities.Pago;
+import com.example.DesafioSprint.Entities.Persona;
+import com.example.DesafioSprint.Entities.ReservaVuelo;
+import com.example.DesafioSprint.Repository.IFligthReservationRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +17,14 @@ import java.util.List;
 
 @Service
 public class ServiceReservaV implements IServiceReservaV {
-    @Autowired
-    private RepositoryData repository = new RepositoryData();
 
-    @Autowired
-    private ServiceVuelo sv = new ServiceVuelo();
+    private final IFligthReservationRepository repository;
+    private final IServiceVuelo serviceVuelo;
+
+    public ServiceReservaV(IServiceVuelo serviceVuelo, IFligthReservationRepository repository){
+        this.serviceVuelo = serviceVuelo;
+        this.repository = repository;
+    }
 
     /**
      * @param rsVuelo contiene los datos ncesarios para la reserva:
@@ -46,24 +48,24 @@ public class ServiceReservaV implements IServiceReservaV {
      *                number
      *                dues
      * @return Comprobante de la reserva que esta compuesta por los datos ingresados anteriormente mas el costo de dicha reserva sumando el monto, intereses y el total
-     * @throws PersonasException  Excepcion cauda por si la cantidad de personas no coincide con la cantidad de datos ingresados
+     * @throws PersonasException  Excepcion causada por si la cantidad de personas no coincide con la cantidad de datos ingresados
      * @throws FechasException    Excepcion causada por si la fecha de Salida es mayor a la fecha de entrada
      * @throws VuelosException    Excepcion causada por si en el sistema no se registran vuelos de acuerdo a los parametros ingresados anteriormente.
      * @throws UbicacionException Excepcion causada por si no existen vuelos en el origen ingresado o en el destino.
      */
 
     public ReservaVueloResponseDTO addReserva(ReservasVueloRequestDTO rsVuelo) throws PersonasException, FechasException, VuelosException, UbicacionException {
-        if (!sv.existsDestinationVuelo(rsVuelo.getFlightReservation().getDestination()))
+        if (!serviceVuelo.existsDestinationVuelo(rsVuelo.getFlightReservation().getDestination()))
             throw new UbicacionException("El destino elegido no existe", HttpStatus.BAD_REQUEST);
-        if (!sv.existsOriginVuelo(rsVuelo.getFlightReservation().getOrigin()))
+        if (!serviceVuelo.existsOriginVuelo(rsVuelo.getFlightReservation().getOrigin()))
             throw new UbicacionException("El origen elegido no existe", HttpStatus.BAD_REQUEST);
         if (rsVuelo.getFlightReservation().getSeats() != rsVuelo.getFlightReservation().getPeople().size())
             throw new PersonasException("La cantidad de Personas no coincide", HttpStatus.BAD_REQUEST);
-        if (!sv.existsVuelo(rsVuelo.getFlightReservation().getFlightNumber()))
+        if (!serviceVuelo.existsVuelo(rsVuelo.getFlightReservation().getFlightNumber()))
             throw new VuelosException("No existe un Vuelo con ese Codigo", HttpStatus.BAD_REQUEST);
         ReservaVueloResponseDTO res;
         DisponibilidadVuelosDTO nuevo = new DisponibilidadVuelosDTO(rsVuelo.getFlightReservation().getDateFrom(), rsVuelo.getFlightReservation().getDateTo(), rsVuelo.getFlightReservation().getOrigin(), rsVuelo.getFlightReservation().getDestination());
-        List<VueloDTO> vuelosDisponibles = sv.disponibilidadVuelos(nuevo);
+        List<VueloDTO> vuelosDisponibles = serviceVuelo.disponibilidadVuelos(nuevo);
         VueloDTO vuelo = null;
         for (VueloDTO v : vuelosDisponibles)
             if (v.getFlightNumber().equals(rsVuelo.getFlightReservation().getFlightNumber())) {
@@ -95,7 +97,7 @@ public class ServiceReservaV implements IServiceReservaV {
             Pago pago = new Pago(rsVuelo.getPaymentMethod().getType(), rsVuelo.getPaymentMethod().getNumber(), rsVuelo.getPaymentMethod().getDues());
             ReservaVuelo rsv = new ReservaVuelo(rsVuelo.getUserName(), rsVuelo.getFlightReservation().getDateFrom(), rsVuelo.getFlightReservation().getDateTo(), rsVuelo.getFlightReservation().getDestination(), l, pago, amount, interest, total, rsVuelo.getFlightReservation().getFlightNumber(), rsVuelo.getFlightReservation().getSeats(), rsVuelo.getFlightReservation().getSeatType(), rsVuelo.getFlightReservation().getDestination());
             ReservaVueloDTO rsv2 = new ReservaVueloDTO(rsVuelo.getFlightReservation().getDateFrom(), rsVuelo.getFlightReservation().getDateTo(), rsVuelo.getFlightReservation().getOrigin(), rsVuelo.getFlightReservation().getDestination(), rsVuelo.getFlightReservation().getFlightNumber(), rsVuelo.getFlightReservation().getSeats(), rsVuelo.getFlightReservation().getSeatType(), rsVuelo.getFlightReservation().getPeople());
-            repository.addReservaVuelo(rsv);
+            repository.save(rsv);
             StatusDTO status = new StatusDTO(200, "El proceso termino satisfactoriamente");
             res = new ReservaVueloResponseDTO(rsVuelo.getUserName(), amount, interest, total, rsv2, status);
         } else
@@ -108,7 +110,7 @@ public class ServiceReservaV implements IServiceReservaV {
      * @return Todos los datos de las reservas que corresponden al vuelo ingresado.
      */
     public List<ReservaVueloResponseDTO> getReservasVuelo(String codVuelo) throws VuelosException {
-        if (!sv.existsVuelo(codVuelo))
+        if (!serviceVuelo.existsVuelo(codVuelo))
             throw new VuelosException("No existe ese vuelo en el sistema", HttpStatus.BAD_REQUEST);
         List<ReservaVuelo> agenda = repository.getReservasVuelo().get(codVuelo);
         if (agenda == null)

@@ -1,17 +1,12 @@
 package com.example.DesafioSprint.Services;
 
-import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
 import com.example.DesafioSprint.DTOs.DisponibilidadVuelosDTO;
-import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.DTOs.VueloDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
-import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
 import com.example.DesafioSprint.Exceptions.VuelosException;
-import com.example.DesafioSprint.Identity.Hotel;
-import com.example.DesafioSprint.Identity.Vuelo;
-import com.example.DesafioSprint.Repository.IRepositoryData;
-import com.example.DesafioSprint.Repository.RepositoryData;
+import com.example.DesafioSprint.Entities.Vuelo;
+import com.example.DesafioSprint.Repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +26,7 @@ import static org.mockito.Mockito.when;
 class ServiceVueloTest {
 
     @Mock
-    RepositoryData repository;
+    FlightRepository repository;
 
     @InjectMocks
     ServiceVuelo srvVuelo;
@@ -47,7 +42,7 @@ class ServiceVueloTest {
             date1 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaOrigin);
             date2 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaVuelta);
         } catch (Exception e) {}
-        Vuelo vuelo1 = new Vuelo("TUPI-3369","Tucumán","Puerto Iguazú",date1,date2,"Business",12530);
+        Vuelo vuelo1 = new Vuelo("TUPI-3369","vuelo1","Tucumán","Puerto Iguazú",date1,date2,"Business",12530);
         list = new ArrayList<>();
         list.add(vuelo1);
     }
@@ -55,7 +50,7 @@ class ServiceVueloTest {
     @Test
     void getVuelosTest() throws VuelosException{
         when(repository.getVuelos()).thenReturn(list);
-        List<VueloDTO> res = srvVuelo.getVuelos();
+        List<VueloDTO> res = srvVuelo.getFlights();
         assertFalse(res.isEmpty());
     }
 
@@ -63,41 +58,8 @@ class ServiceVueloTest {
     void getVuelosTestVacio(){
         List<Vuelo> aux = new ArrayList<>();
         when(repository.getVuelos()).thenReturn(aux);
-        VuelosException ex = assertThrows(VuelosException.class, () -> srvVuelo.getVuelos());
+        VuelosException ex = assertThrows(VuelosException.class, () -> srvVuelo.getFlights());
         assertEquals("No hay vuelos en el repositorio",ex.getERROR());
-    }
-
-    @Test
-    void existsVueloTestOk() {
-        when(repository.getVuelos()).thenReturn(list);
-        assertTrue(srvVuelo.existsVuelo("TUPI-3369"));
-    }
-
-    @Test
-    void existsVueloTestFalla() {
-        assertFalse(srvVuelo.existsVuelo("BAPI-1235gdfgdfg"));
-    }
-
-    @Test
-    void existsDestinationVueloTestOk() {
-        when(repository.getVuelos()).thenReturn(list);
-        assertTrue(srvVuelo.existsDestinationVuelo("Puerto Iguazú"));
-    }
-
-    @Test
-    void existsDestinationVueloTestFalla() {
-        assertFalse(srvVuelo.existsDestinationVuelo("Buenos Airesfdgdsfg"));
-    }
-
-    @Test
-    void existsOriginVueloTestOk() {
-        when(repository.getVuelos()).thenReturn(list);
-        assertTrue(srvVuelo.existsOriginVuelo("Tucumán"));
-    }
-
-    @Test
-    void existsOriginVueloTestFalla() {
-        assertFalse(srvVuelo.existsOriginVuelo("Buenos Airesgfhdfgh"));
     }
 
     @Test

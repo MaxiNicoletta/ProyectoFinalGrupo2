@@ -1,9 +1,9 @@
 package com.example.DesafioSprint.Repository;
 
-import com.example.DesafioSprint.Identity.Hotel;
-import com.example.DesafioSprint.Identity.ReservaHotel;
-import com.example.DesafioSprint.Identity.ReservaVuelo;
-import com.example.DesafioSprint.Identity.Vuelo;
+import com.example.DesafioSprint.Entities.Hotel;
+import com.example.DesafioSprint.Entities.ReservaHotel;
+import com.example.DesafioSprint.Entities.ReservaVuelo;
+import com.example.DesafioSprint.Entities.Vuelo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -21,13 +21,13 @@ import java.util.Map;
 
 @Data
 @Repository
-public class RepositoryData implements IRepositoryData {
+public class FlightRepository {
     private List<Hotel> hoteles;
     private List<Vuelo> vuelos;
     private Map<String, List<ReservaHotel>> reservasHot;
     private Map<String, List<ReservaVuelo>> reservasVuelo;
 
-    public RepositoryData() {
+    public FlightRepository() {
         vuelos = new ArrayList<>();
         reservasHot = new HashMap<>();
         reservasVuelo = new HashMap<>();

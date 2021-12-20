@@ -2,12 +2,13 @@ package com.example.DesafioSprint.Services;
 
 import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
 import com.example.DesafioSprint.DTOs.HotelDTO;
+import com.example.DesafioSprint.DTOs.HotelResponseDTO;
 import com.example.DesafioSprint.DTOs.ListHotelesDTO;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
-import com.example.DesafioSprint.Identity.Hotel;
-import com.example.DesafioSprint.Repository.RepositoryData;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.DesafioSprint.Entities.Hotel;
+import com.example.DesafioSprint.Exceptions.VuelosException;
+import com.example.DesafioSprint.Repository.IHotelRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -16,57 +17,54 @@ import java.util.List;
 
 @Service
 public class ServiceHotel implements IServiceHotel {
+    private final IHotelRepository repoHotel;
 
-    @Autowired
-    private RepositoryData repository = new RepositoryData();
+    public ServiceHotel(IHotelRepository repoHotel) {
+        this.repoHotel = repoHotel;
+    }
+
+    public HotelResponseDTO addHotel(HotelDTO hotelDTO) throws FechasException, VuelosException {
+        if (hotelDTO.getAvailableTo().before(hotelDTO.getAvailableFrom()))
+            throw new FechasException("La fecha de salida debe ser mayor a la de ida", HttpStatus.BAD_REQUEST);
+        if (repoHotel.existsHotel(hotelDTO.getHotelCode()))
+            throw new VuelosException("Ya existe un hotel con ese numero", HttpStatus.BAD_REQUEST);
+        Hotel hotel = new Hotel(hotelDTO.getHotelCode(), hotelDTO.getName(), hotelDTO.getPlace(), hotelDTO.getRoomType(), hotelDTO.getPriceByNight(), hotelDTO.getAvailableFrom(), hotelDTO.getAvailableTo(), hotelDTO.isReserved());
+        repoHotel.save(hotel);
+        HotelResponseDTO res = new HotelResponseDTO("Hotel dado de alta correctamente");
+        return res;
+    }
 
     /**
      * @return los hoteles ingresados en el sistema con sus respectivos atributos como por ejemplo,nombre, codigo,lugar,tipo de habitacion,precio por noche
      * fecha disponible entrada, fecha disponible salida y si esta reservado o no.
      */
     public ListHotelesDTO getHoteles() throws HotelesException {
-        List<Hotel> aux = repository.getHoteles();
+        List<Hotel> aux = repoHotel.findAll();
         List<HotelDTO> auxLst = new ArrayList<>();
         ListHotelesDTO res = new ListHotelesDTO();
         if (aux.isEmpty())
             throw new HotelesException("No hay hoteles en el repositorio", HttpStatus.BAD_REQUEST);
         for (Hotel e : aux) {
-            HotelDTO nuevo = new HotelDTO(e.getHotelCode(), e.getName(), e.getPlace(), e.getRoomType(), e.getPriceByNight(), e.getAvailableFrom(), e.getAvailableTo(), e.isReserved());
+            HotelDTO nuevo = e.hotelToDTO();
             auxLst.add(nuevo);
         }
         res.setHoteles(auxLst);
         return res;
     }
 
-    /**
-     * @param cod es el codigo que identifica a los hoteles en el sistema
-     * @return True si en el sistema existe un hotel que tenga como codigo identificador = cod y false en el caso contrario
-     */
-    public boolean existsHoteles(String cod) {
-        boolean res = false;
-        List<Hotel> aux = repository.getHoteles();
-        for (Hotel e : aux) {
-            if (e.getHotelCode().equals(cod)) {
-                res = true;
-                break;
-            }
-        }
-        return res;
-    }
-
-    /**
-     * @param dest es el destino donde se va a realizar la busqueda de hoteles
-     * @return True si existen hoteles en esa destino y false en el caso contrario.
-     */
-    public boolean existsDestination(String dest) {
-        boolean res = false;
-        List<Hotel> aux = repository.getHoteles();
-        for (Hotel e : aux) {
-            if (e.getPlace().equals(dest)) {
-                res = true;
-                break;
-            }
-        }
+    public HotelResponseDTO updateHotel(String cod, HotelDTO hotelDTO) throws HotelesException {
+        if (!repoHotel.existsHotel(cod))
+            throw new HotelesException("No existe ese hotel en el repositorio", HttpStatus.BAD_REQUEST);
+        Hotel hotel = repoHotel.findHoteltByCod(cod);
+        hotel.setName(hotelDTO.getName());
+        hotel.setPlace(hotelDTO.getPlace());
+        hotel.setRoomType(hotelDTO.getRoomType());
+        hotel.setAvailableFrom(hotelDTO.getAvailableFrom());
+        hotel.setAvailableTo(hotelDTO.getAvailableTo());
+        hotel.setReserved(hotelDTO.isReserved());
+        hotel.setPlace(hotelDTO.getPlace());
+        repoHotel.save(hotel);
+        HotelResponseDTO res = new HotelResponseDTO("Hotel modificado correctamente");
         return res;
     }
 
@@ -78,12 +76,12 @@ public class ServiceHotel implements IServiceHotel {
      */
     public ListHotelesDTO getHotelesDisponibles(DisponibilidadHotelDTO hotel) throws HotelesException, FechasException {
         ListHotelesDTO res = new ListHotelesDTO();
-        if (!existsDestination(hotel.getDestination()))
+        if (!repoHotel.existsDestinationHotel(hotel.getDestination()))
             throw new HotelesException("El destino elegido no existe", HttpStatus.BAD_REQUEST);
         if (hotel.getDateTo().before(hotel.getDateFrom()))
             throw new FechasException("La fecha de salida debe ser mayor a la de entrada", HttpStatus.BAD_REQUEST);
 
-        List<Hotel> aux = repository.getHoteles();
+        List<Hotel> aux = repoHotel.findAll();
         List<HotelDTO> auxLst = new ArrayList<>();
         for (Hotel e : aux) {
             if ((e.getPlace().equals(hotel.getDestination())) && (!e.isReserved()) && (e.getAvailableFrom().before(hotel.getDateFrom())) && (e.getAvailableTo().after(hotel.getDateTo()))) {
@@ -94,6 +92,15 @@ public class ServiceHotel implements IServiceHotel {
         res.setHoteles(auxLst);
         if (res.getHoteles().isEmpty())
             throw new HotelesException("No hay hoteles disponibles con los datos ingresados", HttpStatus.BAD_REQUEST);
+        return res;
+    }
+
+    public HotelResponseDTO deleteHotel(String cod)throws HotelesException {
+        Hotel hotel = repoHotel.findHoteltByCod(cod);
+        if (hotel == null)
+            throw new HotelesException("No existe hotel con ese codigo", HttpStatus.BAD_REQUEST);
+        repoHotel.delete(hotel);
+        HotelResponseDTO res = new HotelResponseDTO("Hotel borrado correctamente");
         return res;
     }
 

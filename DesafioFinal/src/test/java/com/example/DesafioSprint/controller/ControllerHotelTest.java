@@ -1,8 +1,6 @@
 package com.example.DesafioSprint.controller;
 
 import com.example.DesafioSprint.DTOs.*;
-import com.example.DesafioSprint.Repository.IRepositoryData;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -15,20 +13,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.util.LinkedMultiValueMap;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ControllerTest {
+class ControllerHotelTest {
     @Autowired
     MockMvc mockMvc;
     @Test
@@ -140,9 +136,9 @@ class ControllerTest {
         PersonaDTO persona1 = new PersonaDTO("12345678", "Maximiliano", "Nicoletta", dateCumple, "maxinicoletta@hotmail.com");
         List<PersonaDTO> lista = new ArrayList<>();
         lista.add(persona1);
-        ReservaDTO reserva = new ReservaDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
+        BookingDTO reserva = new BookingDTO(dateFrom, dateTo, "Buenos Aires", "BH-0002", 1, "DOUBLE", lista);
         PagoDTO pago = new PagoDTO("CREDIT", "132456-456546-48", 6);
-        ReservaHotelRequestDTO rsv = new ReservaHotelRequestDTO("maximiliano@hotmail.com", reserva, pago);
+        BookingRequestDTO rsv = new BookingRequestDTO("maximiliano@hotmail.com", reserva, pago);
 
         ResponseEntity<?> responseDto = ResponseEntity.ok(null);
         ObjectWriter writer = new ObjectMapper().configure(SerializationFeature.WRAP_ROOT_VALUE, false).writer();

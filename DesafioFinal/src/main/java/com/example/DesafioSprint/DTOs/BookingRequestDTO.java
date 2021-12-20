@@ -9,8 +9,8 @@ import javax.validation.Valid;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReservaHotelRequestDTO {
+public class BookingRequestDTO {
     private String username;
-    private @Valid ReservaDTO booking;
+    private @Valid BookingDTO booking;
     private PagoDTO paymentMethod;
 }

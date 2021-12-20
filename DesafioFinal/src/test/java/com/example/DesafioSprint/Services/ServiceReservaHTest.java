@@ -5,7 +5,6 @@ import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Exceptions.PersonasException;
 import com.example.DesafioSprint.Repository.IFlightRepository;
-import com.example.DesafioSprint.Repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

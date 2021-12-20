@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -39,6 +41,15 @@ public class Persona {
                 person.getBirthDate(),
                 person.getMail()
         );
+    }
+
+    public List<Persona> PeopleDTOtoPeople(List<PersonaDTO> peopleDTO){
+        List<Persona> people = new ArrayList<>();
+        for(PersonaDTO personaDTO : peopleDTO){
+            Persona person = DTOPersonaToDTO(personaDTO);
+            people.add(person);
+        }
+        return people;
     }
 
     public Persona DTOPersonaToDTO(PersonaDTO person){

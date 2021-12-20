@@ -8,8 +8,6 @@ import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.HotelesException;
 import com.example.DesafioSprint.Entities.Hotel;
 import com.example.DesafioSprint.Exceptions.VuelosException;
-import com.example.DesafioSprint.Repository.FlightRepository;
-import com.example.DesafioSprint.Repository.IFlightRepository;
 import com.example.DesafioSprint.Repository.IHotelRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.stereotype.Repository;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

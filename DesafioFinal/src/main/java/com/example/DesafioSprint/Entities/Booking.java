@@ -24,8 +24,8 @@ public class Booking extends Reserva {
     private int peopleAmount;
     private String roomType;
 
-    public Booking(String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total, String hotelCode, int peopleAmount, String roomType) {
-        super(userName, dateFrom, dateTo, destination, people, paymentMethod, amount, interest, total);
+    public Booking(Long id,String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total, String hotelCode, int peopleAmount, String roomType) {
+        super(id,userName, dateFrom, dateTo, destination, people, paymentMethod, amount, interest, total);
         this.hotelCode = hotelCode;
         this.peopleAmount = peopleAmount;
         this.roomType = roomType;
@@ -40,9 +40,24 @@ public class Booking extends Reserva {
         return new BookingDTO(getId(), getDateFrom(), getDateTo(), getDestination(), getHotelCode(), getPeopleAmount(), getRoomType(), people);
     }
 
-    public Booking bookingDTOtoBooking(BookingDTO bookingDTO) {
-        return new Booking(bookingDTO.getHotelCode(),bookingDTO.getPeopleAmount(),bookingDTO.getRoomType());
+    public Booking bookingDTOtoBooking(BookingRequestDTO bookingRequestDTO) {
+       Booking booking = new Booking();
+       booking.setHotelCode(bookingRequestDTO.getBooking().getHotelCode());
+       Persona person = new Persona();
+       booking.setPeople(person.PeopleDTOtoPeople(bookingRequestDTO.getBooking().getPeople()));
+       booking.setPeopleAmount(bookingRequestDTO.getBooking().getPeopleAmount());
+       booking.setRoomType(bookingRequestDTO.getBooking().getRoomType());
+       booking.setDateFrom(bookingRequestDTO.getBooking().getDateFrom());
+       booking.setDateTo(bookingRequestDTO.getBooking().getDateTo());
+       booking.setDestination(bookingRequestDTO.getBooking().getDestination());
+       booking.setUserName(bookingRequestDTO.getUsername());
+       Pago payment = new Pago();
+       payment.paymentDTOtoPayment(bookingRequestDTO.getPaymentMethod());
+       booking.setPaymentMethod(payment);
+       booking.setId(bookingRequestDTO.getBooking().getId());
+       return booking;
     }
+
 
 
 

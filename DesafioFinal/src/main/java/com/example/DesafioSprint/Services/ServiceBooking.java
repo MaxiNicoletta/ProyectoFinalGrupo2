@@ -11,6 +11,7 @@ import com.example.DesafioSprint.Entities.Persona;
 import com.example.DesafioSprint.Entities.Booking;
 import com.example.DesafioSprint.Repository.IBookingRepository;
 import com.example.DesafioSprint.Repository.IHotelRepository;
+import com.example.DesafioSprint.Repository.IPaymentRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +26,13 @@ public class ServiceBooking implements IServiceBooking {
     private IBookingRepository bookingRepository;
     private IHotelRepository hotelRepository;
     private IServiceHotel hotelService;
+    private IPaymentRepository paymentRepository;
 
-    public ServiceBooking(IBookingRepository bookingRepository, IHotelRepository hotelRepository, IServiceHotel serviceHotel) {
+    public ServiceBooking(IBookingRepository bookingRepository, IHotelRepository hotelRepository, IServiceHotel serviceHotel, IPaymentRepository paymentRepository) {
         this.bookingRepository = bookingRepository;
         this.hotelRepository = hotelRepository;
         this.hotelService = serviceHotel;
+        this.paymentRepository = paymentRepository;
     }
 
     @Override
@@ -48,10 +51,10 @@ public class ServiceBooking implements IServiceBooking {
     }
 
     @Override
-    public BookingResponseDTO updateBooking(BookingDTO bookingDTO) {
-        Booking booking = bookingRepository.getById(bookingDTO.getId());
+    public BookingResponseDTO updateBooking(BookingRequestDTO bookingRequestDTO) {
+        Booking booking = bookingRepository.getById(bookingRequestDTO.getBooking().getId());
         Booking updatedBooking = new Booking();
-        updatedBooking.bookingDTOtoBooking(bookingDTO);
+        updatedBooking.bookingDTOtoBooking(bookingRequestDTO);
         bookingRepository.save(updatedBooking);
         return new BookingResponseDTO("Reserva Modificada correctamente");
     }
@@ -67,15 +70,14 @@ public class ServiceBooking implements IServiceBooking {
         return bookingsDTO;
     }
 
-
     private Booking getBooking(BookingRequestDTO bookingRequestDTO) throws HotelesException {
         Pago pago = getPayment(bookingRequestDTO);
         List<Persona> people = bookingRepository.getPeople();
-        BookingDTO bookingDTO = bookingRequestDTO.getBooking();
         Booking booking = new Booking();
-        booking.bookingDTOtoBooking(bookingDTO);
+        booking.bookingDTOtoBooking(bookingRequestDTO);
         booking.setPaymentMethod(pago);
         booking.setPeople(people);
+        paymentRepository.save(pago);
         return booking;
     }
 

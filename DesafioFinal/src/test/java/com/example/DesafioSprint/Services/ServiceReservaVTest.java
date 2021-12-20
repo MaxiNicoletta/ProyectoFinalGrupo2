@@ -3,7 +3,6 @@ package com.example.DesafioSprint.Services;
 import com.example.DesafioSprint.DTOs.*;
 import com.example.DesafioSprint.Exceptions.*;
 import com.example.DesafioSprint.Repository.IFlightRepository;
-import com.example.DesafioSprint.Repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

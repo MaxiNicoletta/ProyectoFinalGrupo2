@@ -48,17 +48,22 @@ public class ServiceBooking implements IServiceBooking {
     }
 
     @Override
-    public BookingResponseDTO updateBooking(BookingDTO bookingDTO) {
-        Booking booking = bookingRepository.getById(bookingDTO.getId());
-        Booking updatedBooking = new Booking();
-        updatedBooking.bookingDTOtoBooking(bookingDTO);
-        bookingRepository.save(updatedBooking);
+    public BookingResponseDTO updateBooking(Long id, BookingDTO bookingDTO) throws HotelesException {
+        Booking booking = bookingRepository.getById(id);
+        if(booking!= null) {
+            Booking updatedBooking = new Booking();
+            updatedBooking.bookingDTOtoBooking(bookingDTO);
+            bookingRepository.save(updatedBooking);
+        }
+        else{
+            throw new HotelesException("No existe una reserva con ese id", HttpStatus.BAD_REQUEST);
+        }
         return new BookingResponseDTO("Reserva Modificada correctamente");
     }
 
     @Override
     public List<BookingDTO> getBookings() throws HotelesException {
-        List<Booking> bookings = bookingRepository.getBookings();
+        List<Booking> bookings = bookingRepository.findAll();
         List<BookingDTO> bookingsDTO = new ArrayList<>();
         for (Booking booking : bookings) {
             BookingDTO bookingDTO = booking.bookingToDTO();
@@ -66,7 +71,6 @@ public class ServiceBooking implements IServiceBooking {
         }
         return bookingsDTO;
     }
-
 
     private Booking getBooking(BookingRequestDTO bookingRequestDTO) throws HotelesException {
         Pago pago = getPayment(bookingRequestDTO);

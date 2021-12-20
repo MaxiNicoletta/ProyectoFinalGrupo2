@@ -19,67 +19,47 @@ public class HotelController {
     @Autowired
     IServiceHotel hotelService;
 
-    /**
-     * @param HotelDTO contiene los datos necesarios para la reserva:
-     *                 username
-     *                 booking que contiene :
-     *                 dateFrom
-     *                 dateTo
-     *                 destination
-     *                 hotelCode
-     *                 peopleAmount
-     *                 roomType
-     *                 people que contiene:
-     *                 dni
-     *                 name
-     *                 lastname
-     *                 birthDate
-     *                 mail
-     *                 paymentMethod:
-     *                 type
-     *                 number
-     *                 dues
-     * @return Devuelve una copia de la reserva que se acaba de realizar mostrando todos los parametros ingresados mas el precio de la reserva.
-     * @throws PersonasException Excepcion cauda por si la cantidad de personas no coincide con la cantidad de datos ingresados
-     * @throws HotelesException  Excepcion causada por si no existen hoteles en el destino ingresado
-     * @throws FechasException   Excepcion causada por si la fecha de Salida es mayor a la fecha de entrada
-     */
+//    /**
+//     * @param HotelDTO contiene los datos necesarios para la reserva:
+//     *                 username
+//     *                 booking que contiene :
+//     *                 dateFrom
+//     *                 dateTo
+//     *                 destination
+//     *                 hotelCode
+//     *                 peopleAmount
+//     *                 roomType
+//     *                 people que contiene:
+//     *                 dni
+//     *                 name
+//     *                 lastname
+//     *                 birthDate
+//     *                 mail
+//     *                 paymentMethod:
+//     *                 type
+//     *                 number
+//     *                 dues
+//     * @return Devuelve una copia de la reserva que se acaba de realizar mostrando todos los parametros ingresados mas el precio de la reserva.
+//     * @throws PersonasException Excepcion cauda por si la cantidad de personas no coincide con la cantidad de datos ingresados
+//     * @throws HotelesException  Excepcion causada por si no existen hoteles en el destino ingresado
+//     * @throws FechasException   Excepcion causada por si la fecha de Salida es mayor a la fecha de entrada
+//     */
 
 
-    // Altas
     @PostMapping("/hotels/new")
     public ResponseEntity<HotelResponseDTO> addHotel(@RequestBody HotelDTO hotelDTO) throws VuelosException,FechasException{
         return new ResponseEntity<>(hotelService.addHotel(hotelDTO), HttpStatus.OK);
     }
 
-
-    
-    // Modificaciones
-
     @PutMapping("/hotels/edit/?hotelCode=code")
-    public ResponseEntity<HotelResponseDTO> updateHotel(@RequestBody HotelDTO hotelDTO) throws HotelesException{
-        return new ResponseEntity<>(hotelService.updateHotel(hotelDTO), HttpStatus.OK);
+    public ResponseEntity<HotelResponseDTO> updateHotel(@RequestBody String hotelCode, @RequestBody HotelDTO hotelDTO) throws HotelesException{
+        return new ResponseEntity<>(hotelService.updateHotel(hotelCode,hotelDTO), HttpStatus.OK);
     }
 
-
-
-    // Bajas
     @DeleteMapping("/hotels/edit/?hotelCode=code")
     public ResponseEntity<HotelResponseDTO> deleteHotel(@RequestBody String hotelCode) throws HotelesException{
         return new ResponseEntity<HotelResponseDTO>(hotelService.deleteHotel(hotelCode), HttpStatus.OK);
     }
-
-
-
-    /**
-     * @param dateFrom    Fecha de origen para listar los hoteles
-     * @param dateTo      Fecha de destino para listar los hoteles
-     * @param destination Ubicacion del hotel que va a realizar la busqueda
-     * @return Se devuelve una lista con los hoteles disponibles que coinciden con los parametros ingresados anteriormente tales como las fechas y el destino.
-     * @throws FaltanParametros Excepcion causada por si faltan algunos parametrso en cuanto a la fecha de origen o la fecha de salida
-     * @throws HotelesException Excepcion causada por si no existen hoteles en el destino ingresado
-     * @throws FechasException  Excepcion causada por si la fecha de Salida es mayor a la fecha de entrada
-     */
 
 
     @GetMapping("/hotels")
@@ -101,3 +81,13 @@ public class HotelController {
 
 
 }
+//
+//    /**
+//     * @param dateFrom    Fecha de origen para listar los hoteles
+//     * @param dateTo      Fecha de destino para listar los hoteles
+//     * @param destination Ubicacion del hotel que va a realizar la busqueda
+//     * @return Se devuelve una lista con los hoteles disponibles que coinciden con los parametros ingresados anteriormente tales como las fechas y el destino.
+//     * @throws FaltanParametros Excepcion causada por si faltan algunos parametrso en cuanto a la fecha de origen o la fecha de salida
+//     * @throws HotelesException Excepcion causada por si no existen hoteles en el destino ingresado
+//     * @throws FechasException  Excepcion causada por si la fecha de Salida es mayor a la fecha de entrada
+//     */

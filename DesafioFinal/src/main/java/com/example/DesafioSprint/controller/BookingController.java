@@ -28,13 +28,13 @@ public class BookingController {
         return new ResponseEntity<>(hotelBooking.addBooking(bookingRequestDTO), HttpStatus.OK);
     }
 
-    @PutMapping("/hotel-bookings/edit/?id=num_id")
-    public ResponseEntity<BookingResponseDTO> updateBooking(@RequestBody Long id, @RequestBody BookingDTO bookingDTO) throws HotelesException{
+    @PutMapping("/hotel-bookings/edit")
+    public ResponseEntity<BookingResponseDTO> updateBooking(@RequestParam Long id, @RequestBody BookingDTO bookingDTO) throws HotelesException{
         return new ResponseEntity<>(hotelBooking.updateBooking(id, bookingDTO), HttpStatus.OK);
     }
 
-    @DeleteMapping("/hotel-bookings/delete/?id=num_id")
-    public ResponseEntity<BookingResponseDTO> deleteBooking(@RequestBody Long id){
+    @DeleteMapping("/hotel-bookings/delete")
+    public ResponseEntity<BookingResponseDTO> deleteBooking(@RequestParam Long id){
         return new ResponseEntity<>(hotelBooking.deleteBooking(id), HttpStatus.OK);
     }
 

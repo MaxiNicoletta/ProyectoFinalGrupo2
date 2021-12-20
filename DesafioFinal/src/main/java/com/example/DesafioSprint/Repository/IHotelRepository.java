@@ -16,5 +16,6 @@ public interface IHotelRepository extends JpaRepository<Hotel, Long> {
     Boolean existsDestinationHotel(@Param("destination") String destination);
 
     @Query("SELECT CASE WHEN COUNT(h) > 0 THEN true ELSE false END FROM Hotel h WHERE h.hotelCode = :hotelCode")
-    Boolean existsHotel(@Param("flightNumber") String hotelCode);
+    Boolean existsHotel(@Param("hotelCode") String hotelCode);
+
 }

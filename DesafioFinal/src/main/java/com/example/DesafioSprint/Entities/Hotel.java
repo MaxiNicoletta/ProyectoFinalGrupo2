@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -19,9 +20,9 @@ public class Hotel {
     private String place;
     private String roomType;
     private int priceByNight;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     private Date availableFrom;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     private Date availableTo;
     private boolean reserved;
 
@@ -39,6 +40,6 @@ public class Hotel {
         return new HotelDTO(getHotelCode(),getName(),getPlace(),getRoomType(),getPriceByNight(),getAvailableFrom(),getAvailableTo(),isReserved());
     }
     public Hotel hotelDTOtoHotel(HotelDTO hotelDTO){
-        return new Hotel(hotelDTO.getHotelCode(),hotelDTO.getName(),hotelDTO.getPlace(),hotelDTO.getRoomType(),hotelDTO.getPriceByNight(),hotelDTO.getAvailableFrom(),hotelDTO.getAvailableTo(),hotelDTO.isReserved());
+        return new Hotel(hotelDTO.getHotelCode(),hotelDTO.getName(),hotelDTO.getPlace(),hotelDTO.getRoomType(),hotelDTO.getRoomPrice(),hotelDTO.getDisponibilityDateFrom(),hotelDTO.getDisponibilityDateTo(),hotelDTO.isBooking());
     }
 }

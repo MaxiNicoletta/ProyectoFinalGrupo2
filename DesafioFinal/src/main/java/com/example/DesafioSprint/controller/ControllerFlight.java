@@ -33,10 +33,14 @@ public class ControllerFlight {
      * @throws UbicacionException
      */
     @PostMapping("/new")
-    public FlightResponseDTO newFlight(@RequestBody VueloDTO flight) throws FechasException, VuelosException {
-        service.addFlight(flight);
-        FlightResponseDTO response = new FlightResponseDTO("Vuelo dado de alta correctamente.");
-        return response;
+    public ResponseEntity<FlightResponseDTO> addFlight(@RequestBody VueloRequestDTO flight) throws FechasException, VuelosException {
+        VueloDTO nuevo = null;
+        try {
+            Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(flight.getGoingDate());
+            Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(flight.getReturnDate());
+            nuevo = new VueloDTO(flight.getFlightNumber(),flight.getName(),flight.getOrigin(),flight.getDestination(),flight.getSeatType(),flight.getFlightPrice(),date1,date2);} catch (Exception e) {
+        }
+        return new ResponseEntity<>(service.addFlight(nuevo), HttpStatus.OK);
     }
 
     /**
@@ -45,10 +49,14 @@ public class ControllerFlight {
      * @return FlightResponseDTO.
      */
     @PutMapping("/edit")
-    public FlightResponseDTO updateFlight(@RequestParam String flightNumber, @RequestBody VueloDTO vueloDTO) throws VuelosException {
-        service.updateFlight(flightNumber, vueloDTO);
-        FlightResponseDTO response = new FlightResponseDTO("Vuelo modificado correctamente.");
-        return response;
+    public ResponseEntity<FlightResponseDTO> updateFlight(@RequestParam String flightNumber, @RequestBody VueloRequestDTO flight) throws VuelosException {
+        VueloDTO nuevo = null;
+        try {
+            Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(flight.getGoingDate());
+            Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(flight.getReturnDate());
+            nuevo = new VueloDTO(flight.getFlightNumber(),flight.getName(),flight.getOrigin(),flight.getDestination(),flight.getSeatType(),flight.getFlightPrice(),date1,date2);} catch (Exception e) {
+        }
+        return new ResponseEntity<>(service.updateFlight(flightNumber, nuevo), HttpStatus.OK);
     }
 
     /**
@@ -63,7 +71,7 @@ public class ControllerFlight {
      * @throws FaltanParametros   Excepcion causada por si faltan algunos parametrso en cuanto a la fecha de origen o la fecha de salida.
      */
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<VueloDTO>> listarVuelos(@RequestParam(required = false) String dateFrom, @RequestParam(required = false) String dateTo, @RequestParam(required = false) String origin, @RequestParam(required = false) String destination) throws UbicacionException, FechasException, VuelosException, FaltanParametros {
         DisponibilidadVuelosDTO nuevo = null;
         if (dateFrom == null && dateTo == null && destination == null && origin == null)
@@ -90,10 +98,8 @@ public class ControllerFlight {
 //    }
 
     @DeleteMapping("/delete")
-    public FlightResponseDTO deleteFlight(@RequestParam String flightNumber) throws VuelosException {
-        service.deleteFlight(flightNumber);
-        FlightResponseDTO response = new FlightResponseDTO("Vuelo eliminado correctamente.");
-        return response;
+    public ResponseEntity<FlightResponseDTO> deleteFlight(@RequestParam String flightNumber) throws VuelosException {
+        return new ResponseEntity<>(service.deleteFlight(flightNumber), HttpStatus.OK);
     }
 
 }

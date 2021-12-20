@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public interface IServiceReservaV {
 
-    //FlightResponseDTO addReserva(ReservasVueloRequestDTO rsVuelo) throws PersonasException, VuelosException, FechasException, UbicacionException;
+    FlightResponseDTO addReserva(ReservasVueloRequestDTO rsVuelo) throws PersonasException, VuelosException, FechasException, UbicacionException;
 
     ArrayList<ReservaVueloDTO> getAllReservations();
 

@@ -1,6 +1,7 @@
 package com.example.DesafioSprint.controller;
 
 import com.example.DesafioSprint.DTOs.*;
+import com.example.DesafioSprint.Entities.Hotel;
 import com.example.DesafioSprint.Exceptions.*;
 import com.example.DesafioSprint.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,17 +48,29 @@ public class HotelController {
 
 
     @PostMapping("/hotels/new")
-    public ResponseEntity<HotelResponseDTO> addHotel(@RequestBody HotelDTO hotelDTO) throws VuelosException,FechasException{
-        return new ResponseEntity<>(hotelService.addHotel(hotelDTO), HttpStatus.OK);
+    public ResponseEntity<HotelResponseDTO> addHotel(@RequestBody HotelRequestDTO hotelDTO) throws VuelosException,FechasException{
+        HotelDTO nuevo = null;
+        try {
+            Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(hotelDTO.getDisponibilityDateFrom());
+            Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(hotelDTO.getDisponibilityDateTo());
+            nuevo = new HotelDTO(hotelDTO.getHotelCode(),hotelDTO.getName(),hotelDTO.getPlace(),hotelDTO.getRoomType(),hotelDTO.getRoomPrice(),date1,date2,hotelDTO.isBooking());} catch (Exception e) {
+        }
+        return new ResponseEntity<>(hotelService.addHotel(nuevo), HttpStatus.OK);
     }
 
-    @PutMapping("/hotels/edit/?hotelCode=code")
-    public ResponseEntity<HotelResponseDTO> updateHotel(@RequestBody String hotelCode, @RequestBody HotelDTO hotelDTO) throws HotelesException{
-        return new ResponseEntity<>(hotelService.updateHotel(hotelCode,hotelDTO), HttpStatus.OK);
+    @PutMapping("/hotels/edit")
+    public ResponseEntity<HotelResponseDTO> updateHotel(@RequestParam String hotelCode, @RequestBody HotelRequestDTO hotelDTO) throws HotelesException{
+        HotelDTO nuevo = null;
+        try {
+            Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(hotelDTO.getDisponibilityDateFrom());
+            Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(hotelDTO.getDisponibilityDateTo());
+            nuevo = new HotelDTO(hotelDTO.getHotelCode(),hotelDTO.getName(),hotelDTO.getPlace(),hotelDTO.getRoomType(),hotelDTO.getRoomPrice(),date1,date2,hotelDTO.isBooking());} catch (Exception e) {
+        }
+        return new ResponseEntity<>(hotelService.updateHotel(hotelCode,nuevo), HttpStatus.OK);
     }
 
-    @DeleteMapping("/hotels/edit/?hotelCode=code")
-    public ResponseEntity<HotelResponseDTO> deleteHotel(@RequestBody String hotelCode) throws HotelesException{
+    @DeleteMapping("/hotels/edit")
+    public ResponseEntity<HotelResponseDTO> deleteHotel(@RequestParam String hotelCode) throws HotelesException{
         return new ResponseEntity<HotelResponseDTO>(hotelService.deleteHotel(hotelCode), HttpStatus.OK);
     }
 

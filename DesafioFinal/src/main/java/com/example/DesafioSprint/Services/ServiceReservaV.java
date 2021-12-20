@@ -1,12 +1,18 @@
 package com.example.DesafioSprint.Services;
 
 import com.example.DesafioSprint.DTOs.*;
+import com.example.DesafioSprint.Entities.Pago;
+import com.example.DesafioSprint.Entities.Persona;
 import com.example.DesafioSprint.Exceptions.FechasException;
 import com.example.DesafioSprint.Exceptions.PersonasException;
 import com.example.DesafioSprint.Exceptions.UbicacionException;
 import com.example.DesafioSprint.Exceptions.VuelosException;
 import com.example.DesafioSprint.Entities.ReservaVuelo;
+import com.example.DesafioSprint.Repository.IFlightRepository;
 import com.example.DesafioSprint.Repository.IFligthReservationRepository;
+import com.example.DesafioSprint.Repository.IPagoRepository;
+import com.example.DesafioSprint.Repository.IPersonRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,19 +22,70 @@ import java.util.List;
 public class ServiceReservaV implements IServiceReservaV {
 
     private final IFligthReservationRepository repository;
+    private final IFlightRepository repositoryFlight;
+    private final IPagoRepository repositoryPago;
     private final IServiceVuelo serviceVuelo;
+    private final IPersonRepository repositoryPerson;
 
-    public ServiceReservaV(IServiceVuelo serviceVuelo, IFligthReservationRepository repository){
-        this.serviceVuelo = serviceVuelo;
+    public ServiceReservaV(IFligthReservationRepository repository, IFlightRepository repositoryFlight, IPagoRepository repositoryPago, IServiceVuelo serviceVuelo, IPersonRepository repositoryPerson) {
         this.repository = repository;
+        this.repositoryFlight = repositoryFlight;
+        this.repositoryPago = repositoryPago;
+        this.serviceVuelo = serviceVuelo;
+        this.repositoryPerson = repositoryPerson;
     }
-/*
+
     @Override
     public FlightResponseDTO addReserva(ReservasVueloRequestDTO rsVuelo) throws PersonasException, VuelosException, FechasException, UbicacionException {
-        repository.save(rsVuelo);
-        return new FlightResponseDTO("Reserva de vuelo dada de alta correctamente.");
+        if (!repositoryFlight.existsDestinationVuelo(rsVuelo.getFlightReservation().getDestination()))
+            throw new UbicacionException("El destino elegido no existe", HttpStatus.BAD_REQUEST);
+        if (!repositoryFlight.existsOriginVuelo(rsVuelo.getFlightReservation().getOrigin()))
+            throw new UbicacionException("El origen elegido no existe", HttpStatus.BAD_REQUEST);
+        if (rsVuelo.getFlightReservation().getSeats() != rsVuelo.getFlightReservation().getPeople().size())
+            throw new PersonasException("La cantidad de Personas no coincide", HttpStatus.BAD_REQUEST);
+        if (!repositoryFlight.existsVuelo(rsVuelo.getFlightReservation().getFlightNumber()))
+            throw new VuelosException("No existe un Vuelo con ese Codigo", HttpStatus.BAD_REQUEST);
+        DisponibilidadVuelosDTO nuevo = new DisponibilidadVuelosDTO(rsVuelo.getFlightReservation().getGoingDate(), rsVuelo.getFlightReservation().getReturnDate(), rsVuelo.getFlightReservation().getOrigin(), rsVuelo.getFlightReservation().getDestination());
+        List<VueloDTO> vuelosDisponibles = serviceVuelo.disponibilidadVuelos(nuevo);
+        VueloDTO vuelo = null;
+        for (VueloDTO v : vuelosDisponibles)
+            if (v.getFlightNumber().equals(rsVuelo.getFlightReservation().getFlightNumber())) {
+                vuelo = v;
+                break;
+            }
+        if (vuelo != null) {
+            List<Persona> l = new ArrayList<>();
+            for (PersonaDTO p : rsVuelo.getFlightReservation().getPeople()) {
+                Persona persona = new Persona(p.getDni(), p.getName(), p.getLastname(), p.getBirthDate(), p.getMail());
+                l.add(persona);
+                repositoryPerson.save(persona);
+            }
+
+            double interest = 0;
+            double amount = vuelo.getFlightPrice() * rsVuelo.getFlightReservation().getSeats();
+            double total = 0;
+            if (rsVuelo.getPaymentMethod().getType().equals("CREDIT")) {
+                if (rsVuelo.getPaymentMethod().getDues() <= 3) {
+                    interest = 5;
+                    total = amount * interest;
+                } else if ((rsVuelo.getPaymentMethod().getDues() >= 3) && ((rsVuelo.getPaymentMethod().getDues() <= 6))) {
+                    interest = 10;
+                    total = amount * interest;
+                }
+            } else if (rsVuelo.getPaymentMethod().getType().equals("DEBIT")) {
+                total = amount;
+                if (rsVuelo.getPaymentMethod().getDues() != 1)
+                    throw new VuelosException("Se ha ingresado una cantidad de cuotas diferente a 1 ", HttpStatus.BAD_REQUEST);
+            }
+            Pago pago = new Pago(rsVuelo.getPaymentMethod().getType(), rsVuelo.getPaymentMethod().getNumber(), rsVuelo.getPaymentMethod().getDues());
+            repositoryPago.save(pago);
+            ReservaVuelo rsv = new ReservaVuelo(rsVuelo.getUserName(), rsVuelo.getFlightReservation().getGoingDate(), rsVuelo.getFlightReservation().getReturnDate(), rsVuelo.getFlightReservation().getDestination(), l, pago, amount, interest, total, rsVuelo.getFlightReservation().getFlightNumber(), rsVuelo.getFlightReservation().getSeats(), rsVuelo.getFlightReservation().getSeatType(), rsVuelo.getFlightReservation().getDestination());
+            repository.save(rsv);
+            return new FlightResponseDTO("Reserva de vuelo dada de alta correctamente.");
+        } else
+            throw new VuelosException("Ese vuelo No esta disponible en las fechas ingresadas", HttpStatus.BAD_REQUEST);
     }
-*/
+
     @Override
     public ArrayList<ReservaVueloDTO> getAllReservations() {
         ArrayList<ReservaVueloDTO> response = new ArrayList<>();

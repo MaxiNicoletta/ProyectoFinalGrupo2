@@ -74,7 +74,12 @@ public class ServiceBooking implements IServiceBooking {
 
     private Booking getBooking(BookingRequestDTO bookingRequestDTO) throws HotelesException {
         Pago pago = getPayment(bookingRequestDTO);
-        List<Persona> people = bookingRepository.getPeople();
+        List<PersonaDTO> peopleDTO = bookingRequestDTO.getBooking().getPeople();
+        List<Persona> people = new ArrayList<>();
+        for (PersonaDTO personaDTO : peopleDTO) {
+            Persona person = new Persona(personaDTO.getDni(), personaDTO.getName(), personaDTO.getLastname(), personaDTO.getBirthDate(), personaDTO.getMail());
+            people.add(person);
+        }
         BookingDTO bookingDTO = bookingRequestDTO.getBooking();
         Booking booking = new Booking();
         booking.bookingDTOtoBooking(bookingDTO);

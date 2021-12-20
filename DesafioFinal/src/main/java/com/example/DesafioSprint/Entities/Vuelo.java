@@ -14,10 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("V")
+@Table(name = "flights")
 public class Vuelo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String flightNumber;
     private String name;
     private String origin;
@@ -28,19 +27,6 @@ public class Vuelo {
     private Date returnDate;
     private String seatType;
     private double pricePerPerson;
-    @OneToMany(mappedBy = "flightNumber")
-    List<ReservaVuelo> flightReservations;
-
-    public Vuelo(String flightNumber, String name, String origin, String destination, Date goingDate, Date returnDate, String seatType, double pricePerPerson) {
-        this.flightNumber = flightNumber;
-        this.name = name;
-        this.origin = origin;
-        this.destination = destination;
-        this.goingDate = goingDate;
-        this.returnDate = returnDate;
-        this.seatType = seatType;
-        this.pricePerPerson = pricePerPerson;
-    }
 
 
     public VueloDTO entityToDTO(){

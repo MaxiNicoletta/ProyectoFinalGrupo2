@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,6 +20,16 @@ public class Persona {
     private String lastname;
     private Date birthDate;
     private String mail;
+    @ManyToMany(mappedBy = "people",cascade = CascadeType.ALL)
+    private List<Reserva> booking;
+
+    public Persona(String dni, String name, String lastname, Date birthDate, String mail) {
+        this.dni = dni;
+        this.name = name;
+        this.lastname = lastname;
+        this.birthDate = birthDate;
+        this.mail = mail;
+    }
 
     public PersonaDTO personaToDTO(){
         return new PersonaDTO(

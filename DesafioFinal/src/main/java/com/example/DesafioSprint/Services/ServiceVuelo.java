@@ -25,10 +25,12 @@ public class ServiceVuelo implements IServiceVuelo {
     }
 
     public FlightResponseDTO addFlight(VueloDTO flightDTO)throws FechasException,VuelosException{
-        if (flightDTO.getReturnDate().after(flightDTO.getGoingDate()))
+        if (flightDTO.getReturnDate().before(flightDTO.getGoingDate())) {
             throw new FechasException("La fecha de vuelta debe ser mayor a la de ida", HttpStatus.BAD_REQUEST);
-        if(repoFlight.existsVuelo(flightDTO.getFlightNumber()))
+        }
+        if(repoFlight.existsVuelo(flightDTO.getFlightNumber())) {
             throw new VuelosException("Ya existe un vuelo con ese numero", HttpStatus.BAD_REQUEST);
+        }
         Vuelo flight = new Vuelo(flightDTO.getFlightNumber(),flightDTO.getName(),flightDTO.getOrigin(),flightDTO.getDestination(),flightDTO.getGoingDate(),flightDTO.getReturnDate(),flightDTO.getSeatType(),flightDTO.getFlightPrice());
         repoFlight.save(flight);
         FlightResponseDTO res = new FlightResponseDTO("Vuelo dado de alta correctamente");
@@ -44,7 +46,7 @@ public class ServiceVuelo implements IServiceVuelo {
         if (vuelosData.isEmpty())
             throw new VuelosException("No hay vuelos en el repositorio", HttpStatus.BAD_REQUEST);
         for (Vuelo v : vuelosData) {
-            VueloDTO aux = v.flightToDTO();
+            VueloDTO aux = v.entityToDTO();
             res.add(aux);
         }
         return res;
@@ -67,7 +69,7 @@ public class ServiceVuelo implements IServiceVuelo {
         List<Vuelo> vuelosData = repoFlight.findAll();
         for (Vuelo v : vuelosData) {
             if (v.getOrigin().equals(vuelo.getOrigin()) && v.getDestination().equals(vuelo.getDestination()) && v.getReturnDate().equals(vuelo.getDateTo()) && v.getGoingDate().equals(vuelo.getDateFrom())) {
-                VueloDTO nuevo = v.flightToDTO();
+                VueloDTO nuevo = v.entityToDTO();
                 res.add(nuevo);
             }
         }

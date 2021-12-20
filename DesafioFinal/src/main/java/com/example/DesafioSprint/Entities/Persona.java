@@ -21,7 +21,6 @@ public class Persona {
     private Date birthDate;
     private String mail;
 
-
     public PersonaDTO personaToDTO(){
         return new PersonaDTO(
                 getDni(),
@@ -32,8 +31,8 @@ public class Persona {
         );
     }
 
-    public Persona DTOPersonaToDTO(PersonaDTO person){
-        return new Persona(
+    public PersonaDTO entityToDTO(Persona person){
+        return new PersonaDTO(
                 person.getDni(),
                 person.getName(),
                 person.getLastname(),
@@ -41,4 +40,15 @@ public class Persona {
                 person.getMail()
         );
     }
+
+    public Persona DTOPersonaToDTO(PersonaDTO person){
+        return new Persona(
+          person.getDni(),
+          person.getName(),
+          person.getLastname(),
+          person.getBirthDate(),
+          person.getMail()
+        );
+    }
+
 }

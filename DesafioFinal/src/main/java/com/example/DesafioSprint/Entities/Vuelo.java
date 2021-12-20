@@ -1,5 +1,6 @@
 package com.example.DesafioSprint.Entities;
 
+import com.example.DesafioSprint.DTOs.VueloDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,5 +40,32 @@ public class Vuelo {
         this.returnDate = returnDate;
         this.seatType = seatType;
         this.pricePerPerson = pricePerPerson;
+    }
+
+
+    public VueloDTO entityToDTO(){
+        return new VueloDTO(
+                getFlightNumber(),
+                getName(),
+                getOrigin(),
+                getDestination(),
+                getSeatType(),
+                getPricePerPerson(),
+                getGoingDate(),
+                getReturnDate()
+        );
+    }
+
+    public Vuelo dtoToEntity(VueloDTO vueloDTO){
+        return new Vuelo(
+                vueloDTO.getFlightNumber(),
+                vueloDTO.getName(),
+                vueloDTO.getOrigin(),
+                vueloDTO.getDestination(),
+                vueloDTO.getGoingDate(),
+                vueloDTO.getReturnDate(),
+                vueloDTO.getSeatType(),
+                vueloDTO.getFlightPrice()
+        );
     }
 }

@@ -15,11 +15,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
-public class ControllerHotel {
+public class HotelController {
     @Autowired
     IServiceHotel hotelService;
-    @Autowired
-    IServiceBooking hotelBooking;
 
     /**
      * @param HotelDTO contiene los datos necesarios para la reserva:
@@ -54,10 +52,7 @@ public class ControllerHotel {
         return new ResponseEntity<>(hotelService.addHotel(hotelDTO), HttpStatus.OK);
     }
 
-    @PostMapping("/bookings/new")
-    public ResponseEntity<BookingResponseDTO> addReserva(@Valid @RequestBody BookingRequestDTO bookingRequestDTO) throws PersonasException, HotelesException, FechasException, UbicacionException {
-        return new ResponseEntity<>(hotelBooking.addBooking(bookingRequestDTO), HttpStatus.OK);
-    }
+
     
     // Modificaciones
 
@@ -66,10 +61,7 @@ public class ControllerHotel {
         return new ResponseEntity<>(hotelService.updateHotel(hotelDTO), HttpStatus.OK);
     }
 
-    @PutMapping("/hotel-bookings/edit/?id=num_id")
-    public ResponseEntity<BookingResponseDTO> modifyBooking(@RequestBody BookingDTO bookingDTO){
-        return new ResponseEntity<>(hotelBooking.updateBooking(bookingDTO), HttpStatus.OK);
-    }
+
 
     // Bajas
     @DeleteMapping("/hotels/edit/?hotelCode=code")
@@ -77,10 +69,7 @@ public class ControllerHotel {
         return new ResponseEntity<HotelResponseDTO>(hotelService.deleteHotel(hotelCode), HttpStatus.OK);
     }
 
-    @PutMapping("/hotel-bookings/edit/?id=num_id")
-    public ResponseEntity<BookingResponseDTO> deleteBooking(@RequestBody Long id){
-        return new ResponseEntity<>(hotelBooking.deleteBooking(id), HttpStatus.OK);
-    }
+
 
     /**
      * @param dateFrom    Fecha de origen para listar los hoteles
@@ -110,14 +99,5 @@ public class ControllerHotel {
         }
     }
 
-    /**
-     * @param cod Recibe el identificador del hotel que quiere consultar
-     * @return Todos los datos de las reservas que corresponden al hotel ingresado.
-     */
-
-    @GetMapping("/hotel-bookings")
-    ResponseEntity<List<BookingDTO>> getBookings() throws HotelesException {
-        return new ResponseEntity<>(hotelBooking.getBookings(), HttpStatus.OK);
-    }
 
 }

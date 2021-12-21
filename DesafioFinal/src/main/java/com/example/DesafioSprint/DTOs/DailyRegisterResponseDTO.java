@@ -8,8 +8,8 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-public class DailyRegisterResponseDTO {
+public class DailyRegisterResponseDTO extends RegisterResponseDTO{
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     private Date date;
-    private double total_income;
+    private Double total_income;
 }

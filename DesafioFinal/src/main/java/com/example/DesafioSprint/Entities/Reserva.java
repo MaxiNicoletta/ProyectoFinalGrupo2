@@ -1,12 +1,14 @@
 package com.example.DesafioSprint.Entities;
 
 import com.example.DesafioSprint.DTOs.BookingDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     protected String userName;
+    @Column(name = "date_from")
     protected Date dateFrom;
     protected Date dateTo;
     protected String destination;
@@ -34,6 +37,9 @@ public class Reserva {
     protected double amount;
     protected double interest;
     protected double total;
+    //Date of the day that the reservation was made.
+//    @JsonFormat(pattern = "dd/MM/yyyy")
+//    protected Date reservationDate = Calendar.getInstance().getTime();
 
     public Reserva(String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total) {
         this.userName = userName;

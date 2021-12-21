@@ -10,5 +10,5 @@ public interface IServiceRegister {
 
     DailyRegisterResponseDTO getDailyAmount(Date date);
 
-    MonthlyRegisterResponseDTO getMonthlyAmount(int month, int year);
+    MonthlyRegisterResponseDTO getMonthlyAmount(Integer month, Integer year);
 }

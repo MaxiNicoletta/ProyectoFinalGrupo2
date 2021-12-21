@@ -2,8 +2,7 @@ package com.example.DesafioSprint.Services;
 
 import com.example.DesafioSprint.DTOs.PackageResponseDTO;
 import com.example.DesafioSprint.DTOs.TouristicPackageDTO;
-import com.example.DesafioSprint.Entities.Booking;
-import com.example.DesafioSprint.Entities.TouristicPackage;
+import com.example.DesafioSprint.Entities.*;
 import com.example.DesafioSprint.Repository.IBookingRepository;
 import com.example.DesafioSprint.Repository.IFligthReservationRepository;
 import com.example.DesafioSprint.Repository.IPackageRepository;
@@ -42,12 +41,42 @@ return null;
         return null;
     }
 
-    private TouristicPackageDTO getPackage(Long firstId,Long secondId){
-        TouristicPackageDTO touristicPackageDTO = new TouristicPackageDTO();
+    private TouristicPackage getPackage(Long firstId,Long secondId) {
+        TouristicPackageDTO touristicPackageDTO;
+        TouristicPackage touristicPackage = new TouristicPackage();
+
+        FlightReservationPackage flightReservationPackage;
+        BookingPackage bookingPackage;
+        BookingFlightPackage bookingFlightPackage;
         Booking booking = bookingRepository.getById(firstId);
-        Booking bookingAux = 
+        Booking secondBooking = bookingRepository.getById(firstId);
+        ReservaVuelo reservation = fligthReservationRepository.getById(firstId);
+        ReservaVuelo secondReservation = fligthReservationRepository.getById(secondId);
+        if (booking == null && secondBooking == null) {
+            flightReservationPackage = new FlightReservationPackage(reservation, secondReservation);
+            touristicPackage.setFlightReservationPackage(flightReservationPackage);
+        }
+        if (reservation == null && secondReservation == null) {
+            bookingPackage = new BookingPackage(booking, secondBooking);
+            touristicPackage.setBookingPackage(bookingPackage);
+        }
+        if (booking == null && reservation != null) {
+            bookingFlightPackage = new BookingFlightPackage(secondBooking, reservation);
+            touristicPackage.setBookingFlightPackage(bookingFlightPackage);
+        }
+        if (secondBooking == null && reservation != null) {
+            bookingFlightPackage = new BookingFlightPackage(booking, reservation);
+            touristicPackage.setBookingFlightPackage(bookingFlightPackage);
+        }
+        if (booking != null && reservation == null) {
+            bookingFlightPackage = new BookingFlightPackage(booking, secondReservation);
+            touristicPackage.setBookingFlightPackage(bookingFlightPackage);
+        }
+        if (secondBooking != null && reservation == null) {
+            bookingFlightPackage = new BookingFlightPackage(secondBooking, secondReservation);
+            touristicPackage.setBookingFlightPackage(bookingFlightPackage);
+        }
+        return touristicPackage;
     }
-
-
 
 }

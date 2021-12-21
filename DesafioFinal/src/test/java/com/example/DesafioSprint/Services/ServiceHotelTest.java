@@ -1,5 +1,5 @@
-//package com.example.DesafioSprint.Services;
 //
+//package com.example.DesafioSprint.Services;
 //import com.example.DesafioSprint.DTOs.DisponibilidadHotelDTO;
 //import com.example.DesafioSprint.DTOs.HotelDTO;
 //import com.example.DesafioSprint.DTOs.HotelResponseDTO;
@@ -8,8 +8,6 @@
 //import com.example.DesafioSprint.Exceptions.HotelesException;
 //import com.example.DesafioSprint.Entities.Hotel;
 //import com.example.DesafioSprint.Exceptions.VuelosException;
-//import com.example.DesafioSprint.Repository.FlightRepository;
-//import com.example.DesafioSprint.Repository.IFlightRepository;
 //import com.example.DesafioSprint.Repository.IHotelRepository;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@
 //import org.mockito.InjectMocks;
 //import org.mockito.Mock;
 //import org.mockito.junit.jupiter.MockitoExtension;
-//import org.springframework.stereotype.Repository;
 //
 //import java.text.SimpleDateFormat;
 //import java.util.ArrayList;
@@ -121,7 +118,7 @@
 //
 //        } catch (Exception e) {}
 //        HotelDTO hotel1 = new HotelDTO("HB-0001", "Hotel BristolModificado", "Buenos Aires", "Single", 5435, date1, date2, false);
-//        HotelResponseDTO res = srvHotel.updateHotel(hotel1);
+//        HotelResponseDTO res = srvHotel.updateHotel("HB-0001",hotel1);
 //        assertTrue(res.getMessage()== "Hotel modificado correctamente");
 //    }
 //
@@ -192,6 +189,8 @@
 //            date2 = new SimpleDateFormat("dd/MM/yyyy").parse(fechaVuelta);
 //        } catch (Exception e) {
 //        }
+//        System.out.printf(repository.findAll().get(0).getHotelCode());
+//        System.out.printf(repository.findAll().get(1).getHotelCode());
 //        DisponibilidadHotelDTO rsv = new DisponibilidadHotelDTO(date1, date2, "Buenos Aires");
 //        //Assert
 //        FechasException ex = assertThrows(FechasException.class, () -> srvHotel.getHotelesDisponibles(rsv));
@@ -231,3 +230,4 @@
 //    }
 //
 //}
+//

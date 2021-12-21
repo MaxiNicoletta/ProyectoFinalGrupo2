@@ -15,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TouristicPackage {
-    private Long packageNumber;
+    private int packageNumber;
     private String name;
     private Date creation_date;
     private int clientId;
@@ -26,12 +26,16 @@ public class TouristicPackage {
 
 
 
-    //    public TouristicPackageDTO entityToDTO(){
-//        return new TouristicPackageDTO(getBooking().bookingToDTO(),getReservaVuelo().entityToDTO());
-//    }
-//
-//    public TouristicPackage dtoToEntity(TouristicPackageDTO touristicPackageDTO){
-//        return new TouristicPackage();
-//    }
+        public TouristicPackageDTO entityToDTO(){
+
+        return new TouristicPackageDTO(getPackageNumber(),getName(),getCreation_date(),getClientId(),getBookingsOrReservations().DTOtoEntity());
+    }
+
+    public TouristicPackage dtoToEntity(TouristicPackageDTO touristicPackageDTO){
+        return new TouristicPackage();
+    }
+
+
+
 
 }

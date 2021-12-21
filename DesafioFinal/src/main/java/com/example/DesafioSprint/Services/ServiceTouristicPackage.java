@@ -22,27 +22,37 @@ public class ServiceTouristicPackage implements IServiceTouristicPackage {
     }
 
     @Override
-    public PackageResponseDTO addTouristicPackage(TouristicPackageDTO packageDTO) {
-return null;
+    public PackageResponseDTO addTouristicPackage(TouristicPackageDTO packageDTO, BookingsOrReservations bookingsOrReservations) {
+        TouristicPackage touristicPackage;
+        touristicPackage = getPackage(bookingsOrReservations.getFirstId(),bookingsOrReservations.getSecondId());
+        packageRepository.save(touristicPackage);
+        return new PackageResponseDTO("Paquete Turistico dado de alta correctamente");
     }
 
     @Override
-    public PackageResponseDTO updateTouristicPackage() {
-        return null;
+    public PackageResponseDTO updateTouristicPackage(TouristicPackageDTO touristicPackageDTO,Long id) {
+        TouristicPackage touristicPackage = packageRepository.getById(id);
+        if(touristicPackage!= null){
+            packageRepository.save(touristicPackage);
+        }
+        return new PackageResponseDTO("Paquete turistico modificado correctamente ")
     }
 
     @Override
     public List<TouristicPackage> getPackages() {
-        return null;
+        List<TouristicPackage> touristicPackages = packageRepository.findAll();
+        return touristicPackages;
     }
 
     @Override
-    public PackageResponseDTO deletePackage() {
-        return null;
+    public PackageResponseDTO deletePackage(Long id) {
+        TouristicPackage touristicPackage = packageRepository.getById(id);
+        packageRepository.delete(touristicPackage);
+        return new PackageResponseDTO("Paquete turistico modificado correctamente");
     }
 
+
     private TouristicPackage getPackage(Long firstId,Long secondId) {
-        TouristicPackageDTO touristicPackageDTO;
         TouristicPackage touristicPackage = new TouristicPackage();
 
         FlightReservationPackage flightReservationPackage;

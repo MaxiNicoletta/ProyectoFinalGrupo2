@@ -15,13 +15,14 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TouristicPackage {
-    private int packageNumber;
+    private Long packageNumber;
     private String name;
     private Date creation_date;
     private int clientId;
-    private BookingPackage bookingPackage;
-    private BookingFlightPackage bookingFlightPackage;
-    private FlightReservationPackage flightReservationPackage;
+    private BookingsOrReservations bookingsOrReservations;
+//    private BookingPackage bookingPackage;
+//    private BookingFlightPackage bookingFlightPackage;
+//    private FlightReservationPackage flightReservationPackage;
 
 
 

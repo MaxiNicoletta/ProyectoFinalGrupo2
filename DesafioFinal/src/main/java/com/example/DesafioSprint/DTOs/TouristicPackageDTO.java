@@ -15,8 +15,9 @@ public class TouristicPackageDTO {
     private String name;
     private Date creation_date;
     private int clientId;
-    private BookingPackageDTO bookingPackage;
-    private BookingFlightPackageDTO bookingFlightPackage;
-    private FlightReservationPackageDTO flightReservationPackage;
+    private BookingsOrReservationsDTO bookingsOrReservations;
+//    private BookingPackageDTO bookingPackage;
+//    private BookingFlightPackageDTO bookingFlightPackage;
+//    private FlightReservationPackageDTO flightReservationPackage;
 
 }

@@ -22,7 +22,7 @@ public interface IServiceBooking {
 
     public BookingResponseDTO deleteBooking(Long id);
 
-    public BookingResponseDTO updateBooking(Long id,BookingRequestDTO bookingRequestDTO) throws HotelesException;
+    public BookingResponseDTO updateBooking(Long id,BookingRequestDTO bookingRequestDTO) throws HotelesException, FechasException, PersonasException;
 
 
 

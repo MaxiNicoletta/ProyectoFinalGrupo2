@@ -23,12 +23,12 @@ public class Reserva {
     protected Date dateFrom;
     protected Date dateTo;
     protected String destination;
-    @ManyToMany
+    @ManyToMany (cascade= CascadeType.ALL)
     @JoinTable(name = "reservation_people",
                 joinColumns = @JoinColumn(name = "reservation_id",referencedColumnName = "id"),
                 inverseJoinColumns = @JoinColumn(name="people_id",referencedColumnName = "dni"))
     protected List<Persona> people ;
-    @OneToOne
+    @OneToOne(cascade= CascadeType.ALL)
     @JoinColumn(name ="pago_id")
     protected Pago paymentMethod;
     protected double amount;

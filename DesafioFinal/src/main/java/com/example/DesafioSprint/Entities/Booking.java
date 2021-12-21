@@ -31,6 +31,13 @@ public class Booking extends Reserva {
         this.roomType = roomType;
     }
 
+    public Booking(String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total, String hotelCode, int peopleAmount, String roomType) {
+        super(userName, dateFrom, dateTo, destination, people, paymentMethod, amount, interest, total);
+        this.hotelCode = hotelCode;
+        this.peopleAmount = peopleAmount;
+        this.roomType = roomType;
+    }
+
     public BookingDTO bookingToDTO() {
         List<PersonaDTO> people = new ArrayList<>();
         for (Persona p : getPeople()) {

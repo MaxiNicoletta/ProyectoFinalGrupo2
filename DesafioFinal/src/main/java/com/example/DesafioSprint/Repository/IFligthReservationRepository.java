@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 public interface IFligthReservationRepository extends JpaRepository<ReservaVuelo, Long> {
     @Query("SELECT CASE WHEN COUNT(v) > 0 THEN true ELSE false END FROM Reserva v WHERE v.id = :id")
     Boolean existsReservaVueloById(@Param("id") Long id);
-
+/*
+    @Query("select r.paymentMethod.id FROM Reserva r where r.id =: id")
+    Long PagoID(@Param("id") Long id);
+ */
 }
 

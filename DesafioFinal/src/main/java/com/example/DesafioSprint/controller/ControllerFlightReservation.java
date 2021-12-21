@@ -58,14 +58,13 @@ public class ControllerFlightReservation {
         return new ResponseEntity<>(bookingService.addReserva(rsVuelo), HttpStatus.OK);
     }
 
-
     /**
      * Edit the flight reservation.
      * @param id Id of the reservation.
      * @return FlightResponseDTO.
      */
     @PutMapping("/edit")
-    public FlightResponseDTO updateFlightReservation(@RequestParam Long id, @Valid @RequestBody ReservasVueloRequestDTO reservasVueloRequestDTO) throws VuelosException, PersonasException {
+    public FlightResponseDTO updateFlightReservation(@RequestParam Long id, @Valid @RequestBody ReservasVueloRequestDTO reservasVueloRequestDTO) throws VuelosException, PersonasException, UbicacionException {
         return bookingService.updateFlightReservation(id, reservasVueloRequestDTO);
     }
 

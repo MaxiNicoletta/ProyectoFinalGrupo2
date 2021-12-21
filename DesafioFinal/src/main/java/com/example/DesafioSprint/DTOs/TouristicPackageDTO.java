@@ -1,7 +1,6 @@
 package com.example.DesafioSprint.DTOs;
 
-import com.example.DesafioSprint.Entities.Booking;
-import com.example.DesafioSprint.Entities.ReservaVuelo;
+import com.example.DesafioSprint.Entities.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +15,8 @@ public class TouristicPackageDTO {
     private String name;
     private Date creation_date;
     private int clientId;
-    private Booking booking;
-    private ReservaVuelo reservaVuelo;
-
+    private BookingPackageDTO bookingPackage;
+    private BookingFlightPackageDTO bookingFlightPackage;
+    private FlightReservationPackageDTO flightReservationPackage;
 
 }

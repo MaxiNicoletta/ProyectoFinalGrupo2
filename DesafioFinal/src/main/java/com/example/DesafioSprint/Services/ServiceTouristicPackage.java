@@ -23,7 +23,7 @@ public class ServiceTouristicPackage implements IServiceTouristicPackage {
 
     @Override
     public PackageResponseDTO addTouristicPackage(TouristicPackageDTO packageDTO) {
-return null;
+        
     }
 
     @Override

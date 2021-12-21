@@ -20,5 +20,12 @@ public class BookingFlightPackage {
         return new BookingFlightPackageDTO(bookingDTO,flightReservationDTO);
     }
 
+    public BookingFlightPackage DTOtoPackage(BookingDTO bookingDTO, ReservaVueloDTO flightReservationDTO){
+        Booking booking = new Booking();
+        booking.bookingDTOtoBooking(bookingDTO);
+        ReservaVuelo flightReservation = new ReservaVuelo();
+        flightReservation.dtoToEntity(flightReservationDTO);
+        return new BookingFlightPackage(booking,flightReservation);
+    }
 
 }

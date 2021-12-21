@@ -35,6 +35,16 @@ public class Reserva {
     protected double interest;
     protected double total;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "flight_reservation_package_id")
+    private FlightReservationPackage flightReservationPackage;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_package_id")
+    private BookingPackage bookingPackage;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_flight_package_id")
+    private BookingFlightPackage bookingFlightPackage;
+
     public Reserva(String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total) {
         this.userName = userName;
         this.dateFrom = dateFrom;

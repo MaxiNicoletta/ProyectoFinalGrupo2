@@ -5,27 +5,38 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class TouristicPackage {
+    @Id
     private int packageNumber;
     private String name;
     private Date creation_date;
     private int clientId;
-    private BookingPackage bookingPackage;
-    private BookingFlightPackage bookingFlightPackage;
-    private FlightReservationPackage flightReservationPackage;
+    @ManyToMany(mappedBy = "touristicPackagesH", fetch = FetchType.LAZY)
+    @JoinTable(name = "booking_packages",
+            joinColumns = @JoinColumn(name = "package_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "booking_id", referencedColumnName = "id"))
+    private List<BookingPackage> bookingPackages;
+    @ManyToMany(mappedBy = "touristicPackagesFH", fetch = FetchType.LAZY)
+    @JoinTable(name = "booking_reservation_ packages",
+            joinColumns = @JoinColumn(name = "package_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "booking_reservation_package_id", referencedColumnName = "id"))
+    private List<BookingFlightPackage> bookingFlightPackages;
+    @ManyToMany(mappedBy = "touristicPackagesF", fetch = FetchType.LAZY)
+    @JoinTable(name = "reservation_ packages", joinColumns = @JoinColumn(name = "package_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"))
+    private List<FlightReservationPackage> flightReservationPackages;
 
 
 
-    //    public TouristicPackageDTO entityToDTO(){
+//        public TouristicPackageDTO entityToDTO(){
 //        return new TouristicPackageDTO(getBooking().bookingToDTO(),getReservaVuelo().entityToDTO());
 //    }
 //

@@ -2,7 +2,9 @@ package com.example.DesafioSprint.Repository;
 
 import com.example.DesafioSprint.Entities.TouristicPackage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface IPackageRepository extends JpaRepository<TouristicPackage,Integer> {
+@Repository
+public interface IPackageRepository extends JpaRepository<TouristicPackage,Long> {
 
 }

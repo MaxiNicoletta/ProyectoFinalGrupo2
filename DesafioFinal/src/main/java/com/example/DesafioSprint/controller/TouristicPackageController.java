@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/v1/touristicpackage")
-public class TouristicPackageController {
+public class git TouristicPackageController {
 
     private TouristicPackageServiceImpl service;
 

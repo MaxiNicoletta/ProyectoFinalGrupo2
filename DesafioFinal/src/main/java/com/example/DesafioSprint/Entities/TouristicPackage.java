@@ -25,17 +25,13 @@ public class TouristicPackage {
 //    private FlightReservationPackage flightReservationPackage;
 
 
-
-        public TouristicPackageDTO entityToDTO(){
-
-        return new TouristicPackageDTO(getPackageNumber(),getName(),getCreation_date(),getClientId(),getBookingsOrReservations().DTOtoEntity());
+    public TouristicPackageDTO entityToDTO() {
+        return new TouristicPackageDTO(getPackageNumber(), getName(), getCreation_date(), getClientId(), getBookingsOrReservations().entityToDTO());
     }
 
-    public TouristicPackage dtoToEntity(TouristicPackageDTO touristicPackageDTO){
-        return new TouristicPackage();
+    public TouristicPackage dtoToEntity(TouristicPackageDTO touristicPackageDTO) {
+        return new TouristicPackage(touristicPackageDTO.getPackageNumber(),touristicPackageDTO.getName(),touristicPackageDTO.getCreation_date(),touristicPackageDTO.getClientId(),bookingsOrReservations.DTOtoEntity(touristicPackageDTO.getBookingsOrReservations()));
     }
-
-
 
 
 }

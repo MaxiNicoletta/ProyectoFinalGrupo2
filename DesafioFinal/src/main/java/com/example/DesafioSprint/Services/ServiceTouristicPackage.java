@@ -26,15 +26,15 @@ public class ServiceTouristicPackage implements IServiceTouristicPackage {
     @Override
     public PackageResponseDTO addTouristicPackage(TouristicPackageDTO packageDTO) {
         TouristicPackage touristicPackage = new TouristicPackage();
-        touristicPackage.dtoToEntity(packageDTO);
-        packageRepository.save(touristicPackage);
+            touristicPackage.dtoToEntity(packageDTO);
+            packageRepository.save(touristicPackage);
         return new PackageResponseDTO("Paquete Turistico dado de alta correctamente");
     }
 
     @Override
-    public PackageResponseDTO updateTouristicPackage(TouristicPackageDTO touristicPackageDTO,int id) {
+    public PackageResponseDTO updateTouristicPackage(TouristicPackageDTO touristicPackageDTO, int id) {
         TouristicPackage touristicPackage = packageRepository.getById(id);
-        if(touristicPackage!= null){
+        if (touristicPackage != null) {
             packageRepository.save(touristicPackage);
         }
         return new PackageResponseDTO("Paquete turistico modificado correctamente ");
@@ -44,7 +44,7 @@ public class ServiceTouristicPackage implements IServiceTouristicPackage {
     public List<TouristicPackageDTO> getPackages() {
         List<TouristicPackage> touristicPackages = packageRepository.findAll();
         List<TouristicPackageDTO> result = new ArrayList<>();
-        for(TouristicPackage touristicPackage: touristicPackages){
+        for (TouristicPackage touristicPackage : touristicPackages) {
             TouristicPackageDTO touristicPackageDTO = new TouristicPackageDTO();
             touristicPackage.dtoToEntity(touristicPackageDTO);
             result.add(touristicPackageDTO);
@@ -59,6 +59,7 @@ public class ServiceTouristicPackage implements IServiceTouristicPackage {
         return new PackageResponseDTO("Paquete turistico modificado correctamente");
     }
 
+}
 
 //    private TouristicPackage getPackage(Long firstId,Long secondId) {
 //        TouristicPackage touristicPackage = new TouristicPackage();
@@ -96,5 +97,5 @@ public class ServiceTouristicPackage implements IServiceTouristicPackage {
 //        }
 //        return touristicPackage;
 //    }
-
-}
+//
+//}

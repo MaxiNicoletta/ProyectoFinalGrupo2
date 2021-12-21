@@ -84,12 +84,6 @@ class ServiceHotelTest {
         assertEquals("La fecha de salida debe ser mayor a la de ida",ex.getERROR());
     }
 
-    @Test
-    void getHoteles() throws HotelesException {
-        when(repository.findAll()).thenReturn(list);
-        ListHotelesDTO res = srvHotel.getHoteles();
-        assertTrue(res.getHoteles().get(0) != null);
-    }
 
 
     @Test

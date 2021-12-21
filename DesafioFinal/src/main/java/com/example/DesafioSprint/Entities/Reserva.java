@@ -46,10 +46,6 @@ public class Reserva {
         this.interest = interest;
         this.total = total;
     }
-
-
-
-
 }
 
 

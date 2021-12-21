@@ -1,0 +1,576 @@
+{
+	"info": {
+		"_postman_id": "bb8f7bbf-a830-46d3-858f-737a394d179d",
+		"name": "Desafio Final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Hotel",
+			"item": [
+				{
+					"name": "Agregar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"hotelCode\": \"BG-0004\",\r\n    \"name\": \"Bocagrande\",\r\n    \"place\": \"Cartagena\",\r\n    \"roomType\": \"Múltiple\",\r\n    \"roomPrice\": 9370,\r\n    \"disponibilityDateFrom\": \"17/04/2022\",\r\n    \"disponibilityDateTo\": \"12/06/2022\",\r\n    \"reserved\": false\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/hotels/new/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hotels",
+								"new",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"hotelCode\": \"BG-0004\",\r\n    \"name\": \"Bocagrande Modificado\",\r\n    \"place\": \"Cartagena\",\r\n    \"roomType\": \"Múltiple\",\r\n    \"roomPrice\": 9370,\r\n    \"disponibilityDateFrom\": \"17/04/2022\",\r\n    \"disponibilityDateTo\": \"12/06/2022\",\r\n    \"reserved\": false\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/hotels/edit/?hotelCode=BG-0004",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hotels",
+								"edit",
+								""
+							],
+							"query": [
+								{
+									"key": "hotelCode",
+									"value": "BG-0004"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/hotels/edit/?hotelCode=BG-0004",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hotels",
+								"edit",
+								""
+							],
+							"query": [
+								{
+									"key": "hotelCode",
+									"value": "BG-0004"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/hotels",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hotels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar entre Fechas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/hotels?dateFrom=12/02/2022&dateTo=17/02/2022&destination=Buenos Aires",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hotels"
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "12/02/2022"
+								},
+								{
+									"key": "dateTo",
+									"value": "17/02/2022"
+								},
+								{
+									"key": "destination",
+									"value": "Buenos Aires"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vuelo",
+			"item": [
+				{
+					"name": "Agregar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"flightNumber\":\"MEPI-9986\",\r\n    \"name\":\"Vuelo 9\",\r\n    \"origin\":\"Medellín\",\r\n    \"destination\":\"Puerto Iguazú\",\r\n    \"seatType\":\"Business\",\r\n    \"flightPrice\":41640,\r\n    \"goingDate\":\"17/04/2022\",\r\n    \"returnDate\":\"02/05/2022\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/flights/new",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flights",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"flightNumber\":\"MEPI-9986\",\r\n    \"name\":\"Vuelo 9 Modificado\",\r\n    \"origin\":\"Medellín\",\r\n    \"destination\":\"Puerto Iguazú\",\r\n    \"seatType\":\"Business\",\r\n    \"flightPrice\":41640,\r\n    \"goingDate\":\"17/04/2022\",\r\n    \"returnDate\":\"02/05/2022\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/flights/edit?flightNumber=MEPI-9986",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flights",
+								"edit"
+							],
+							"query": [
+								{
+									"key": "flightNumber",
+									"value": "MEPI-9986"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/flights/delete?flightNumber=MEPI-9986",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flights",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "flightNumber",
+									"value": "MEPI-9986"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/flights",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flights"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar entre Fechas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/flights?dateFrom=10/02/2022&dateTo=15/02/2022&origin=Buenos Aires&destination=Puerto Iguazú",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flights"
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "10/02/2022"
+								},
+								{
+									"key": "dateTo",
+									"value": "15/02/2022"
+								},
+								{
+									"key": "origin",
+									"value": "Buenos Aires"
+								},
+								{
+									"key": "destination",
+									"value": "Puerto Iguazú"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reserva Vuelo",
+			"item": [
+				{
+					"name": "Agregar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"maxi.nicoletta@sabre.com\",\r\n    \"flightReservation\": {\r\n        \"goingDate\": \"10/02/2022\",\r\n        \"returnDate\": \"23/02/2022\",\r\n        \"origin\": \"Tucumán\",\r\n        \"destination\": \"Puerto Iguazú\",\r\n        \"flightNumber\": \"TUPI-3369\",\r\n        \"seats\": 2,\r\n        \"seatType\": \"Economy\",\r\n        \"people\": [\r\n            {\r\n                \"dni\": \"1234567899\",\r\n                \"name\": \"Maximiliano\",\r\n                \"lastname\": \"Nicoletta\",\r\n                \"birthDate\": \"04/03/200\",\r\n                \"mail\": \"maximiliano.nicoletta@sabre.com\"\r\n            },\r\n            {\r\n                \"dni\": \"123456789999\",\r\n                \"name\": \"Maximiliano\",\r\n                \"lastname\": \"perez\",\r\n                \"birthDate\": \"04/03/200\",\r\n                \"mail\": \"maximiliano.perez@sabre.com\"\r\n            }\r\n        ]\r\n    },\r\n        \"paymentMethod\":{\r\n            \"type\": \"CREDIT\",\r\n            \"number\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/flight-reservation/new",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flight-reservation",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Reserva",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/flight-reservation/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flight-reservation",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar Reserva",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"maxi.nicoletta@sabre.com\",\r\n    \"flightReservation\": {\r\n        \"goingDate\": \"10/02/2022\",\r\n        \"returnDate\": \"23/02/2022\",\r\n        \"origin\": \"Tucumán\",\r\n        \"destination\": \"Puerto Iguazú\",\r\n        \"flightNumber\": \"TUPI-3369\",\r\n        \"seats\": 1,\r\n        \"seatType\": \"Economy\",\r\n        \"people\": [\r\n            {\r\n                \"dni\": \"12\",\r\n                \"name\": \"Mauricio\",\r\n                \"lastname\": \"Perez\",\r\n                \"birthDate\": \"04/03/200\",\r\n                \"mail\": \"maximiliano.perez@sabre.com\"\r\n            }\r\n        ]\r\n    },\r\n        \"paymentMethod\":{\r\n            \"type\": \"CREDIT\",\r\n            \"number\": \"1234-1234-1234-1234\",\r\n            \"dues\": 2\r\n        }\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/flight-reservation/edit?id=8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flight-reservation",
+								"edit"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/flight-reservation/delete?id=8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flight-reservation",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reserva Hotel",
+			"item": [
+				{
+					"name": "Agregar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"maximiliano@hotmail.com\",\r\n    \"booking\":{\r\n        \"dateFrom\": \"13/02/2022\",\r\n        \"dateTo\":\"14/02/2022\",\r\n        \"destination\":\"Buenos Aires\",\r\n        \"hotelCode\":\"BH-0002\",\r\n        \"peopleAmount\":2,\r\n        \"roomType\":\"DOUBLE\",\r\n        \"people\":[\r\n            {\r\n                \"dni\":\"12345678\",\r\n                \"name\":\"Maximiliano\",\r\n                \"lastname\":\"Nicoletta\",\r\n                \"birthDate\":\"12/08/1995\",\r\n                \"mail\":\"maximiliano@hotmail.com\"\r\n\r\n            },\r\n            {\r\n                \"dni\":\"456789\",\r\n                \"name\":\"Jose\",\r\n                \"lastname\":\"Perez\",\r\n                \"birthDate\":\"12/08/1995\",\r\n                \"mail\":\"josePerez@hotmail.com\"\r\n\r\n            }\r\n        ]\r\n    },\r\n        \"paymentMethod\":{\r\n            \"type\":\"CREDIT\",\r\n            \"number\":\"132456-456546-48\",\r\n            \"dues\":6\r\n        }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/hotel-booking/new",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hotel-booking",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Reservas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/hotel-bookings/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hotel-bookings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar Reserva",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"maximiliano@hotmail.com\",\r\n    \"booking\":{\r\n        \"dateFrom\": \"13/02/2022\",\r\n        \"dateTo\":\"14/02/2022\",\r\n        \"destination\":\"Buenos Aires\",\r\n        \"hotelCode\":\"BH-0002\",\r\n        \"peopleAmount\":1,\r\n        \"roomType\":\"DOUBLE\",\r\n        \"people\":[\r\n            {\r\n                \"dni\":\"12345678\",\r\n                \"name\":\"Maximiliano\",\r\n                \"lastname\":\"Nicoletta\",\r\n                \"birthDate\":\"12/08/1995\",\r\n                \"mail\":\"maximiliano@hotmail.com\"\r\n\r\n            }\r\n        ]\r\n    },\r\n        \"paymentMethod\":{\r\n            \"type\":\"CREDIT\",\r\n            \"number\":\"132456-456546-48\",\r\n            \"dues\":2\r\n        }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/hotel-bookings/edit?id=11\n",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hotel-bookings",
+								"edit"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "11\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/hotel-booking/delete?id=11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hotel-booking",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

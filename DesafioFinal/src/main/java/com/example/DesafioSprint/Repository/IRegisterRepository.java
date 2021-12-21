@@ -10,9 +10,9 @@ import java.util.Date;
 
 @Repository
 public interface IRegisterRepository extends JpaRepository<Reserva, Long> {
-    @Query("")
+    @Query("SELECT SUM(R.total) FROM Reserva R WHERE R.dateFrom = :date")
     Double getDailyAmount(@Param("date") Date date);
 
-    @Query()
+    @Query("SELECT (R.total) FROM Reserva R WHERE month(R.dateFrom) = month(:month) AND year(R.dateFrom) = year(:year)")
     Double getMonthlyAmount(@Param("month") int month, @Param("year") int year);
 }

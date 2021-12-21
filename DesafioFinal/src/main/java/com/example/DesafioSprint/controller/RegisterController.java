@@ -23,12 +23,24 @@ public class RegisterController {
    @Autowired
     IServiceRegister service;
 
+    /**
+     * Endpoint that returns the total amount of earnings from the reservations in a given day.
+     * @param rawDate Day from which we obtain the total amount of earnings.
+     * @return DailyRegisterResponseDTO, containing the date and the total amount of that date.
+     * @throws ParseException
+     */
     @GetMapping
     public DailyRegisterResponseDTO returnDailyAmount(@RequestParam String rawDate) throws ParseException {
         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(rawDate);
         return service.getDailyAmount(date);
     }
 
+    /**
+     * Returns the total amount of earnings given a month and a year.
+     * @param month Month from where I want to get the earnings.
+     * @param year Year from where I want to get the earnings.
+     * @return MonthlyRegisterResponseDTO, containing the month, year and the total amount of that date.
+     */
     @GetMapping
     public MonthlyRegisterResponseDTO returnMonthlyAmount(@Valid @RequestParam @Min(1) @Max(12) int month, @RequestParam int year){
         return service.getMonthlyAmount(month, year);

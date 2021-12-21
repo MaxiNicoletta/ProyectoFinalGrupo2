@@ -47,9 +47,6 @@ public class Reserva {
         this.total = total;
     }
 
-
-
-
 }
 
 

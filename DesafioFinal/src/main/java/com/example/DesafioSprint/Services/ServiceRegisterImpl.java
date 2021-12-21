@@ -10,7 +10,7 @@ import java.util.Date;
 @Service
 public class ServiceRegisterImpl implements IServiceRegister {
 
-    private IRegisterRepository repository;
+    private final IRegisterRepository repository;
 
     public ServiceRegisterImpl(IRegisterRepository repository) {
         this.repository = repository;

@@ -6,87 +6,53 @@ import com.example.DesafioSprint.Entities.*;
 import com.example.DesafioSprint.Repository.IBookingRepository;
 import com.example.DesafioSprint.Repository.IFligthReservationRepository;
 import com.example.DesafioSprint.Repository.IPackageRepository;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class ServiceTouristicPackage implements IServiceTouristicPackage {
 
     private final IPackageRepository packageRepository;
-    private final IBookingRepository bookingRepository;
-    private final IFligthReservationRepository fligthReservationRepository;
 
-    public ServiceTouristicPackage(IPackageRepository packageRepository, IBookingRepository bookingRepository, IFligthReservationRepository fligthReservationRepository) {
+    public ServiceTouristicPackage(IPackageRepository packageRepository) {
         this.packageRepository = packageRepository;
-        this.bookingRepository = bookingRepository;
-        this.fligthReservationRepository = fligthReservationRepository;
     }
 
     @Override
-    public PackageResponseDTO addTouristicPackage(TouristicPackageDTO packageDTO, BookingsOrReservations bookingsOrReservations) {
-        TouristicPackage touristicPackage;
-        touristicPackage = getPackage(bookingsOrReservations.getFirstId(),bookingsOrReservations.getSecondId());
-        packageRepository.save(touristicPackage);
+    public PackageResponseDTO addTouristicPackage(TouristicPackageDTO packageDTO) {
+        TouristicPackage touristicPackage = new TouristicPackage();
+            touristicPackage.dtoToEntity(packageDTO);
+            packageRepository.save(touristicPackage);
         return new PackageResponseDTO("Paquete Turistico dado de alta correctamente");
     }
 
     @Override
-    public PackageResponseDTO updateTouristicPackage(TouristicPackageDTO touristicPackageDTO,Long id) {
+    public PackageResponseDTO updateTouristicPackage(TouristicPackageDTO touristicPackageDTO, int id) {
         TouristicPackage touristicPackage = packageRepository.getById(id);
-        if(touristicPackage!= null){
+        if (touristicPackage != null) {
             packageRepository.save(touristicPackage);
         }
-        return new PackageResponseDTO("Paquete turistico modificado correctamente ")
+        return new PackageResponseDTO("Paquete turistico modificado correctamente ");
     }
 
     @Override
-    public List<TouristicPackage> getPackages() {
+    public List<TouristicPackageDTO> getPackages() {
         List<TouristicPackage> touristicPackages = packageRepository.findAll();
-        return touristicPackages;
+        List<TouristicPackageDTO> result = new ArrayList<>();
+        for (TouristicPackage touristicPackage : touristicPackages) {
+            TouristicPackageDTO touristicPackageDTO = new TouristicPackageDTO();
+            touristicPackage.dtoToEntity(touristicPackageDTO);
+            result.add(touristicPackageDTO);
+        }
+        return result;
     }
 
     @Override
-    public PackageResponseDTO deletePackage(Long id) {
+    public PackageResponseDTO deletePackage(int id) {
         TouristicPackage touristicPackage = packageRepository.getById(id);
         packageRepository.delete(touristicPackage);
         return new PackageResponseDTO("Paquete turistico modificado correctamente");
-    }
-
-
-    private TouristicPackage getPackage(Long firstId,Long secondId) {
-        TouristicPackage touristicPackage = new TouristicPackage();
-
-        FlightReservationPackage flightReservationPackage;
-        BookingPackage bookingPackage;
-        BookingFlightPackage bookingFlightPackage;
-        Booking booking = bookingRepository.getById(firstId);
-        Booking secondBooking = bookingRepository.getById(firstId);
-        ReservaVuelo reservation = fligthReservationRepository.getById(firstId);
-        ReservaVuelo secondReservation = fligthReservationRepository.getById(secondId);
-        if (booking == null && secondBooking == null) {
-            flightReservationPackage = new FlightReservationPackage(reservation, secondReservation);
-            touristicPackage.setFlightReservationPackage(flightReservationPackage);
-        }
-        if (reservation == null && secondReservation == null) {
-            bookingPackage = new BookingPackage(booking, secondBooking);
-            touristicPackage.setBookingPackage(bookingPackage);
-        }
-        if (booking == null && reservation != null) {
-            bookingFlightPackage = new BookingFlightPackage(secondBooking, reservation);
-            touristicPackage.setBookingFlightPackage(bookingFlightPackage);
-        }
-        if (secondBooking == null && reservation != null) {
-            bookingFlightPackage = new BookingFlightPackage(booking, reservation);
-            touristicPackage.setBookingFlightPackage(bookingFlightPackage);
-        }
-        if (booking != null && reservation == null) {
-            bookingFlightPackage = new BookingFlightPackage(booking, secondReservation);
-            touristicPackage.setBookingFlightPackage(bookingFlightPackage);
-        }
-        if (secondBooking != null && reservation == null) {
-            bookingFlightPackage = new BookingFlightPackage(secondBooking, secondReservation);
-            touristicPackage.setBookingFlightPackage(bookingFlightPackage);
-        }
-        return touristicPackage;
     }
 
 }

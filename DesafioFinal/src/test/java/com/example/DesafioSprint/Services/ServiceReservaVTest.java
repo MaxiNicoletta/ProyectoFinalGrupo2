@@ -3,7 +3,6 @@
 //import com.example.DesafioSprint.DTOs.*;
 //import com.example.DesafioSprint.Exceptions.*;
 //import com.example.DesafioSprint.Repository.IFlightRepository;
-//import com.example.DesafioSprint.Repository.FlightRepository;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +26,7 @@
 //
 //    @BeforeEach
 //    void cargarServ() {
-//        srvVueloR = new ServiceReservaV(srvVueloR, repository);
+//        srvVueloR = new ServiceReservaV(repository,);
 //        repository = new FlightRepository();
 //    }
 //
@@ -283,3 +282,4 @@
 //        assertEquals("Ese vuelo No esta disponible en las fechas ingresadas",ex.getERROR());
 //    }
 //}
+//

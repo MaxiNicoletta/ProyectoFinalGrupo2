@@ -16,13 +16,13 @@ import java.util.List;
 
 public interface IServiceBooking {
 
-    public BookingResponseDTO addBooking(BookingRequestDTO bookingRequestDTO) throws UbicacionException, PersonasException, HotelesException, FechasException;
+     BookingResponseDTO addBooking(BookingRequestDTO bookingRequestDTO) throws UbicacionException, PersonasException, HotelesException, FechasException;
 
-    public List<BookingDTO> getBookings() throws HotelesException;
+     List<BookingDTO> getBookings() throws HotelesException;
 
-    public BookingResponseDTO deleteBooking(Long id);
+     BookingResponseDTO deleteBooking(Long id);
 
-    public BookingResponseDTO updateBooking(Long id,BookingRequestDTO bookingRequestDTO) throws HotelesException, FechasException, PersonasException;
+     BookingResponseDTO updateBooking(Long id,BookingRequestDTO bookingRequestDTO) throws HotelesException, FechasException, PersonasException;
 
 
 

@@ -11,5 +11,4 @@ public class DisponibilidadHotelDTO {
     private Date dateFrom;
     private Date dateTo;
     private String destination;
-
 }

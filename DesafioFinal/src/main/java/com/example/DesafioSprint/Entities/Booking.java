@@ -65,11 +65,4 @@ public class Booking extends Reserva {
        return booking;
     }
 
-
-
-
-//    public Booking bookingRequestDTOtoBooking(BookingRequestDTO bookingRequestDTO){
-//        Booking booking = new Booking(bookingRequestDTO.getBooking()
-//    }
-
 }

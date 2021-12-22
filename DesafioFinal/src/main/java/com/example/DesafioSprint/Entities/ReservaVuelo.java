@@ -24,7 +24,6 @@ public class ReservaVuelo extends Reserva {
     private String origin;
 
 
-    //Constructor
     public ReservaVuelo(String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total, String flightNumber, int seats, String seaType, String origin) {
         super(userName, dateFrom, dateTo, destination, people, paymentMethod, amount, interest, total);
         this.flightNumber = flightNumber;

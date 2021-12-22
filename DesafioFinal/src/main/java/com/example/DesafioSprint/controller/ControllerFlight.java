@@ -88,15 +88,6 @@ public class ControllerFlight {
         }
     }
 
-//    /**
-//     * @param cod Recibe el identificador del vuelo que quiere consultar
-//     * @return Todos los datos de las reservas que corresponden al vuelo ingresado.
-//     */
-//    @GetMapping("/flight-history/{cod}")
-//    ResponseEntity<List<ReservaVueloResponseDTO>> getReservasVuelos(@PathVariable String cod) throws VuelosException {
-//        return new ResponseEntity<>(service.getReservasVuelo(cod), HttpStatus.OK);
-//    }
-
     @DeleteMapping("/delete")
     public ResponseEntity<FlightResponseDTO> deleteFlight(@RequestParam String flightNumber) throws VuelosException {
         return new ResponseEntity<>(service.deleteFlight(flightNumber), HttpStatus.OK);

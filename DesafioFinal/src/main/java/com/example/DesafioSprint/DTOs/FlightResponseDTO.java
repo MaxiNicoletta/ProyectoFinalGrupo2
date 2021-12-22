@@ -7,5 +7,4 @@ import lombok.Data;
 @AllArgsConstructor
 public class FlightResponseDTO {
     private String message;
-
 }

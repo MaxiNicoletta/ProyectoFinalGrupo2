@@ -8,7 +8,6 @@ import com.example.DesafioSprint.Exceptions.*;
 import com.example.DesafioSprint.Entities.ReservaVuelo;
 import com.example.DesafioSprint.Repository.IFlightRepository;
 import com.example.DesafioSprint.Repository.IFligthReservationRepository;
-import com.example.DesafioSprint.Repository.IPersonRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,7 @@ public class ServiceReservaV implements IServiceReservaV {
         validation2(rsVuelo);
         VueloDTO vuelo = flight(rsVuelo);
         if (vuelo != null) {
-            getPersonAndPaymentReservation(rsVuelo,vuelo);
+            getPersonAndPaymentReservation(rsVuelo, vuelo);
             return new FlightResponseDTO("Reserva de vuelo dada de alta correctamente.");
         } else
             throw new VuelosException("Ese vuelo No esta disponible en las fechas ingresadas", HttpStatus.BAD_REQUEST);
@@ -41,35 +40,35 @@ public class ServiceReservaV implements IServiceReservaV {
     @Override
     public ArrayList<ReservaVueloDTO> getAllReservations() {
         ArrayList<ReservaVueloDTO> response = new ArrayList<>();
-        for(ReservaVuelo r: repositoryReservation.findAll())
+        for (ReservaVuelo r : repositoryReservation.findAll())
             response.add(r.entityToDTO());
         return response;
     }
 
     @Override
-    public FlightResponseDTO updateFlightReservation(Long id,ReservasVueloRequestDTO reservasVueloRequestDTO) throws VuelosException, PersonasException, UbicacionException {
-        validation(reservasVueloRequestDTO,id);
+    public FlightResponseDTO updateFlightReservation(Long id, ReservasVueloRequestDTO reservasVueloRequestDTO) throws VuelosException, PersonasException, UbicacionException {
+        validation(reservasVueloRequestDTO, id);
         ReservaVuelo rsv = repositoryReservation.getById(id);
         rsv.setUserName(reservasVueloRequestDTO.getUserName());
-        if (rsv.getSeats()!= reservasVueloRequestDTO.getFlightReservation().getSeats())
-           person(reservasVueloRequestDTO,rsv);
+        if (rsv.getSeats() != reservasVueloRequestDTO.getFlightReservation().getSeats())
+            person(reservasVueloRequestDTO, rsv);
         else
             rsv.setSeats(reservasVueloRequestDTO.getFlightReservation().getSeats());
         if (rsv.getPaymentMethod() != reservasVueloRequestDTO.getFlightReservation().getParmentMethod())
-            getPayment(reservasVueloRequestDTO,rsv);
-        else{
-            Pago pago = new Pago(reservasVueloRequestDTO.getPaymentMethod().getType(),reservasVueloRequestDTO.getPaymentMethod().getNumber() ,reservasVueloRequestDTO.getPaymentMethod().getDues());
+            getPayment(reservasVueloRequestDTO, rsv);
+        else {
+            Pago pago = new Pago(reservasVueloRequestDTO.getPaymentMethod().getType(), reservasVueloRequestDTO.getPaymentMethod().getNumber(), reservasVueloRequestDTO.getPaymentMethod().getDues());
             rsv.setPaymentMethod(pago);
-            }
-            repositoryReservation.save(rsv);
-        return new FlightResponseDTO("Reserva de vuelo modificada correctamente.");
         }
+        repositoryReservation.save(rsv);
+        return new FlightResponseDTO("Reserva de vuelo modificada correctamente.");
+    }
 
     @Override
     public FlightResponseDTO deleteFlightReservation(Long id) throws VuelosException {
         ReservaVuelo rsv = repositoryReservation.getById(id);
         if (rsv == null)
-        throw new VuelosException("No existe hotel con ese codigo", HttpStatus.BAD_REQUEST);
+            throw new VuelosException("No existe hotel con ese codigo", HttpStatus.BAD_REQUEST);
         else {
             repositoryReservation.deleteById(id);
             return new FlightResponseDTO("Reserva de vuelo eliminada correctamente.");

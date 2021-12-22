@@ -17,7 +17,6 @@ import java.util.Date;
 @Entity
 public class TouristicPackage {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int packageNumber;
     private String name;
     private Date creation_date;

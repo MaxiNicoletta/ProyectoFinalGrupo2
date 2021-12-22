@@ -29,14 +29,14 @@ public class TouristicPackageController {
         return new ResponseEntity<>(service.updateTouristicPackage(touristicPackageDTO,id), HttpStatus.OK);
     }
 
-    @GetMapping("s")
+    @GetMapping("")
     public List<TouristicPackageDTO> getAllTouristicPackages(){
         return service.getPackages();
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<PackageResponseDTO> deleteTouristicPackage(@RequestParam int id){
-        return new ResponseEntity<>(service.deletePackage(id), HttpStatus.OK);
+    public ResponseEntity<PackageResponseDTO> deleteTouristicPackage(@RequestParam int packageNumber){
+        return new ResponseEntity<>(service.deletePackage(packageNumber), HttpStatus.OK);
     }
 
 }

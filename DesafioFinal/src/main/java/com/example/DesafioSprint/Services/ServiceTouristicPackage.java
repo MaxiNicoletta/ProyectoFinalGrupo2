@@ -22,7 +22,7 @@ public class ServiceTouristicPackage implements IServiceTouristicPackage {
     @Override
     public PackageResponseDTO addTouristicPackage(TouristicPackageDTO packageDTO) {
         TouristicPackage touristicPackage = new TouristicPackage();
-            touristicPackage.dtoToEntity(packageDTO);
+            touristicPackage= touristicPackage.dtoToEntity(packageDTO);
             packageRepository.save(touristicPackage);
         return new PackageResponseDTO("Paquete Turistico dado de alta correctamente");
     }
@@ -52,7 +52,7 @@ public class ServiceTouristicPackage implements IServiceTouristicPackage {
     public PackageResponseDTO deletePackage(int id) {
         TouristicPackage touristicPackage = packageRepository.getById(id);
         packageRepository.delete(touristicPackage);
-        return new PackageResponseDTO("Paquete turistico modificado correctamente");
+        return new PackageResponseDTO("Paquete turistico borrado correctamente");
     }
 
 }

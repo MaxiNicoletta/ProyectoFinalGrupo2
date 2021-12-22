@@ -37,9 +37,6 @@ public class Reserva {
     protected double amount;
     protected double interest;
     protected double total;
-    //Date of the day that the reservation was made.
-//    @JsonFormat(pattern = "dd/MM/yyyy")
-//    protected Date reservationDate = Calendar.getInstance().getTime();
 
     public Reserva(String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total) {
         this.userName = userName;

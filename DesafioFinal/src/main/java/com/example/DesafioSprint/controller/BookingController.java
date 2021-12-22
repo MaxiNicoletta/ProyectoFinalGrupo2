@@ -32,7 +32,7 @@ public class BookingController {
         return new ResponseEntity<>(hotelBooking.updateBooking(id, bookingRequestDTO), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/hotel-booking/delete")
     public ResponseEntity<BookingResponseDTO> deleteBooking(@RequestParam Long id){
         return new ResponseEntity<>(hotelBooking.deleteBooking(id), HttpStatus.OK);
     }

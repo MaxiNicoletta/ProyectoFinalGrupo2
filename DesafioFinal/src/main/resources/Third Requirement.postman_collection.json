@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "8a0257de-e6ef-448c-a79f-2593ca2f1907",
+		"name": "Third Requirement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get amount by day",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/income?date=10/02/2022",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"income"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "10/02/2022"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get amount by month and year",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/income?month=2&year=2022",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"income"
+					],
+					"query": [
+						{
+							"key": "month",
+							"value": "2"
+						},
+						{
+							"key": "year",
+							"value": "2022"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

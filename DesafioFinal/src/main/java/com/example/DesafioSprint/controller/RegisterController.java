@@ -25,19 +25,18 @@ public class RegisterController {
 
     /**
      * Endpoint that returns the total amount of earnings from the reservations in a given a date.
-     * @param rawDate Day from which we obtain the total amount of earnings.
+     * @param date Day from which we obtain the total amount of earnings.
      * @param month Month from where I want to get the earnings.
      * @param year Year from where I want to get the earnings.
      * @return RegisterResponseDTO, containing the date and the total amount of that date.
      * @throws ParseException
      */
     @GetMapping
-    public RegisterResponseDTO returnDailyAmount(@RequestParam (required = false) String rawDate,
+    public RegisterResponseDTO returnDailyAmount(@RequestParam (required = false) String date,
                                                  @Valid @RequestParam (required = false) @Min(1) @Max(12) Integer month,
                                                  @RequestParam (required = false) @Positive Integer year) throws ParseException {
 
-        if(rawDate != null && !rawDate.equals("")) {
-            Date date = new SimpleDateFormat("dd/MM/yyyy").parse(rawDate);
+        if(date != null && !date.equals("")) {
             return service.getDailyAmount(date);
         } else {
             return service.getMonthlyAmount(month, year);

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,11 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@DiscriminatorValue("V")
 public class ReservaVuelo extends Reserva {
     private String flightNumber;
     private int seats;
     private String seaType;
     private String origin;
+
 
     //Constructor
     public ReservaVuelo(String userName, Date dateFrom, Date dateTo, String destination, List<Persona> people, Pago paymentMethod, double amount, double interest, double total, String flightNumber, int seats, String seaType, String origin) {
@@ -30,20 +33,20 @@ public class ReservaVuelo extends Reserva {
         this.origin = origin;
     }
 
-    public ReservaVueloDTO entityToDTO(ReservaVuelo reservation){
+    public ReservaVueloDTO entityToDTO(){
         ArrayList<PersonaDTO> people = new ArrayList<>();
         Persona person = new Persona();
         for(Persona p: getPeople())
             people.add(person.entityToDTO(p));
         return new ReservaVueloDTO(
-                reservation.getDateFrom(),
-                reservation.getDateTo(),
-                reservation.getOrigin(),
-                reservation.getDestination(),
-                reservation.getFlightNumber(),
-                reservation.getSeats(),
-                reservation.getSeaType(),
-                people
+                getDateFrom(),
+                getDateTo(),
+                getOrigin(),
+                getDestination(),
+                getFlightNumber(),
+                getSeats(),
+                getSeaType(),
+                people,getPaymentMethod()
         );
     }
 
@@ -51,10 +54,10 @@ public class ReservaVuelo extends Reserva {
         ArrayList<Persona> people = new ArrayList<>();
         Persona person = new Persona();
         for(PersonaDTO p: reservationDTO.getPeople())
-            people.add(person.dtoToEntity(p));
+            people.add(person.DTOPersonaToDTO(p));
         ReservaVuelo reservation = new ReservaVuelo();
-        reservation.setDateFrom(reservationDTO.getDateFrom());
-        reservation.setDateTo(reservationDTO.getDateTo());
+        reservation.setDateFrom(reservationDTO.getGoingDate());
+        reservation.setDateTo(reservationDTO.getReturnDate());
         reservation.setOrigin(reservationDTO.getOrigin());
         reservation.setDestination(reservationDTO.getDestination());
         reservation.setFlightNumber(reservationDTO.getFlightNumber());

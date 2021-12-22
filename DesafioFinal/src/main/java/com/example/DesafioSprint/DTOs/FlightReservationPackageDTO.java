@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotelResponseDTO {
-    private String message;
+public class FlightReservationPackageDTO {
+    private ReservaVueloDTO flightReservationDTO;
+    private ReservaVueloDTO secondFlightReservationDTO;
 }

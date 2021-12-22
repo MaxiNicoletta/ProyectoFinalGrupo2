@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,14 +18,17 @@ import java.util.List;
 public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
     protected String userName;
     protected Date dateFrom;
     protected Date dateTo;
     protected String destination;
-    @OneToMany(mappedBy = "id")
-    protected List<Persona> people;
-    @OneToOne
+    @ManyToMany (cascade= CascadeType.ALL)
+    @JoinTable(name = "reservation_people",
+                joinColumns = @JoinColumn(name = "reservation_id",referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name="people_id",referencedColumnName = "dni"))
+    protected List<Persona> people ;
+    @OneToOne(cascade= CascadeType.ALL)
     @JoinColumn(name ="pago_id")
     protected Pago paymentMethod;
     protected double amount;
@@ -42,10 +46,6 @@ public class Reserva {
         this.interest = interest;
         this.total = total;
     }
-
-
-
-
 }
 
 

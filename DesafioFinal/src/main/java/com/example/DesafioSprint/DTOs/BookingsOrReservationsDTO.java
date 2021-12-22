@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotelResponseDTO {
-    private String message;
+public class BookingsOrReservationsDTO {
+    private int firstId;
+    private int secondId;
 }

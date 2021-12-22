@@ -15,7 +15,7 @@ public class PersonaDTO {
     private String dni;
     private String name;
     private String lastname;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     private Date birthDate;
     @Email(message = "Por favor ingrese un e-mail válido")
     private String mail;

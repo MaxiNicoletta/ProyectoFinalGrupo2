@@ -25,8 +25,8 @@ public class TouristicPackageController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<PackageResponseDTO> updateTouristicPackage(@RequestParam int id, @RequestBody TouristicPackageDTO touristicPackageDTO) {
-        return new ResponseEntity<>(service.updateTouristicPackage(touristicPackageDTO,id), HttpStatus.OK);
+    public ResponseEntity<PackageResponseDTO> updateTouristicPackage(@RequestParam int packageNumber, @RequestBody TouristicPackageDTO touristicPackageDTO) {
+        return new ResponseEntity<>(service.updateTouristicPackage(touristicPackageDTO,packageNumber), HttpStatus.OK);
     }
 
     @GetMapping("")

@@ -60,7 +60,6 @@ public class ServiceRegisterImpl implements IServiceRegister {
         MonthlyRegisterResponseDTO response = new MonthlyRegisterResponseDTO();
         response.setMonth(month);
         response.setYear(year);
-//        response.setTotal_income();
         return response;
     }
 }
